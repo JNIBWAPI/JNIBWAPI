@@ -1,0 +1,184 @@
+Compiled from "JNIBWAPI.java"
+public class eisbot.proxy.JNIBWAPI extends java.lang.Object{
+static {};
+  Signature: ()V
+public native void attackMove(int, int, int);
+  Signature: (III)V
+public native void attackUnit(int, int);
+  Signature: (II)V
+public native void build(int, int, int, int);
+  Signature: (IIII)V
+public native void buildAddon(int, int);
+  Signature: (II)V
+public native void train(int, int);
+  Signature: (II)V
+public native void morph(int, int);
+  Signature: (II)V
+public native void research(int, int);
+  Signature: (II)V
+public native void upgrade(int, int);
+  Signature: (II)V
+public native void setRallyPoint(int, int, int);
+  Signature: (III)V
+public native void setRallyPoint(int, int);
+  Signature: (II)V
+public native void move(int, int, int);
+  Signature: (III)V
+public native void patrol(int, int, int);
+  Signature: (III)V
+public native void holdPosition(int);
+  Signature: (I)V
+public native void stop(int);
+  Signature: (I)V
+public native void follow(int, int);
+  Signature: (II)V
+public native void gather(int, int);
+  Signature: (II)V
+public native void returnCargo(int);
+  Signature: (I)V
+public native void repair(int, int);
+  Signature: (II)V
+public native void burrow(int);
+  Signature: (I)V
+public native void unburrow(int);
+  Signature: (I)V
+public native void cloak(int);
+  Signature: (I)V
+public native void decloak(int);
+  Signature: (I)V
+public native void siege(int);
+  Signature: (I)V
+public native void unsiege(int);
+  Signature: (I)V
+public native void lift(int);
+  Signature: (I)V
+public native void land(int, int, int);
+  Signature: (III)V
+public native void load(int, int);
+  Signature: (II)V
+public native void unload(int, int);
+  Signature: (II)V
+public native void unloadAll(int);
+  Signature: (I)V
+public native void unloadAll(int, int, int);
+  Signature: (III)V
+public native void rightClick(int, int, int);
+  Signature: (III)V
+public native void rightClick(int, int);
+  Signature: (II)V
+public native void haltConstruction(int);
+  Signature: (I)V
+public native void cancelConstruction(int);
+  Signature: (I)V
+public native void cancelAddon(int);
+  Signature: (I)V
+public native void cancelTrain(int, int);
+  Signature: (II)V
+public native void cancelMorph(int);
+  Signature: (I)V
+public native void cancelResearch(int);
+  Signature: (I)V
+public native void cancelUpgrade(int);
+  Signature: (I)V
+public native void useTech(int, int);
+  Signature: (II)V
+public native void useTech(int, int, int, int);
+  Signature: (IIII)V
+public native void useTech(int, int, int);
+  Signature: (III)V
+public native void drawHealth(boolean);
+  Signature: (Z)V
+public native void drawTargets(boolean);
+  Signature: (Z)V
+public native void drawIDs(boolean);
+  Signature: (Z)V
+public native void enableUserInput();
+  Signature: ()V
+public native void enablePerfectInformation();
+  Signature: ()V
+public native void setGameSpeed(int);
+  Signature: (I)V
+public native void drawBox(int, int, int, int, int, boolean, boolean);
+  Signature: (IIIIIZZ)V
+public native void drawCircle(int, int, int, int, boolean, boolean);
+  Signature: (IIIIZZ)V
+public native void drawLine(int, int, int, int, int, boolean);
+  Signature: (IIIIIZ)V
+public native void drawDot(int, int, int, boolean);
+  Signature: (IIIZ)V
+public native void drawText(int, int, java.lang.String, boolean);
+  Signature: (IILjava/lang/String;Z)V
+public eisbot.proxy.types.UnitType getUnitType(int);
+  Signature: (I)Leisbot/proxy/types/UnitType;
+public eisbot.proxy.types.TechType getTechType(int);
+  Signature: (I)Leisbot/proxy/types/TechType;
+public eisbot.proxy.types.UpgradeType getUpgradeType(int);
+  Signature: (I)Leisbot/proxy/types/UpgradeType;
+public eisbot.proxy.types.WeaponType getWeaponType(int);
+  Signature: (I)Leisbot/proxy/types/WeaponType;
+public eisbot.proxy.types.UnitSizeType getUnitSizeType(int);
+  Signature: (I)Leisbot/proxy/types/UnitSizeType;
+public eisbot.proxy.types.BulletType getBulletType(int);
+  Signature: (I)Leisbot/proxy/types/BulletType;
+public eisbot.proxy.types.DamageType getDamageType(int);
+  Signature: (I)Leisbot/proxy/types/DamageType;
+public eisbot.proxy.types.ExplosionType getExplosionType(int);
+  Signature: (I)Leisbot/proxy/types/ExplosionType;
+public java.util.Collection unitTypes();
+  Signature: ()Ljava/util/Collection;
+public java.util.Collection techTypes();
+  Signature: ()Ljava/util/Collection;
+public java.util.Collection upgradeTypes();
+  Signature: ()Ljava/util/Collection;
+public java.util.Collection weaponTypes();
+  Signature: ()Ljava/util/Collection;
+public java.util.Collection unitSizeTypes();
+  Signature: ()Ljava/util/Collection;
+public java.util.Collection bulletTypes();
+  Signature: ()Ljava/util/Collection;
+public java.util.Collection damageTypes();
+  Signature: ()Ljava/util/Collection;
+public java.util.Collection explosionTypes();
+  Signature: ()Ljava/util/Collection;
+public int getFrameCount();
+  Signature: ()I
+public eisbot.proxy.model.Player getSelf();
+  Signature: ()Leisbot/proxy/model/Player;
+public eisbot.proxy.model.Player getPlayer(int);
+  Signature: (I)Leisbot/proxy/model/Player;
+public java.util.ArrayList getAllies();
+  Signature: ()Ljava/util/ArrayList;
+public java.util.ArrayList getEnemies();
+  Signature: ()Ljava/util/ArrayList;
+public eisbot.proxy.model.Unit getUnit(int);
+  Signature: (I)Leisbot/proxy/model/Unit;
+public java.util.Collection getAllUnits();
+  Signature: ()Ljava/util/Collection;
+public java.util.ArrayList getMyUnits();
+  Signature: ()Ljava/util/ArrayList;
+public java.util.ArrayList getAlliedUnits();
+  Signature: ()Ljava/util/ArrayList;
+public java.util.ArrayList getEnemyUnits();
+  Signature: ()Ljava/util/ArrayList;
+public java.util.ArrayList getNeutralUnits();
+  Signature: ()Ljava/util/ArrayList;
+public eisbot.proxy.model.Map getMap();
+  Signature: ()Leisbot/proxy/model/Map;
+public void loadTypeData();
+  Signature: ()V
+public void loadMapData(boolean);
+  Signature: (Z)V
+public eisbot.proxy.JNIBWAPI(eisbot.proxy.BWAPIEventListener);
+  Signature: (Leisbot/proxy/BWAPIEventListener;)V
+public void start();
+  Signature: ()V
+public void javaPrint(java.lang.String);
+  Signature: (Ljava/lang/String;)V
+public void connected();
+  Signature: ()V
+public void gameStarted();
+  Signature: ()V
+public void keyPressed(int);
+  Signature: (I)V
+}
+
