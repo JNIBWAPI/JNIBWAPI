@@ -331,7 +331,7 @@ public class JNIBWAPI {
 		}
 		
 		// get region and choke point data
-		File bwtaFile = new File("bwta/" + map.getHash());
+		File bwtaFile = new File(map.getHash());
 		boolean analyzed = bwtaFile.exists();		
 		int[] regionData = null;
 		int[] chokePointData = null;
