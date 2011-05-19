@@ -2,9 +2,9 @@ Compiled from "JNIBWAPI.java"
 public class eisbot.proxy.JNIBWAPI extends java.lang.Object{
 static {};
   Signature: ()V
-public native void attackMove(int, int, int);
+public native void attack(int, int, int);
   Signature: (III)V
-public native void attackUnit(int, int);
+public native void attack(int, int);
   Signature: (II)V
 public native void build(int, int, int, int);
   Signature: (IIII)V
@@ -104,10 +104,14 @@ public native void drawCircle(int, int, int, int, boolean, boolean);
   Signature: (IIIIZZ)V
 public native void drawLine(int, int, int, int, int, boolean);
   Signature: (IIIIIZ)V
+public void drawLine(java.awt.Point, java.awt.Point, int, boolean);
+  Signature: (Ljava/awt/Point;Ljava/awt/Point;IZ)V
 public native void drawDot(int, int, int, boolean);
   Signature: (IIIZ)V
 public native void drawText(int, int, java.lang.String, boolean);
   Signature: (IILjava/lang/String;Z)V
+public void drawText(java.awt.Point, java.lang.String, boolean);
+  Signature: (Ljava/awt/Point;Ljava/lang/String;Z)V
 public eisbot.proxy.types.UnitType getUnitType(int);
   Signature: (I)Leisbot/proxy/types/UnitType;
 public eisbot.proxy.types.TechType getTechType(int);
@@ -124,6 +128,10 @@ public eisbot.proxy.types.DamageType getDamageType(int);
   Signature: (I)Leisbot/proxy/types/DamageType;
 public eisbot.proxy.types.ExplosionType getExplosionType(int);
   Signature: (I)Leisbot/proxy/types/ExplosionType;
+public eisbot.proxy.types.UnitCommandType getUnitCommandType(int);
+  Signature: (I)Leisbot/proxy/types/UnitCommandType;
+public eisbot.proxy.types.OrderType getOrderType(int);
+  Signature: (I)Leisbot/proxy/types/OrderType;
 public java.util.Collection unitTypes();
   Signature: ()Ljava/util/Collection;
 public java.util.Collection techTypes();
@@ -139,6 +147,10 @@ public java.util.Collection bulletTypes();
 public java.util.Collection damageTypes();
   Signature: ()Ljava/util/Collection;
 public java.util.Collection explosionTypes();
+  Signature: ()Ljava/util/Collection;
+public java.util.Collection unitCommandTypes();
+  Signature: ()Ljava/util/Collection;
+public java.util.Collection orderTypes();
   Signature: ()Ljava/util/Collection;
 public int getFrameCount();
   Signature: ()I

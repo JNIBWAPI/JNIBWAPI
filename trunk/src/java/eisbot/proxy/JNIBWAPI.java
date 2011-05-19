@@ -1,5 +1,6 @@
 package eisbot.proxy;
 
+import java.awt.Point;
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.File;
@@ -19,7 +20,9 @@ import eisbot.proxy.model.Unit;
 import eisbot.proxy.types.BulletType;
 import eisbot.proxy.types.DamageType;
 import eisbot.proxy.types.ExplosionType;
+import eisbot.proxy.types.OrderType;
 import eisbot.proxy.types.TechType;
+import eisbot.proxy.types.UnitCommandType;
 import eisbot.proxy.types.UnitSizeType;
 import eisbot.proxy.types.UnitType;
 import eisbot.proxy.types.UpgradeType;
@@ -40,10 +43,15 @@ import eisbot.proxy.types.WeaponType;
  *  Unit: http://code.google.com/p/bwapi/wiki/Unit
  */
 public class JNIBWAPI {
-	
+	  
 	// load the BWAPI client library
     static {
-        System.loadLibrary("ExampleAIClient");
+    	try {
+            System.loadLibrary("ExampleAIClient");
+        	System.out.println("Load ExampelAI");
+        } catch (UnsatisfiedLinkError e) {
+          System.err.println("Native code library failed to load.\n" + e);
+        }
     }
 	
 	/** callback listener for BWAPI events */
@@ -92,6 +100,10 @@ public class JNIBWAPI {
 	private native String getDamageTypeName(int damageID);
 	private native int[] getExplosionTypes();
 	private native String getExplosionTypeName(int explosionID);
+	private native int[] getUnitCommandTypes();
+	private native String getUnitCommandTypeName(int unitCommandID);
+	private native int[] getOrderTypes();
+	private native String getOrderTypeName(int unitCommandID);
 
 	// map data
 	private native void analyzeTerrain();
@@ -108,8 +120,8 @@ public class JNIBWAPI {
 	private native int[] getBaseLocations();
 
 	// unit commands: http://code.google.com/p/bwapi/wiki/Unit
-	public native void attackMove(int unitID, int x, int y); 
-	public native void attackUnit(int unitID, int targetID);
+	public native void attack(int unitID, int x, int y); 
+	public native void attack(int unitID, int targetID);
 	public native void build(int unitID, int tx, int ty, int typeID);
 	public native void buildAddon(int unitID, int typeID);
 	public native void train(int unitID, int typeID);
@@ -163,8 +175,12 @@ public class JNIBWAPI {
 	public native void drawBox(int left, int top, int right, int bottom, int color, boolean fill, boolean screenCoords);
 	public native void drawCircle(int x, int y, int radius, int color, boolean fill, boolean screenCoords);
 	public native void drawLine(int x1, int y1, int x2, int y2, int color, boolean screenCoords);
+	public void drawLine(Point a,Point b, int color, boolean screenCoords){
+		drawLine(a.x, a.y, b.x, b.y, color, screenCoords);
+	}
 	public native void drawDot(int x, int y, int color, boolean screenCoords);
 	public native void drawText(int x, int y, String msg, boolean screenCoords);
+	public void drawText(Point a, String msg, boolean screenCoords){drawText(a.x,a.y,msg,screenCoords);}
 	
 	// type data
 	private HashMap<Integer, UnitType> unitTypes = new HashMap<Integer, UnitType>();
@@ -175,6 +191,8 @@ public class JNIBWAPI {
 	private HashMap<Integer, BulletType> bulletTypes = new HashMap<Integer, BulletType>();
 	private HashMap<Integer, DamageType> damageTypes = new HashMap<Integer, DamageType>();
 	private HashMap<Integer, ExplosionType> explosionTypes = new HashMap<Integer, ExplosionType>();
+	private HashMap<Integer, UnitCommandType> unitCommandTypes = new HashMap<Integer, UnitCommandType>();
+	private HashMap<Integer, OrderType> orderTypes = new HashMap<Integer, OrderType>();
 	
 	// type data accessors
 	public UnitType getUnitType(int unitID) { return unitTypes.get(unitID); }
@@ -185,6 +203,8 @@ public class JNIBWAPI {
 	public BulletType getBulletType(int bulletID) { return bulletTypes.get(bulletID); }
 	public DamageType getDamageType(int damageID) { return damageTypes.get(damageID); }
 	public ExplosionType getExplosionType(int explosionID) { return explosionTypes.get(explosionID); }
+	public UnitCommandType getUnitCommandType(int unitCommandID) { return unitCommandTypes.get(unitCommandID); }
+	public OrderType getOrderType(int orderID) { return orderTypes.get(orderID); }
 	
 	public Collection<UnitType> unitTypes() { return unitTypes.values(); }
 	public Collection<TechType> techTypes() { return techTypes.values(); }
@@ -194,6 +214,8 @@ public class JNIBWAPI {
 	public Collection<BulletType> bulletTypes() { return bulletTypes.values(); }
 	public Collection<DamageType> damageTypes() { return damageTypes.values(); }
 	public Collection<ExplosionType> explosionTypes() { return explosionTypes.values(); }
+	public Collection<UnitCommandType> unitCommandTypes() { return unitCommandTypes.values(); }
+	public Collection<OrderType> orderTypes() { return orderTypes.values(); }
 	
 	// game state accessors
 	public int getFrameCount() {
@@ -253,7 +275,6 @@ public class JNIBWAPI {
 	 * Loads type data from BWAPI.
 	 */
 	public void loadTypeData() {
-
 		// unit types		
 		int[] unitTypeData = getUnitTypes();
 		for (int index=0; index<unitTypeData.length; index+=UnitType.numAttributes) {
@@ -316,6 +337,23 @@ public class JNIBWAPI {
 			ExplosionType type = new ExplosionType(explosionTypeData, index);
 			type.setName(getExplosionTypeName(type.getID()));
 			explosionTypes.put(type.getID(), type);			
+		}
+		
+		// unitCommand types				
+		int[] unitCommandTypeData = getUnitCommandTypes();
+		for (int index=0; index<unitCommandTypeData.length; index+=UnitCommandType.numAttributes) {
+			UnitCommandType type = new UnitCommandType(unitCommandTypeData, index);
+			type.setName(getUnitCommandTypeName(type.getID()));
+			unitCommandTypes.put(type.getID(), type);			
+		}
+	
+		// order types				
+		int[] orderTypeData = getOrderTypes();
+		for (int index=0; index<orderTypeData.length; index+=OrderType.numAttributes) {
+			OrderType type = new OrderType(orderTypeData, index);
+			type.setName(getOrderTypeName(type.getID()));
+//			System.out.println("ID: "+ type.getID()+" Name: "+ type.getName());
+			orderTypes.put(type.getID(), type);			
 		}
 	}
 	
@@ -421,9 +459,13 @@ public class JNIBWAPI {
 				
 				// choke points
 				String[] chokePoints = reader.readLine().split(",");
-				chokePointData = new int[chokePoints.length];
-				for (int i=0; i<chokePoints.length; i++) {
-					chokePointData[i] = Integer.parseInt(chokePoints[i]);
+				if (!chokePoints.equals("")){
+					chokePointData = new int[chokePoints.length];
+					for (int i=0; i<chokePoints.length; i++) {
+						chokePointData[i] = Integer.parseInt(chokePoints[i]);
+					}
+				} else {
+					chokePointData = new int[0];					
 				}
 				
 				// base locations
