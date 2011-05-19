@@ -24,6 +24,8 @@ std::map<int, UnitSizeType> unitSizeTypeMap;
 std::map<int, BulletType> bulletTypeMap;
 std::map<int, DamageType> damageTypeMap;
 std::map<int, ExplosionType> explosionTypeMap;
+std::map<int, UnitCommandType> unitCommandTypeMap;
+std::map<int, Order> orderTypeMap;
 
 // region IDs
 std::map<BWTA::Region*, int> regionMap;
@@ -53,12 +55,12 @@ double fixedScale = 100.0;
  */
 JNIEXPORT void JNICALL Java_eisbot_proxy_JNIBWAPI_startClient(JNIEnv *env, jobject jObj, jobject classRef)
 {
-
   // get the java callback functions
   jEnv = env;
   classref = classRef;
   jclass jc = env->GetObjectClass(classRef);
   printCallback = env->GetMethodID(jc, "javaPrint","(Ljava/lang/String;)V");
+
   javaPrint("BWAPI Client launched!!!");
   jmethodID connectedCallback = env->GetMethodID(jc, "connected","()V");
   jmethodID gameStartCallback = env->GetMethodID(jc, "gameStarted","()V");
@@ -72,7 +74,7 @@ JNIEXPORT void JNICALL Java_eisbot_proxy_JNIBWAPI_startClient(JNIEnv *env, jobje
 
   // connet to BWAPI
   BWAPI::BWAPI_init();
-  javaPrint("Connecting...");
+  javaPrint( "Connecting..." );
   reconnect();
   loadTypeData();
   jEnv->CallObjectMethod(classref, connectedCallback);
@@ -245,6 +247,18 @@ void loadTypeData()
   for(std::set<ExplosionType>::iterator i=explosionTypes.begin();i!=explosionTypes.end();i++)
   {
 	  explosionTypeMap[i->getID()] = (*i);
+  }
+
+  std::set<UnitCommandType> unitCommandTypes = UnitCommandTypes::allUnitCommandTypes();
+  for(std::set<UnitCommandType>::iterator i=unitCommandTypes.begin();i!=unitCommandTypes.end();i++)
+  {
+	  unitCommandTypeMap[i->getID()] = (*i);
+  }
+
+  std::set<Order> orders = Orders::allOrders();
+  for(std::set<Order>::iterator i=orders.begin();i!=orders.end();i++)
+  {
+	  orderTypeMap[i->getID()] = (*i);
   }
 }
 
@@ -490,11 +504,11 @@ JNIEXPORT jintArray JNICALL Java_eisbot_proxy_JNIBWAPI_getUpgradeTypes(JNIEnv *e
   {
 	intBuf[index++] = i->getID();
 	intBuf[index++] = i->getRace().getID();
-	intBuf[index++] = i->mineralPriceBase();
+	intBuf[index++] = i->mineralPrice();
 	intBuf[index++] = i->mineralPriceFactor();
-	intBuf[index++] = i->gasPriceBase();
+	intBuf[index++] = i->gasPrice();
 	intBuf[index++] = i->gasPriceFactor(); 
-	intBuf[index++] = i->upgradeTimeBase();
+	intBuf[index++] = i->upgradeTime();
 	intBuf[index++] = i->upgradeTimeFactor();
 	intBuf[index++] = i->maxRepeats();
 	intBuf[index++] = i->whatUpgrades().getID();
@@ -632,6 +646,48 @@ JNIEXPORT jstring JNICALL Java_eisbot_proxy_JNIBWAPI_getExplosionTypeName(JNIEnv
 {
 	return jEnv->NewStringUTF(explosionTypeMap[explosionID].getName().c_str());
 }
+
+JNIEXPORT jstring JNICALL Java_eisbot_proxy_JNIBWAPI_getUnitCommandTypeName(JNIEnv *env, jobject jObj, jint unitCommandID)
+{
+	return jEnv->NewStringUTF(unitCommandTypeMap[unitCommandID].getName().c_str());
+}
+
+JNIEXPORT jintArray JNICALL Java_eisbot_proxy_JNIBWAPI_getUnitCommandTypes(JNIEnv *env, jobject jObj)
+{
+  int index = 0;
+
+  std::set<UnitCommandType> unitCommandTypes = UnitCommandTypes::allUnitCommandTypes();
+  for(std::set<UnitCommandType>::iterator i=unitCommandTypes.begin();i!=unitCommandTypes.end();i++)
+  {
+	intBuf[index++] = i->getID();
+  }
+
+  jintArray result =env->NewIntArray(index);
+  env->SetIntArrayRegion(result, 0, index, intBuf);
+  return result;
+}
+
+
+JNIEXPORT jstring JNICALL Java_eisbot_proxy_JNIBWAPI_getOrderTypeName(JNIEnv *env, jobject jObj, jint unitCommandID)
+{
+	return jEnv->NewStringUTF(orderTypeMap[unitCommandID].getName().c_str());
+}
+
+JNIEXPORT jintArray JNICALL Java_eisbot_proxy_JNIBWAPI_getOrderTypes(JNIEnv *env, jobject jObj)
+{
+  int index = 0;
+
+  std::set<Order> orders = Orders::allOrders();
+  for(std::set<Order>::iterator i=orders.begin();i!=orders.end();i++)
+  {
+	intBuf[index++] = i->getID();
+  }
+
+  jintArray result =env->NewIntArray(index);
+  env->SetIntArrayRegion(result, 0, index, intBuf);
+  return result;
+}
+
 
 /**
  * Returns the list of active units in the game. 
@@ -951,18 +1007,18 @@ JNIEXPORT jintArray JNICALL Java_eisbot_proxy_JNIBWAPI_getBaseLocations(JNIEnv *
 // Unit Commands
 /*****************************************************************************************************************/
 
-JNIEXPORT void JNICALL Java_eisbot_proxy_JNIBWAPI_attackMove(JNIEnv *env, jobject jObj, jint unitID, jint x, jint y) {
+JNIEXPORT void JNICALL Java_eisbot_proxy_JNIBWAPI_attack__III(JNIEnv *env, jobject jObj, jint unitID, jint x, jint y) {
 	Unit* unit = Broodwar->getUnit(unitID);
 	if (unit != NULL) {
-		unit->attackMove(BWAPI::Position(x, y)); 
+		unit->attack(BWAPI::Position(x, y), false); 
 	}
 }
  
-JNIEXPORT void JNICALL Java_eisbot_proxy_JNIBWAPI_attackUnit(JNIEnv *env, jobject jObj, jint unitID, jint targetID){ 
+JNIEXPORT void JNICALL Java_eisbot_proxy_JNIBWAPI_attack__II(JNIEnv *env, jobject jObj, jint unitID, jint targetID){
 	Unit* unit = Broodwar->getUnit(unitID);
 	Unit* target = Broodwar->getUnit(targetID);
 	if (unit != NULL && target != NULL) {
-		unit->attackUnit(target);
+		unit->attack(target, false);
 	}
 }
  
@@ -1414,7 +1470,7 @@ void drawTargets() {
 				target->getPosition().x(), target->getPosition().y(), BWAPI::Colors::Yellow);
 		}
 
-		Position position = (*i)->getTargetPosition(); 
+		Position position = (*i)->getTargetPosition();
 		Broodwar->drawLineMap((*i)->getPosition().x(), (*i)->getPosition().y(), 
 			position.x(), position.y(), BWAPI::Colors::Yellow);
 	}	

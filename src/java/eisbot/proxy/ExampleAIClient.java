@@ -73,8 +73,8 @@ public class ExampleAIClient implements BWAPIEventListener {
 	/**
 	 * Called each game cycle.
 	 */
-	public void gameUpdate() {		
-
+	public void gameUpdate() {
+	
 		// spawn a drone
 		for (Unit unit : bwapi.getMyUnits()) {
 			if (unit.getTypeID() == UnitTypes.Zerg_Larva.ordinal()) {
@@ -150,7 +150,7 @@ public class ExampleAIClient implements BWAPIEventListener {
 		for (Unit unit : bwapi.getMyUnits()) {
 			if (unit.getTypeID() == UnitTypes.Zerg_Zergling.ordinal() && unit.isIdle()) {
 				for (Unit enemy : bwapi.getEnemyUnits()) {
-					bwapi.attackMove(unit.getID(), enemy.getX(), enemy.getY());
+					bwapi.attack(unit.getID(), enemy.getX(), enemy.getY());
 					break;
 				}
 			}

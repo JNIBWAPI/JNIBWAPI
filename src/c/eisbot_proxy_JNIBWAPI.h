@@ -193,6 +193,38 @@ JNIEXPORT jstring JNICALL Java_eisbot_proxy_JNIBWAPI_getExplosionTypeName
 
 /*
  * Class:     eisbot_proxy_JNIBWAPI
+ * Method:    getUnitCommandTypes
+ * Signature: ()[I
+ */
+JNIEXPORT jintArray JNICALL Java_eisbot_proxy_JNIBWAPI_getUnitCommandTypes
+  (JNIEnv *, jobject);
+
+/*
+ * Class:     eisbot_proxy_JNIBWAPI
+ * Method:    getUnitCommandTypeName
+ * Signature: (I)Ljava/lang/String;
+ */
+JNIEXPORT jstring JNICALL Java_eisbot_proxy_JNIBWAPI_getUnitCommandTypeName
+  (JNIEnv *, jobject, jint);
+
+/*
+ * Class:     eisbot_proxy_JNIBWAPI
+ * Method:    getOrderTypes
+ * Signature: ()[I
+ */
+JNIEXPORT jintArray JNICALL Java_eisbot_proxy_JNIBWAPI_getOrderTypes
+  (JNIEnv *, jobject);
+
+/*
+ * Class:     eisbot_proxy_JNIBWAPI
+ * Method:    getOrderTypeName
+ * Signature: (I)Ljava/lang/String;
+ */
+JNIEXPORT jstring JNICALL Java_eisbot_proxy_JNIBWAPI_getOrderTypeName
+  (JNIEnv *, jobject, jint);
+
+/*
+ * Class:     eisbot_proxy_JNIBWAPI
  * Method:    analyzeTerrain
  * Signature: ()V
  */
@@ -289,18 +321,18 @@ JNIEXPORT jintArray JNICALL Java_eisbot_proxy_JNIBWAPI_getBaseLocations
 
 /*
  * Class:     eisbot_proxy_JNIBWAPI
- * Method:    attackMove
+ * Method:    attack
  * Signature: (III)V
  */
-JNIEXPORT void JNICALL Java_eisbot_proxy_JNIBWAPI_attackMove
+JNIEXPORT void JNICALL Java_eisbot_proxy_JNIBWAPI_attack__III
   (JNIEnv *, jobject, jint, jint, jint);
 
 /*
  * Class:     eisbot_proxy_JNIBWAPI
- * Method:    attackUnit
+ * Method:    attack
  * Signature: (II)V
  */
-JNIEXPORT void JNICALL Java_eisbot_proxy_JNIBWAPI_attackUnit
+JNIEXPORT void JNICALL Java_eisbot_proxy_JNIBWAPI_attack__II
   (JNIEnv *, jobject, jint, jint);
 
 /*
