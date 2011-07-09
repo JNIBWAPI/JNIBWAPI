@@ -670,6 +670,10 @@ public class JNIBWAPI {
 			for (int index=0; index<unitData.length; index += Unit.numAttributes) {
 				int id = unitData[index];
 			
+				// unit was updated -> unit isAlive
+				// remove it from dead ones
+				deadUnits.remove(id);
+				
 				Unit unit = units.get(id);
 				if (unit == null) {
 					unit = new Unit(id);
