@@ -2,19 +2,29 @@ package eisbot.proxy;
 /**
  * Example of a Java AI Client that does nothing.
  */
+import eisbot.proxy.model.Unit;
+import eisbot.proxy.util.BWColor;
 public class MinimalAIClient implements BWAPIEventListener {
 
+	JNIBWAPI bwapi;
 	public static void main(String[] args) {
 		new MinimalAIClient();
 	}
 	
 	public MinimalAIClient() {
-		new JNIBWAPI(this).start();
+		bwapi = new JNIBWAPI(this);
+		bwapi.start();
 	} 
 
 	public void connected() {}	
 	public void gameStarted() {}
-	public void gameUpdate() {}
+	public void gameUpdate() 
+	{
+		for(Unit u : bwapi.getAllUnits())
+		{
+			bwapi.drawCircle(u.getX(), u.getY(), 5, BWColor.RED, true, false);
+		}
+	}
 	public void gameEnded() { }
 	public void keyPressed(int keyCode) {}
 	public void matchEnded(boolean winner) { }

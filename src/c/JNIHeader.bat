@@ -1,2 +1,3 @@
-javah -jni eisbot.proxy.JNIBWAPI
-javap -s eisbot.proxy.JNIBWAPI > JNIBWAPI
+javah -jni -classpath ../../bin/ eisbot.proxy.JNIBWAPI
+javap -s -classpath ../../bin/ eisbot.proxy.JNIBWAPI > JNIBWAPI
+pause

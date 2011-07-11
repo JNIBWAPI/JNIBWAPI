@@ -80,9 +80,9 @@ public class JNIBWAPI {
 	// query methods
 	private native int getGameFrame();	
 	private native int[] getPlayerInfo();
-	private native int[] getPlayerUpdate();
-	private native int[] getResearchStatus();
-	private native int[] getUpgradeStatus();
+	private native int[] getPlayerUpdate(int playerID);
+	private native int[] getResearchStatus(int playerID);
+	private native int[] getUpgradeStatus(int playerID);
 	private native int[] getUnits();
 	private native int[] getUnitTypes();
 	private native String getUnitTypeName(int typeID);
@@ -104,6 +104,7 @@ public class JNIBWAPI {
 	private native String getUnitCommandTypeName(int unitCommandID);
 	private native int[] getOrderTypes();
 	private native String getOrderTypeName(int unitCommandID);
+	private native boolean isReplay();
 
 	// map data
 	private native void analyzeTerrain();
@@ -626,8 +627,20 @@ public class JNIBWAPI {
 				unit.update(unitData, index);
 				
 				units.put(id, unit);
-				if (unit.getPlayerID() == self.getID()) {
-					playerUnits.add(unit);
+				if(self != null)
+				{
+					if (unit.getPlayerID() == self.getID()) {
+						playerUnits.add(unit);
+					}
+					else if (allyIDs.contains(unit.getPlayerID())) {
+						alliedUnits.add(unit);
+					}
+					else if (enemyIDs.contains(unit.getPlayerID())) {
+						enemyUnits.add(unit);
+					}
+					else {
+						neutralUnits.add(unit);
+					}
 				}
 				else if (allyIDs.contains(unit.getPlayerID())) {
 					alliedUnits.add(unit);
@@ -656,9 +669,19 @@ public class JNIBWAPI {
 		 try {
 			// update game state
 			gameFrame = getGameFrame();		
-			self.update(getPlayerUpdate());
-			self.updateResearch(getResearchStatus(), getUpgradeStatus());
-			 
+			if(!isReplay())
+			{
+				self.update(getPlayerUpdate(self.getID()));
+				self.updateResearch(getResearchStatus(self.getID()), getUpgradeStatus(self.getID()));
+			}
+			else
+			{
+				for(Integer playerID : players.keySet())
+				{
+					players.get(playerID).update(getPlayerUpdate(playerID));
+					players.get(playerID).updateResearch(getResearchStatus(playerID), getUpgradeStatus(playerID));
+				}
+			}
 			// update units
 			int[] unitData = getUnits();
 			HashSet<Integer> deadUnits = new HashSet<Integer>(units.keySet());		
@@ -670,8 +693,7 @@ public class JNIBWAPI {
 			for (int index=0; index<unitData.length; index += Unit.numAttributes) {
 				int id = unitData[index];
 			
-				// unit was updated -> unit isAlive
-				// remove it from dead ones
+				// bugfix - unit list was emptying itself every second frame
 				deadUnits.remove(id);
 				
 				Unit unit = units.get(id);
@@ -682,8 +704,20 @@ public class JNIBWAPI {
 				
 				unit.update(unitData, index);
 				
-				if (unit.getPlayerID() == self.getID()) {
-					playerList.add(unit);
+				if(self != null)
+				{
+					if (unit.getPlayerID() == self.getID()) {
+						playerList.add(unit);
+					}
+					else if (allyIDs.contains(unit.getPlayerID())) {
+						alliedList.add(unit);
+					}
+					else if (enemyIDs.contains(unit.getPlayerID())) {
+						enemyList.add(unit);
+					}
+					else {
+						neutralList.add(unit);
+					}
 				}
 				else if (allyIDs.contains(unit.getPlayerID())) {
 					alliedList.add(unit);

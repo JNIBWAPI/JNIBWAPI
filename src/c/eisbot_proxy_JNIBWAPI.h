@@ -34,26 +34,26 @@ JNIEXPORT jintArray JNICALL Java_eisbot_proxy_JNIBWAPI_getPlayerInfo
 /*
  * Class:     eisbot_proxy_JNIBWAPI
  * Method:    getPlayerUpdate
- * Signature: ()[I
+ * Signature: (I)[I
  */
 JNIEXPORT jintArray JNICALL Java_eisbot_proxy_JNIBWAPI_getPlayerUpdate
-  (JNIEnv *, jobject);
+  (JNIEnv *, jobject, jint);
 
 /*
  * Class:     eisbot_proxy_JNIBWAPI
  * Method:    getResearchStatus
- * Signature: ()[I
+ * Signature: (I)[I
  */
 JNIEXPORT jintArray JNICALL Java_eisbot_proxy_JNIBWAPI_getResearchStatus
-  (JNIEnv *, jobject);
+  (JNIEnv *, jobject, jint);
 
 /*
  * Class:     eisbot_proxy_JNIBWAPI
  * Method:    getUpgradeStatus
- * Signature: ()[I
+ * Signature: (I)[I
  */
 JNIEXPORT jintArray JNICALL Java_eisbot_proxy_JNIBWAPI_getUpgradeStatus
-  (JNIEnv *, jobject);
+  (JNIEnv *, jobject, jint);
 
 /*
  * Class:     eisbot_proxy_JNIBWAPI
@@ -222,6 +222,14 @@ JNIEXPORT jintArray JNICALL Java_eisbot_proxy_JNIBWAPI_getOrderTypes
  */
 JNIEXPORT jstring JNICALL Java_eisbot_proxy_JNIBWAPI_getOrderTypeName
   (JNIEnv *, jobject, jint);
+
+/*
+ * Class:     eisbot_proxy_JNIBWAPI
+ * Method:    isReplay
+ * Signature: ()Z
+ */
+JNIEXPORT jboolean JNICALL Java_eisbot_proxy_JNIBWAPI_isReplay
+  (JNIEnv *, jobject);
 
 /*
  * Class:     eisbot_proxy_JNIBWAPI
