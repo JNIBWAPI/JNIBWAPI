@@ -310,15 +310,31 @@ JNIEXPORT jintArray JNICALL Java_eisbot_proxy_JNIBWAPI_getPlayerInfo(JNIEnv *env
   int index = 0;
 
   std::set<Player*> players = Broodwar->getPlayers();
-  for(std::set<Player*>::iterator i=players.begin();i!=players.end();i++) {
-    intBuf[index++] = (*i)->getID();
-    intBuf[index++] = (*i)->getRace().getID();
-    intBuf[index++] = (*i)->getType().getID();
-	intBuf[index++] = ((*i)->getID() == Broodwar->self()->getID()) ? 1 : 0;	// is self?
-	intBuf[index++] = (*i)->isAlly(Broodwar->self()) ? 1 : 0;
-	intBuf[index++] = (*i)->isEnemy(Broodwar->self()) ? 1 : 0;
-    intBuf[index++] = (*i)->isNeutral();
-    intBuf[index++] = (*i)->getColor().getID();
+  if(Broodwar->isReplay())
+  {
+	  for(std::set<Player*>::iterator i=players.begin();i!=players.end();i++) {
+		intBuf[index++] = (*i)->getID();
+		intBuf[index++] = (*i)->getRace().getID();
+		intBuf[index++] = (*i)->getType().getID();
+		intBuf[index++] = 0;// there is no self in replay((*i)->getID() == Broodwar->self()->getID()) ? 1 : 0;	// is self?
+		intBuf[index++] = 0;// as there is no self in replays, there is also no allies(*i)->isAlly(Broodwar->self()) ? 1 : 0;
+		intBuf[index++] = 0;// as there is no self in replays, there is also no enemies(*i)->isEnemy(Broodwar->self()) ? 1 : 0;
+		intBuf[index++] = (*i)->isNeutral();
+		intBuf[index++] = (*i)->getColor().getID();
+	  }
+  }
+  else
+  {
+	  for(std::set<Player*>::iterator i=players.begin();i!=players.end();i++) {
+		intBuf[index++] = (*i)->getID();
+		intBuf[index++] = (*i)->getRace().getID();
+		intBuf[index++] = (*i)->getType().getID();
+		intBuf[index++] = ((*i)->getID() == Broodwar->self()->getID()) ? 1 : 0;	// is self?
+		intBuf[index++] = (*i)->isAlly(Broodwar->self()) ? 1 : 0;
+		intBuf[index++] = (*i)->isEnemy(Broodwar->self()) ? 1 : 0;
+		intBuf[index++] = (*i)->isNeutral();
+		intBuf[index++] = (*i)->getColor().getID();
+	  }
   }
 
   jintArray result =env->NewIntArray(index);
@@ -326,33 +342,35 @@ JNIEXPORT jintArray JNICALL Java_eisbot_proxy_JNIBWAPI_getPlayerInfo(JNIEnv *env
   return result;
 }
  
-JNIEXPORT jintArray JNICALL Java_eisbot_proxy_JNIBWAPI_getPlayerUpdate(JNIEnv *env, jobject jObj)
+JNIEXPORT jintArray JNICALL Java_eisbot_proxy_JNIBWAPI_getPlayerUpdate(JNIEnv *env, jobject jObj, jint playerID)
 {
   int index = 0;
-  intBuf[index++] = Broodwar->self()->minerals();
-  intBuf[index++] = Broodwar->self()->gas();
-  intBuf[index++] = Broodwar->self()->supplyUsed();
-  intBuf[index++] = Broodwar->self()->supplyTotal();
-  intBuf[index++] = Broodwar->self()->cumulativeMinerals();
-  intBuf[index++] = Broodwar->self()->cumulativeGas();
-  intBuf[index++] = Broodwar->self()->getUnitScore();
-  intBuf[index++] = Broodwar->self()->getKillScore();
-  intBuf[index++] = Broodwar->self()->getBuildingScore();
-  intBuf[index++] = Broodwar->self()->getRazingScore();
+  Player* p = Broodwar->getPlayer(playerID);
+  intBuf[index++] = p->minerals();
+  intBuf[index++] = p->gas();
+  intBuf[index++] = p->supplyUsed();
+  intBuf[index++] = p->supplyTotal();
+  intBuf[index++] = p->cumulativeMinerals();
+  intBuf[index++] = p->cumulativeGas();
+  intBuf[index++] = p->getUnitScore();
+  intBuf[index++] = p->getKillScore();
+  intBuf[index++] = p->getBuildingScore();
+  intBuf[index++] = p->getRazingScore();
 
   jintArray result =env->NewIntArray(index);
   env->SetIntArrayRegion(result, 0, index, intBuf);
   return result;
 } 
  
-JNIEXPORT jintArray JNICALL Java_eisbot_proxy_JNIBWAPI_getResearchStatus(JNIEnv *env, jobject jObj)
+JNIEXPORT jintArray JNICALL Java_eisbot_proxy_JNIBWAPI_getResearchStatus(JNIEnv *env, jobject jObj, jint playerID)
 {
   int index = 0;
-  
+  Player* p = Broodwar->getPlayer(playerID);
+
   std::set<TechType> techTypes = TechTypes::allTechTypes();
   for(std::set<TechType>::iterator i=techTypes.begin();i!=techTypes.end();i++) {
-	  intBuf[index++] = Broodwar->self()->hasResearched((*i)) ? 1 : 0;
-	  intBuf[index++] = Broodwar->self()->isResearching((*i)) ? 1 : 0;
+	  intBuf[index++] = p->hasResearched((*i)) ? 1 : 0;
+	  intBuf[index++] = p->isResearching((*i)) ? 1 : 0;
   }
 
   jintArray result =env->NewIntArray(index);
@@ -360,14 +378,15 @@ JNIEXPORT jintArray JNICALL Java_eisbot_proxy_JNIBWAPI_getResearchStatus(JNIEnv 
   return result;
 }
 
-JNIEXPORT jintArray JNICALL Java_eisbot_proxy_JNIBWAPI_getUpgradeStatus(JNIEnv *env, jobject jObj)
+JNIEXPORT jintArray JNICALL Java_eisbot_proxy_JNIBWAPI_getUpgradeStatus(JNIEnv *env, jobject jObj, jint playerID)
 {
   int index = 0;
-  
+  Player* p = Broodwar->getPlayer(playerID);
+
   std::set<UpgradeType> upTypes = UpgradeTypes::allUpgradeTypes();
   for(std::set<UpgradeType>::iterator i=upTypes.begin();i!=upTypes.end();i++) {
-    intBuf[index++] = Broodwar->self()->getUpgradeLevel((*i));
-	intBuf[index++] = Broodwar->self()->isUpgrading((*i)) ? 1 : 0;
+    intBuf[index++] = p->getUpgradeLevel((*i));
+	intBuf[index++] = p->isUpgrading((*i)) ? 1 : 0;
   }
  
   jintArray result =env->NewIntArray(index);
@@ -1391,7 +1410,15 @@ JNIEXPORT void JNICALL Java_eisbot_proxy_JNIBWAPI_drawText(JNIEnv *env, jobject 
  */
 void drawHealth() 
 {
-	std::set<Unit*> units = Broodwar->self()->getUnits();
+	std::set<Unit*> units;
+	if(Broodwar->isReplay())
+	{
+		units = Broodwar->self()->getUnits();
+	}
+	else
+	{
+		units = Broodwar->getAllUnits();
+	}
 	for(std::set<Unit*>::iterator i=units.begin();i!=units.end();i++) {
 		int health = (*i)->getHitPoints();
 
@@ -1455,8 +1482,15 @@ void drawHealth()
  * Draws the targets of each unit.
  */
 void drawTargets() {
-
-	std::set<Unit*> units = Broodwar->self()->getUnits();
+	std::set<Unit*> units;
+	if(!Broodwar->isReplay())
+	{
+		units = Broodwar->self()->getUnits();
+	}
+	else
+	{
+		units = Broodwar->getAllUnits();
+	}
 	for(std::set<Unit*>::iterator i=units.begin();i!=units.end();i++) {
 		Unit* target = (*i)->getTarget(); 
 		if (target != NULL) {
@@ -1507,4 +1541,10 @@ void drawIDs() {
 
 		Broodwar->drawTextMap(x, y, "%i", (*i)->getID());
 	}	
+}
+
+//////////////isReplay implementation//////////////
+JNIEXPORT jboolean JNICALL Java_eisbot_proxy_JNIBWAPI_isReplay (JNIEnv *, jobject jObj)
+{
+	return Broodwar->isReplay();
 }
