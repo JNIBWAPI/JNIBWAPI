@@ -736,6 +736,8 @@ public class JNIBWAPI {
 			enemyUnits = enemyList;
 			neutralUnits = neutralList;
 			for (Integer unitID : deadUnits) {
+			//Patch - isExists() not being updated corrected
+				units.get(unitID).setDestroyed();
 				units.remove(unitID);
 			}
 			

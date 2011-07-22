@@ -127,6 +127,11 @@ public class Unit {
 		this.ID = ID;
 	}
 	
+	public void setDestroyed()
+	{
+		this.exists = false;
+	}
+	
 	public void update(int[] data, int index) {
 		 index++; 	// ID = data[index++];
 		 playerID = data[index++];
