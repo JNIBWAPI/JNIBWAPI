@@ -460,7 +460,7 @@ public class JNIBWAPI {
 				
 				// choke points
 				String[] chokePoints = reader.readLine().split(",");
-				if (!chokePoints.equals("")){
+				if (chokePoints.length > 0 && !chokePoints[0].equals("")){
 					chokePointData = new int[chokePoints.length];
 					for (int i=0; i<chokePoints.length; i++) {
 						chokePointData[i] = Integer.parseInt(chokePoints[i]);
@@ -470,13 +470,15 @@ public class JNIBWAPI {
 				}
 				
 				// base locations
-				String[] baseLocations = reader.readLine().split(",");
-				baseLocationData = new int[baseLocations.length];
-				for (int i=0; i<baseLocations.length; i++) {
-					baseLocationData[i] = Integer.parseInt(baseLocations[i]);
-				}
-				
-				// polygons (first integer is ID)
+				String[] baseLocations = reader.readLine().split(",");                                
+                                if (baseLocations.length > 0 && !baseLocations[0].equals("")) {
+                                    baseLocationData = new int[baseLocations.length];
+                                    for (int i=0; i<baseLocations.length; i++) {
+                                        baseLocationData[i] = Integer.parseInt(baseLocations[i]);
+                                    }
+                                }
+                                    
+                                // polygons (first integer is ID)
 				String line = reader.readLine();
 				while (line != null) {
 					String[] coordinates = line.split(",");
@@ -507,18 +509,22 @@ public class JNIBWAPI {
 		}
 
 		// choke points
-		for (int index=0; index<chokePointData.length; index+=ChokePoint.numAttributes) {
-			ChokePoint chokePoint = new ChokePoint(chokePointData, index);
-			chokePoint.setFirstRegion(regionMap.get(chokePoint.getFirstRegionID()));
-			chokePoint.setSecondRegion(regionMap.get(chokePoint.getSecondRegionID()));
-			map.getChokePoints().add(chokePoint);
-		}
+                if (chokePointData != null) {
+                    for (int index=0; index<chokePointData.length; index+=ChokePoint.numAttributes) {
+                            ChokePoint chokePoint = new ChokePoint(chokePointData, index);
+                            chokePoint.setFirstRegion(regionMap.get(chokePoint.getFirstRegionID()));
+                            chokePoint.setSecondRegion(regionMap.get(chokePoint.getSecondRegionID()));
+                            map.getChokePoints().add(chokePoint);
+                    }
+                }
 		
 		// base locations
-		for (int index=0; index<baseLocationData.length; index+=BaseLocation.numAttributes) {
-			BaseLocation baseLocation = new BaseLocation(baseLocationData, index);
-			map.getBaseLocations().add(baseLocation);
-		}
+                if (baseLocationData != null) {
+                    for (int index=0; index<baseLocationData.length; index+=BaseLocation.numAttributes) {
+                            BaseLocation baseLocation = new BaseLocation(baseLocationData, index);
+                            map.getBaseLocations().add(baseLocation);
+                    }
+                }
 
 		// connect the region graph
 		for (Region region : map.getRegions()) {
@@ -736,7 +742,6 @@ public class JNIBWAPI {
 			enemyUnits = enemyList;
 			neutralUnits = neutralList;
 			for (Integer unitID : deadUnits) {
-			//Patch - isExists() not being updated corrected
 				units.get(unitID).setDestroyed();
 				units.remove(unitID);
 			}
