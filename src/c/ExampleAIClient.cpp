@@ -6,6 +6,7 @@
 #include <windows.h>
 #include <string>
 #include "eisbot_proxy_JNIBWAPI.h"
+#include <sstream>
 
 using namespace BWAPI;
 
@@ -84,17 +85,11 @@ JNIEXPORT void JNICALL Java_eisbot_proxy_JNIBWAPI_startClient(JNIEnv *env, jobje
   {
 
     // wait for a game to start
-
-    if(Broodwar != NULL)
-	{
-		javaPrint("waiting to enter match");
-		while (!Broodwar->isInGame())
-		{
-		  BWAPI::BWAPIClient.update();
-		  if(Broodwar == NULL)
-			  return;
-		}
-	}
+    javaPrint("waiting to enter match");
+    while (!Broodwar->isInGame())
+    {
+      BWAPI::BWAPIClient.update();
+    }
     
 	javaPrint("starting match!");
     jEnv->CallObjectMethod(classref, gameStartCallback);
@@ -1050,7 +1045,7 @@ JNIEXPORT void JNICALL Java_eisbot_proxy_JNIBWAPI_attack__II(JNIEnv *env, jobjec
 JNIEXPORT void JNICALL Java_eisbot_proxy_JNIBWAPI_build(JNIEnv *env, jobject jObj, jint unitID, jint tx, jint ty, jint typeID){ 
 	Unit* unit = Broodwar->getUnit(unitID);
 	if (unit != NULL) {
-		if (unitTypeMap[typeID] != NULL) {
+		if (unitTypeMap.count(typeID) > 0) {
 			unit->build(BWAPI::TilePosition(tx, ty), unitTypeMap[typeID]);
 		}
 	}
@@ -1059,7 +1054,7 @@ JNIEXPORT void JNICALL Java_eisbot_proxy_JNIBWAPI_build(JNIEnv *env, jobject jOb
 JNIEXPORT void JNICALL Java_eisbot_proxy_JNIBWAPI_buildAddon(JNIEnv *env, jobject jObj, jint unitID, jint typeID){ 
 	Unit* unit = Broodwar->getUnit(unitID);
 	if (unit != NULL) {
-		if (unitTypeMap[typeID] != NULL) {
+		if (unitTypeMap.count(typeID) > 0) {
 			unit->buildAddon(unitTypeMap[typeID]);
 		}
 	}
@@ -1068,7 +1063,8 @@ JNIEXPORT void JNICALL Java_eisbot_proxy_JNIBWAPI_buildAddon(JNIEnv *env, jobjec
 JNIEXPORT void JNICALL Java_eisbot_proxy_JNIBWAPI_train(JNIEnv *env, jobject jObj, jint unitID, jint typeID){ 
 	Unit* unit = Broodwar->getUnit(unitID);
 	if (unit != NULL) {
-		if (unitTypeMap[typeID] != NULL) {
+		if (unitTypeMap.count(typeID) > 0)
+		{
 			unit->train(unitTypeMap[typeID]);
 		}
 	}
@@ -1077,7 +1073,7 @@ JNIEXPORT void JNICALL Java_eisbot_proxy_JNIBWAPI_train(JNIEnv *env, jobject jOb
 JNIEXPORT void JNICALL Java_eisbot_proxy_JNIBWAPI_morph(JNIEnv *env, jobject jObj, jint unitID, jint typeID){ 
 	Unit* unit = Broodwar->getUnit(unitID);
 	if (unit != NULL) {
-		if (unitTypeMap[typeID] != NULL) {
+		if (unitTypeMap.count(typeID) > 0) {
 			unit->morph(unitTypeMap[typeID]);
 		}
 	}
@@ -1086,7 +1082,7 @@ JNIEXPORT void JNICALL Java_eisbot_proxy_JNIBWAPI_morph(JNIEnv *env, jobject jOb
 JNIEXPORT void JNICALL Java_eisbot_proxy_JNIBWAPI_research(JNIEnv *env, jobject jObj, jint unitID, jint techID){ 
 	Unit* unit = Broodwar->getUnit(unitID);
 	if (unit != NULL) {
-		if (techTypeMap[techID] != NULL) {
+		if (techTypeMap.count(techID) > 0) {
 			unit->research(techTypeMap[techID]);
 		}
 	}
@@ -1095,7 +1091,7 @@ JNIEXPORT void JNICALL Java_eisbot_proxy_JNIBWAPI_research(JNIEnv *env, jobject 
 JNIEXPORT void JNICALL Java_eisbot_proxy_JNIBWAPI_upgrade(JNIEnv *env, jobject jObj, jint unitID, jint upgradeID){ 
 	Unit* unit = Broodwar->getUnit(unitID);
 	if (unit != NULL) {
-		if (upgradeTypeMap[upgradeID] != NULL) {
+		if (upgradeTypeMap.count(upgradeID) > 0) {
 			unit->upgrade(upgradeTypeMap[upgradeID]);
 		}
 	}
@@ -1328,7 +1324,7 @@ JNIEXPORT void JNICALL Java_eisbot_proxy_JNIBWAPI_cancelUpgrade(JNIEnv *env, job
 JNIEXPORT void JNICALL Java_eisbot_proxy_JNIBWAPI_useTech__II(JNIEnv *env, jobject jObj, jint unitID, jint techID){ 
 	Unit* unit = Broodwar->getUnit(unitID);
 	if (unit != NULL) {
-		if (techTypeMap[techID] != NULL) {
+		if (techTypeMap.count(techID) > 0) {
 			unit->useTech(techTypeMap[techID]);
 		}
 	}
@@ -1337,7 +1333,7 @@ JNIEXPORT void JNICALL Java_eisbot_proxy_JNIBWAPI_useTech__II(JNIEnv *env, jobje
 JNIEXPORT void JNICALL Java_eisbot_proxy_JNIBWAPI_useTech__IIII(JNIEnv *env, jobject jObj, jint unitID, jint techID, jint x, jint y){ 
 	Unit* unit = Broodwar->getUnit(unitID);
 	if (unit != NULL) {
-		if (techTypeMap[techID] != NULL) {
+		if (techTypeMap.count(techID) > 0) {
 			unit->useTech(techTypeMap[techID], BWAPI::Position(x, y));
 		}			
 	}
@@ -1347,7 +1343,7 @@ JNIEXPORT void JNICALL Java_eisbot_proxy_JNIBWAPI_useTech__III(JNIEnv *env, jobj
 	Unit* unit = Broodwar->getUnit(unitID);
 	Unit* target = Broodwar->getUnit(targetID);
 	if (unit != NULL && target != NULL) {
-		if (techTypeMap[techID] != NULL) {
+		if (techTypeMap.count(techID) > 0) {
 			unit->useTech(techTypeMap[techID], target);
 		}
 	}
@@ -1549,8 +1545,74 @@ void drawIDs() {
 	}	
 }
 
-//////////////isReplay implementation//////////////
-JNIEXPORT jboolean JNICALL Java_eisbot_proxy_JNIBWAPI_isReplay (JNIEnv *, jobject jObj)
+
+/////////////HAS CREEP DEFINITION///////////////
+JNIEXPORT jboolean JNICALL Java_eisbot_proxy_JNIBWAPI_hasCreep(JNIEnv *env, jobject jObj, jint tx, jint ty)
+{
+	return Broodwar->hasCreep(tx, ty);
+}
+
+/////////////canBuildHere Definition/////////////
+JNIEXPORT jboolean JNICALL Java_eisbot_proxy_JNIBWAPI_canBuildHere(JNIEnv *env, jobject jObj, jint unitID, jint tx, jint ty, jint utypeID, jboolean checkExplored)
+{
+	if(unitTypeMap.count(utypeID) > 0)
+	{
+		BWAPI::UnitType typ = unitTypeMap[utypeID];
+		BWAPI::Unit* un = Broodwar->getUnit(unitID);
+		bool checkex = false;
+		if(checkExplored)
+		{
+		    checkex = true;
+		}
+		return Broodwar->canBuildHere(un, TilePosition(tx, ty), typ, checkex);
+		
+	}
+	else
+	{
+		return false;
+	}
+}
+
+/////////////isReplay defn//////////////
+JNIEXPORT jboolean JNICALL Java_eisbot_proxy_JNIBWAPI_isReplay
+  (JNIEnv *, jobject jObj)
 {
 	return Broodwar->isReplay();
+}
+
+/*
+ * Class:     eisbot_proxy_JNIBWAPI
+ * Method:    printText
+ * Signature: (Ljava/lang/String;)V
+ */
+JNIEXPORT void JNICALL Java_eisbot_proxy_JNIBWAPI_printText
+  (JNIEnv * env, jobject jObj, jstring message)
+{
+        const char *messagechars = env->GetStringUTFChars(message, 0);
+        Broodwar->printf(messagechars);
+        env->ReleaseStringUTFChars(message, messagechars);
+}
+
+/*
+ * Class:     eisbot_proxy_JNIBWAPI
+ * Method:    sendText
+ * Signature: (Ljava/lang/String;)V
+ */
+JNIEXPORT void JNICALL Java_eisbot_proxy_JNIBWAPI_sendText
+  (JNIEnv * env, jobject jObj, jstring message)
+{
+        const char *messagechars = env->GetStringUTFChars(message, 0);
+		Broodwar->sendText(messagechars);
+		env->ReleaseStringUTFChars(message, messagechars);
+}
+
+
+/*
+ * Class:     eisbot_proxy_JNIBWAPI
+ * Method:    setCommandOptimizationLevel
+ * Signature: (I)V
+ */
+JNIEXPORT void JNICALL Java_eisbot_proxy_JNIBWAPI_setCommandOptimizationLevel (JNIEnv * env, jobject jObj, jint level)
+{
+	Broodwar->setCommandOptimizationLevel(level);
 }
