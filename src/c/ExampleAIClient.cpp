@@ -85,12 +85,16 @@ JNIEXPORT void JNICALL Java_eisbot_proxy_JNIBWAPI_startClient(JNIEnv *env, jobje
   {
 
     // wait for a game to start
-    javaPrint("waiting to enter match");
-    while (!Broodwar->isInGame())
-    {
-      BWAPI::BWAPIClient.update();
-    }
-    
+	if(Broodwar != NULL)
+	{
+		javaPrint("waiting to enter match");
+		while (!Broodwar->isInGame())
+		{
+			BWAPI::BWAPIClient.update();
+			if(Broodwar == NULL)
+				return;
+		}
+	}
 	javaPrint("starting match!");
     jEnv->CallObjectMethod(classref, gameStartCallback);
 
