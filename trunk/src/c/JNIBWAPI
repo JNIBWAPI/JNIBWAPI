@@ -112,6 +112,14 @@ public native void drawText(int, int, java.lang.String, boolean);
   Signature: (IILjava/lang/String;Z)V
 public void drawText(java.awt.Point, java.lang.String, boolean);
   Signature: (Ljava/awt/Point;Ljava/lang/String;Z)V
+public native boolean hasCreep(int, int);
+  Signature: (II)Z
+public native boolean canBuildHere(int, int, int, int, boolean);
+  Signature: (IIIIZ)Z
+public native void printText(java.lang.String);
+  Signature: (Ljava/lang/String;)V
+public native void setCommandOptimizationLevel(int);
+  Signature: (I)V
 public eisbot.proxy.types.UnitType getUnitType(int);
   Signature: (I)Leisbot/proxy/types/UnitType;
 public eisbot.proxy.types.TechType getTechType(int);

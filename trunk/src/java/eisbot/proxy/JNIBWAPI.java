@@ -104,7 +104,6 @@ public class JNIBWAPI {
 	private native String getUnitCommandTypeName(int unitCommandID);
 	private native int[] getOrderTypes();
 	private native String getOrderTypeName(int unitCommandID);
-	private native boolean isReplay();
 
 	// map data
 	private native void analyzeTerrain();
@@ -182,6 +181,14 @@ public class JNIBWAPI {
 	public native void drawDot(int x, int y, int color, boolean screenCoords);
 	public native void drawText(int x, int y, String msg, boolean screenCoords);
 	public void drawText(Point a, String msg, boolean screenCoords){drawText(a.x,a.y,msg,screenCoords);}
+	
+	// Extended Commands (Fobbah)
+	public native boolean hasCreep(int tx, int ty);
+	public native boolean canBuildHere(int unitID, int tx, int ty, int utypeID, boolean checkExplored);
+	public native void printText(String message);
+	public native void sendText(String message);
+	public native void setCommandOptimizationLevel(int level);
+	private native boolean isReplay();
 	
 	// type data
 	private HashMap<Integer, UnitType> unitTypes = new HashMap<Integer, UnitType>();

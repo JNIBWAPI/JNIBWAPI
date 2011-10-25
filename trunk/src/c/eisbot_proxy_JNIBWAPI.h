@@ -225,14 +225,6 @@ JNIEXPORT jstring JNICALL Java_eisbot_proxy_JNIBWAPI_getOrderTypeName
 
 /*
  * Class:     eisbot_proxy_JNIBWAPI
- * Method:    isReplay
- * Signature: ()Z
- */
-JNIEXPORT jboolean JNICALL Java_eisbot_proxy_JNIBWAPI_isReplay
-  (JNIEnv *, jobject);
-
-/*
- * Class:     eisbot_proxy_JNIBWAPI
  * Method:    analyzeTerrain
  * Signature: ()V
  */
@@ -750,6 +742,46 @@ JNIEXPORT void JNICALL Java_eisbot_proxy_JNIBWAPI_drawDot
  */
 JNIEXPORT void JNICALL Java_eisbot_proxy_JNIBWAPI_drawText
   (JNIEnv *, jobject, jint, jint, jstring, jboolean);
+
+/*
+ * Class:     eisbot_proxy_JNIBWAPI
+ * Method:    hasCreep
+ * Signature: (II)Z
+ */
+JNIEXPORT jboolean JNICALL Java_eisbot_proxy_JNIBWAPI_hasCreep
+  (JNIEnv *, jobject, jint, jint);
+
+/*
+ * Class:     eisbot_proxy_JNIBWAPI
+ * Method:    canBuildHere
+ * Signature: (IIIIZ)Z
+ */
+JNIEXPORT jboolean JNICALL Java_eisbot_proxy_JNIBWAPI_canBuildHere
+  (JNIEnv *, jobject, jint, jint, jint, jint, jboolean);
+
+/*
+ * Class:     eisbot_proxy_JNIBWAPI
+ * Method:    printText
+ * Signature: (Ljava/lang/String;)V
+ */
+JNIEXPORT void JNICALL Java_eisbot_proxy_JNIBWAPI_printText
+  (JNIEnv *, jobject, jstring);
+
+/*
+ * Class:     eisbot_proxy_JNIBWAPI
+ * Method:    setCommandOptimizationLevel
+ * Signature: (I)V
+ */
+JNIEXPORT void JNICALL Java_eisbot_proxy_JNIBWAPI_setCommandOptimizationLevel
+  (JNIEnv *, jobject, jint);
+
+/*
+ * Class:     eisbot_proxy_JNIBWAPI
+ * Method:    isReplay
+ * Signature: ()Z
+ */
+JNIEXPORT jboolean JNICALL Java_eisbot_proxy_JNIBWAPI_isReplay
+  (JNIEnv *, jobject);
 
 #ifdef __cplusplus
 }
