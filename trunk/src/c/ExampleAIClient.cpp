@@ -108,41 +108,41 @@ JNIEXPORT void JNICALL Java_eisbot_proxy_JNIBWAPI_startClient(JNIEnv *env, jobje
 	  {
 		  for(std::list<Event>::iterator e=Broodwar->getEvents().begin();e!=Broodwar->getEvents().end();e++)
 		  {
-			  switch (e->type) {
+			  switch (e->getType()) {
 			  case EventType::MatchEnd:
-				  jEnv->CallObjectMethod(classref, eventCallback, 0, e->isWinner ? 1 : 0, 0);
+				  jEnv->CallObjectMethod(classref, eventCallback, 0, e->isWinner() ? 1 : 0, 0);
 				  break;
 			  case EventType::PlayerLeft:
-  				  jEnv->CallObjectMethod(classref, eventCallback, 1, e->player->getID(), 0);
+  				  jEnv->CallObjectMethod(classref, eventCallback, 1, e->getPlayer()->getID(), 0);
 				break;
 			  case EventType::NukeDetect:
-				if (e->position!=Positions::Unknown) {
-  				  jEnv->CallObjectMethod(classref, eventCallback, 2, e->position.x(), e->position.y());
+				if (e->getPosition()!=Positions::Unknown) {
+  				  jEnv->CallObjectMethod(classref, eventCallback, 2, e->getPosition().x(), e->getPosition().y());
 				}
 				else {
   				  jEnv->CallObjectMethod(classref, eventCallback, 3, 0, 0);
 				}
 				break;
 			  case EventType::UnitDiscover:
-  			    jEnv->CallObjectMethod(classref, eventCallback, 4, e->unit->getID(), 0);
+  			    jEnv->CallObjectMethod(classref, eventCallback, 4, e->getUnit()->getID(), 0);
 				break;
 			  case EventType::UnitEvade:
-  			    jEnv->CallObjectMethod(classref, eventCallback, 5, e->unit->getID(), 0);
+  			    jEnv->CallObjectMethod(classref, eventCallback, 5, e->getUnit()->getID(), 0);
 				break;
 			  case EventType::UnitShow:
-  			    jEnv->CallObjectMethod(classref, eventCallback, 6, e->unit->getID(), 0);
+  			    jEnv->CallObjectMethod(classref, eventCallback, 6, e->getUnit()->getID(), 0);
 				break;
 			  case EventType::UnitHide:
-  			    jEnv->CallObjectMethod(classref, eventCallback, 7, e->unit->getID(), 0);
+  			    jEnv->CallObjectMethod(classref, eventCallback, 7, e->getUnit()->getID(), 0);
 				break;
 			  case EventType::UnitCreate:
-  			    jEnv->CallObjectMethod(classref, eventCallback, 8, e->unit->getID(), 0);
+  			    jEnv->CallObjectMethod(classref, eventCallback, 8, e->getUnit()->getID(), 0);
 				break;
 			  case EventType::UnitDestroy:
-  			    jEnv->CallObjectMethod(classref, eventCallback, 9, e->unit->getID(), 0);
+  			    jEnv->CallObjectMethod(classref, eventCallback, 9, e->getUnit()->getID(), 0);
 				break;
 			  case EventType::UnitMorph:
-  			    jEnv->CallObjectMethod(classref, eventCallback, 10, e->unit->getID(), 0);
+  			    jEnv->CallObjectMethod(classref, eventCallback, 10, e->getUnit()->getID(), 0);
 				break;
 			  // Don't currently care about these
 			  case EventType::UnitRenegade:
@@ -355,8 +355,8 @@ JNIEXPORT jintArray JNICALL Java_eisbot_proxy_JNIBWAPI_getPlayerUpdate(JNIEnv *e
   intBuf[index++] = p->gas();
   intBuf[index++] = p->supplyUsed();
   intBuf[index++] = p->supplyTotal();
-  intBuf[index++] = p->cumulativeMinerals();
-  intBuf[index++] = p->cumulativeGas();
+  intBuf[index++] = p->gatheredMinerals();
+  intBuf[index++] = p->gatheredGas();
   intBuf[index++] = p->getUnitScore();
   intBuf[index++] = p->getKillScore();
   intBuf[index++] = p->getBuildingScore();
