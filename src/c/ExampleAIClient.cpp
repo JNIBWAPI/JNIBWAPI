@@ -1402,10 +1402,10 @@ JNIEXPORT void JNICALL Java_eisbot_proxy_JNIBWAPI_drawText(JNIEnv *env, jobject 
   const char *message = env->GetStringUTFChars(msg, 0);
 
   if (screenCoords) {
-	  Broodwar->drawTextScreen(x, y, message);
+	  Broodwar->drawTextScreen(x, y, "%s", message);
   }
   else {
-	  Broodwar->drawTextMap(x, y, message);
+	  Broodwar->drawTextMap(x, y, "%s", message);
   }
 
   env->ReleaseStringUTFChars(msg, message);
@@ -1479,7 +1479,7 @@ void drawHealth()
 
 			Broodwar->drawBoxMap(x - l, y - t - 5, x + r, y - t, BWAPI::Colors::Red, false);
 			Broodwar->drawBoxMap(x - l, y - t, x + r, y + b, BWAPI::Colors::Red, false);
-			Broodwar->drawTextMap(x - l, y - t, (*i)->getType().getName().c_str());
+			Broodwar->drawTextMap(x - l, y - t, "%s", (*i)->getType().getName().c_str());
 		}
 	}
 }
