@@ -1593,7 +1593,7 @@ JNIEXPORT void JNICALL Java_eisbot_proxy_JNIBWAPI_printText
   (JNIEnv * env, jobject jObj, jstring message)
 {
         const char *messagechars = env->GetStringUTFChars(message, 0);
-        Broodwar->printf(messagechars);
+        Broodwar->printf("%s", messagechars);
         env->ReleaseStringUTFChars(message, messagechars);
 }
 
@@ -1606,7 +1606,7 @@ JNIEXPORT void JNICALL Java_eisbot_proxy_JNIBWAPI_sendText
   (JNIEnv * env, jobject jObj, jstring message)
 {
         const char *messagechars = env->GetStringUTFChars(message, 0);
-		Broodwar->sendText(messagechars);
+		Broodwar->sendText("%s", messagechars);
 		env->ReleaseStringUTFChars(message, messagechars);
 }
 
