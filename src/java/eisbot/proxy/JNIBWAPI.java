@@ -243,7 +243,7 @@ public class JNIBWAPI {
 	}
 
 	public ArrayList<Player> getEnemies() {
-		return allies;
+		return enemies;
 	}
 	
 	public Unit getUnit(int unitID) {
