@@ -27,6 +27,7 @@ import eisbot.proxy.types.UnitSizeType;
 import eisbot.proxy.types.UnitType;
 import eisbot.proxy.types.UpgradeType;
 import eisbot.proxy.types.WeaponType;
+
 /**
  * JNI interface for the Brood War API.
  * 
@@ -43,16 +44,16 @@ import eisbot.proxy.types.WeaponType;
  *  Unit: http://code.google.com/p/bwapi/wiki/Unit
  */
 public class JNIBWAPI {
-	  
+
 	// load the BWAPI client library
-    static {
-    	try {
-            System.loadLibrary("ExampleAIClient");
-        	System.out.println("Load ExampelAI");
-        } catch (UnsatisfiedLinkError e) {
-          System.err.println("Native code library failed to load.\n" + e);
-        }
-    }
+	static {
+		try {
+			System.loadLibrary("ExampleAIClient");
+			System.out.println("Load ExampleAI");
+		} catch (UnsatisfiedLinkError e) {
+			System.err.println("Native code library failed to load.\n" + e);
+		}
+	}
 	
 	/** callback listener for BWAPI events */
 	private BWAPIEventListener listener;
@@ -120,49 +121,50 @@ public class JNIBWAPI {
 	private native int[] getBaseLocations();
 
 	// unit commands: http://code.google.com/p/bwapi/wiki/Unit
-	public native void attack(int unitID, int x, int y); 
-	public native void attack(int unitID, int targetID);
-	public native void build(int unitID, int tx, int ty, int typeID);
-	public native void buildAddon(int unitID, int typeID);
-	public native void train(int unitID, int typeID);
-	public native void morph(int unitID, int typeID);
-	public native void research(int unitID, int techID);
-	public native void upgrade(int unitID, int updateID);
-	public native void setRallyPoint(int unitID, int x, int y);
-	public native void setRallyPoint(int unitID, int targetID);
-	public native void move(int unitID, int x, int y);
-	public native void patrol(int unitID, int x, int y);
-	public native void holdPosition(int unitID);
-	public native void stop(int unitID);
-	public native void follow(int unitID, int targetID);
-	public native void gather(int unitID, int trargetID);
-	public native void returnCargo(int unitID);
-	public native void repair(int unitID, int targetID);
-	public native void burrow(int unitID);
-	public native void unburrow(int unitID);
-	public native void cloak(int unitID);
-	public native void decloak(int unitID);
-	public native void siege(int unitID);
-	public native void unsiege(int unitID);
-	public native void lift(int unitID);
-	public native void land(int unitID, int tx, int ty);
-	public native void load(int unitID, int targetID);
-	public native void unload(int unitID, int targetID);
-	public native void unloadAll(int unitID);
-	public native void unloadAll(int unitID, int x, int y);
-	public native void rightClick(int unitID, int x, int y);
-	public native void rightClick(int unitID, int targetID);
-	public native void haltConstruction(int unitID);
-	public native void cancelConstruction(int unitID);
-	public native void cancelAddon(int unitID);
-	public native void cancelTrain(int unitID, int slot);
-	public native void cancelMorph(int unitID);
-	public native void cancelResearch(int unitID);
-	public native void cancelUpgrade(int unitID);
-	public native void useTech(int unitID, int typeID);
-	public native void useTech(int unitID, int typeID, int x, int y);
-	public native void useTech(int unitID, int typeID, int targetID);
-	
+	public native boolean attack(int unitID, int x, int y); 
+	public native boolean attack(int unitID, int targetID);
+	public native boolean build(int unitID, int tx, int ty, int typeID);
+	public native boolean buildAddon(int unitID, int typeID);
+	public native boolean train(int unitID, int typeID);
+	public native boolean morph(int unitID, int typeID);
+	public native boolean research(int unitID, int techID);
+	public native boolean upgrade(int unitID, int updateID);
+	public native boolean setRallyPoint(int unitID, int x, int y);
+	public native boolean setRallyPoint(int unitID, int targetID);
+	public native boolean move(int unitID, int x, int y);
+	public native boolean patrol(int unitID, int x, int y);
+	public native boolean holdPosition(int unitID);
+	public native boolean stop(int unitID);
+	public native boolean follow(int unitID, int targetID);
+	public native boolean gather(int unitID, int trargetID);
+	public native boolean returnCargo(int unitID);
+	public native boolean repair(int unitID, int targetID);
+	public native boolean burrow(int unitID);
+	public native boolean unburrow(int unitID);
+	public native boolean cloak(int unitID);
+	public native boolean decloak(int unitID);
+	public native boolean siege(int unitID);
+	public native boolean unsiege(int unitID);
+	public native boolean lift(int unitID);
+	public native boolean land(int unitID, int tx, int ty);
+	public native boolean load(int unitID, int targetID);
+	public native boolean unload(int unitID, int targetID);
+	public native boolean unloadAll(int unitID);
+	public native boolean unloadAll(int unitID, int x, int y);
+	public native boolean rightClick(int unitID, int x, int y);
+	public native boolean rightClick(int unitID, int targetID);
+	public native boolean haltConstruction(int unitID);
+	public native boolean cancelConstruction(int unitID);
+	public native boolean cancelAddon(int unitID);
+	public native boolean cancelTrain(int unitID, int slot);
+	public native boolean cancelMorph(int unitID);
+	public native boolean cancelResearch(int unitID);
+	public native boolean cancelUpgrade(int unitID);
+	public native boolean useTech(int unitID, int typeID);
+	public native boolean useTech(int unitID, int typeID, int x, int y);
+	public native boolean useTech(int unitID, int typeID, int targetID);
+	public native boolean placeCOP(int unitID, int tx, int ty);
+
 	// utility commands
 	public native void drawHealth(boolean enable);
 	public native void drawTargets(boolean enable);

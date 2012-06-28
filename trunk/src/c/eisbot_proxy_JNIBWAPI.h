@@ -322,337 +322,345 @@ JNIEXPORT jintArray JNICALL Java_eisbot_proxy_JNIBWAPI_getBaseLocations
 /*
  * Class:     eisbot_proxy_JNIBWAPI
  * Method:    attack
- * Signature: (III)V
+ * Signature: (III)Z
  */
-JNIEXPORT void JNICALL Java_eisbot_proxy_JNIBWAPI_attack__III
+JNIEXPORT jboolean JNICALL Java_eisbot_proxy_JNIBWAPI_attack__III
   (JNIEnv *, jobject, jint, jint, jint);
 
 /*
  * Class:     eisbot_proxy_JNIBWAPI
  * Method:    attack
- * Signature: (II)V
+ * Signature: (II)Z
  */
-JNIEXPORT void JNICALL Java_eisbot_proxy_JNIBWAPI_attack__II
+JNIEXPORT jboolean JNICALL Java_eisbot_proxy_JNIBWAPI_attack__II
   (JNIEnv *, jobject, jint, jint);
 
 /*
  * Class:     eisbot_proxy_JNIBWAPI
  * Method:    build
- * Signature: (IIII)V
+ * Signature: (IIII)Z
  */
-JNIEXPORT void JNICALL Java_eisbot_proxy_JNIBWAPI_build
+JNIEXPORT jboolean JNICALL Java_eisbot_proxy_JNIBWAPI_build
   (JNIEnv *, jobject, jint, jint, jint, jint);
 
 /*
  * Class:     eisbot_proxy_JNIBWAPI
  * Method:    buildAddon
- * Signature: (II)V
+ * Signature: (II)Z
  */
-JNIEXPORT void JNICALL Java_eisbot_proxy_JNIBWAPI_buildAddon
+JNIEXPORT jboolean JNICALL Java_eisbot_proxy_JNIBWAPI_buildAddon
   (JNIEnv *, jobject, jint, jint);
 
 /*
  * Class:     eisbot_proxy_JNIBWAPI
  * Method:    train
- * Signature: (II)V
+ * Signature: (II)Z
  */
-JNIEXPORT void JNICALL Java_eisbot_proxy_JNIBWAPI_train
+JNIEXPORT jboolean JNICALL Java_eisbot_proxy_JNIBWAPI_train
   (JNIEnv *, jobject, jint, jint);
 
 /*
  * Class:     eisbot_proxy_JNIBWAPI
  * Method:    morph
- * Signature: (II)V
+ * Signature: (II)Z
  */
-JNIEXPORT void JNICALL Java_eisbot_proxy_JNIBWAPI_morph
+JNIEXPORT jboolean JNICALL Java_eisbot_proxy_JNIBWAPI_morph
   (JNIEnv *, jobject, jint, jint);
 
 /*
  * Class:     eisbot_proxy_JNIBWAPI
  * Method:    research
- * Signature: (II)V
+ * Signature: (II)Z
  */
-JNIEXPORT void JNICALL Java_eisbot_proxy_JNIBWAPI_research
+JNIEXPORT jboolean JNICALL Java_eisbot_proxy_JNIBWAPI_research
   (JNIEnv *, jobject, jint, jint);
 
 /*
  * Class:     eisbot_proxy_JNIBWAPI
  * Method:    upgrade
- * Signature: (II)V
+ * Signature: (II)Z
  */
-JNIEXPORT void JNICALL Java_eisbot_proxy_JNIBWAPI_upgrade
+JNIEXPORT jboolean JNICALL Java_eisbot_proxy_JNIBWAPI_upgrade
   (JNIEnv *, jobject, jint, jint);
 
 /*
  * Class:     eisbot_proxy_JNIBWAPI
  * Method:    setRallyPoint
- * Signature: (III)V
+ * Signature: (III)Z
  */
-JNIEXPORT void JNICALL Java_eisbot_proxy_JNIBWAPI_setRallyPoint__III
+JNIEXPORT jboolean JNICALL Java_eisbot_proxy_JNIBWAPI_setRallyPoint__III
   (JNIEnv *, jobject, jint, jint, jint);
 
 /*
  * Class:     eisbot_proxy_JNIBWAPI
  * Method:    setRallyPoint
- * Signature: (II)V
+ * Signature: (II)Z
  */
-JNIEXPORT void JNICALL Java_eisbot_proxy_JNIBWAPI_setRallyPoint__II
+JNIEXPORT jboolean JNICALL Java_eisbot_proxy_JNIBWAPI_setRallyPoint__II
   (JNIEnv *, jobject, jint, jint);
 
 /*
  * Class:     eisbot_proxy_JNIBWAPI
  * Method:    move
- * Signature: (III)V
+ * Signature: (III)Z
  */
-JNIEXPORT void JNICALL Java_eisbot_proxy_JNIBWAPI_move
+JNIEXPORT jboolean JNICALL Java_eisbot_proxy_JNIBWAPI_move
   (JNIEnv *, jobject, jint, jint, jint);
 
 /*
  * Class:     eisbot_proxy_JNIBWAPI
  * Method:    patrol
- * Signature: (III)V
+ * Signature: (III)Z
  */
-JNIEXPORT void JNICALL Java_eisbot_proxy_JNIBWAPI_patrol
+JNIEXPORT jboolean JNICALL Java_eisbot_proxy_JNIBWAPI_patrol
   (JNIEnv *, jobject, jint, jint, jint);
 
 /*
  * Class:     eisbot_proxy_JNIBWAPI
  * Method:    holdPosition
- * Signature: (I)V
+ * Signature: (I)Z
  */
-JNIEXPORT void JNICALL Java_eisbot_proxy_JNIBWAPI_holdPosition
+JNIEXPORT jboolean JNICALL Java_eisbot_proxy_JNIBWAPI_holdPosition
   (JNIEnv *, jobject, jint);
 
 /*
  * Class:     eisbot_proxy_JNIBWAPI
  * Method:    stop
- * Signature: (I)V
+ * Signature: (I)Z
  */
-JNIEXPORT void JNICALL Java_eisbot_proxy_JNIBWAPI_stop
+JNIEXPORT jboolean JNICALL Java_eisbot_proxy_JNIBWAPI_stop
   (JNIEnv *, jobject, jint);
 
 /*
  * Class:     eisbot_proxy_JNIBWAPI
  * Method:    follow
- * Signature: (II)V
+ * Signature: (II)Z
  */
-JNIEXPORT void JNICALL Java_eisbot_proxy_JNIBWAPI_follow
+JNIEXPORT jboolean JNICALL Java_eisbot_proxy_JNIBWAPI_follow
   (JNIEnv *, jobject, jint, jint);
 
 /*
  * Class:     eisbot_proxy_JNIBWAPI
  * Method:    gather
- * Signature: (II)V
+ * Signature: (II)Z
  */
-JNIEXPORT void JNICALL Java_eisbot_proxy_JNIBWAPI_gather
+JNIEXPORT jboolean JNICALL Java_eisbot_proxy_JNIBWAPI_gather
   (JNIEnv *, jobject, jint, jint);
 
 /*
  * Class:     eisbot_proxy_JNIBWAPI
  * Method:    returnCargo
- * Signature: (I)V
+ * Signature: (I)Z
  */
-JNIEXPORT void JNICALL Java_eisbot_proxy_JNIBWAPI_returnCargo
+JNIEXPORT jboolean JNICALL Java_eisbot_proxy_JNIBWAPI_returnCargo
   (JNIEnv *, jobject, jint);
 
 /*
  * Class:     eisbot_proxy_JNIBWAPI
  * Method:    repair
- * Signature: (II)V
+ * Signature: (II)Z
  */
-JNIEXPORT void JNICALL Java_eisbot_proxy_JNIBWAPI_repair
+JNIEXPORT jboolean JNICALL Java_eisbot_proxy_JNIBWAPI_repair
   (JNIEnv *, jobject, jint, jint);
 
 /*
  * Class:     eisbot_proxy_JNIBWAPI
  * Method:    burrow
- * Signature: (I)V
+ * Signature: (I)Z
  */
-JNIEXPORT void JNICALL Java_eisbot_proxy_JNIBWAPI_burrow
+JNIEXPORT jboolean JNICALL Java_eisbot_proxy_JNIBWAPI_burrow
   (JNIEnv *, jobject, jint);
 
 /*
  * Class:     eisbot_proxy_JNIBWAPI
  * Method:    unburrow
- * Signature: (I)V
+ * Signature: (I)Z
  */
-JNIEXPORT void JNICALL Java_eisbot_proxy_JNIBWAPI_unburrow
+JNIEXPORT jboolean JNICALL Java_eisbot_proxy_JNIBWAPI_unburrow
   (JNIEnv *, jobject, jint);
 
 /*
  * Class:     eisbot_proxy_JNIBWAPI
  * Method:    cloak
- * Signature: (I)V
+ * Signature: (I)Z
  */
-JNIEXPORT void JNICALL Java_eisbot_proxy_JNIBWAPI_cloak
+JNIEXPORT jboolean JNICALL Java_eisbot_proxy_JNIBWAPI_cloak
   (JNIEnv *, jobject, jint);
 
 /*
  * Class:     eisbot_proxy_JNIBWAPI
  * Method:    decloak
- * Signature: (I)V
+ * Signature: (I)Z
  */
-JNIEXPORT void JNICALL Java_eisbot_proxy_JNIBWAPI_decloak
+JNIEXPORT jboolean JNICALL Java_eisbot_proxy_JNIBWAPI_decloak
   (JNIEnv *, jobject, jint);
 
 /*
  * Class:     eisbot_proxy_JNIBWAPI
  * Method:    siege
- * Signature: (I)V
+ * Signature: (I)Z
  */
-JNIEXPORT void JNICALL Java_eisbot_proxy_JNIBWAPI_siege
+JNIEXPORT jboolean JNICALL Java_eisbot_proxy_JNIBWAPI_siege
   (JNIEnv *, jobject, jint);
 
 /*
  * Class:     eisbot_proxy_JNIBWAPI
  * Method:    unsiege
- * Signature: (I)V
+ * Signature: (I)Z
  */
-JNIEXPORT void JNICALL Java_eisbot_proxy_JNIBWAPI_unsiege
+JNIEXPORT jboolean JNICALL Java_eisbot_proxy_JNIBWAPI_unsiege
   (JNIEnv *, jobject, jint);
 
 /*
  * Class:     eisbot_proxy_JNIBWAPI
  * Method:    lift
- * Signature: (I)V
+ * Signature: (I)Z
  */
-JNIEXPORT void JNICALL Java_eisbot_proxy_JNIBWAPI_lift
+JNIEXPORT jboolean JNICALL Java_eisbot_proxy_JNIBWAPI_lift
   (JNIEnv *, jobject, jint);
 
 /*
  * Class:     eisbot_proxy_JNIBWAPI
  * Method:    land
- * Signature: (III)V
+ * Signature: (III)Z
  */
-JNIEXPORT void JNICALL Java_eisbot_proxy_JNIBWAPI_land
+JNIEXPORT jboolean JNICALL Java_eisbot_proxy_JNIBWAPI_land
   (JNIEnv *, jobject, jint, jint, jint);
 
 /*
  * Class:     eisbot_proxy_JNIBWAPI
  * Method:    load
- * Signature: (II)V
+ * Signature: (II)Z
  */
-JNIEXPORT void JNICALL Java_eisbot_proxy_JNIBWAPI_load
+JNIEXPORT jboolean JNICALL Java_eisbot_proxy_JNIBWAPI_load
   (JNIEnv *, jobject, jint, jint);
 
 /*
  * Class:     eisbot_proxy_JNIBWAPI
  * Method:    unload
- * Signature: (II)V
+ * Signature: (II)Z
  */
-JNIEXPORT void JNICALL Java_eisbot_proxy_JNIBWAPI_unload
+JNIEXPORT jboolean JNICALL Java_eisbot_proxy_JNIBWAPI_unload
   (JNIEnv *, jobject, jint, jint);
 
 /*
  * Class:     eisbot_proxy_JNIBWAPI
  * Method:    unloadAll
- * Signature: (I)V
+ * Signature: (I)Z
  */
-JNIEXPORT void JNICALL Java_eisbot_proxy_JNIBWAPI_unloadAll__I
+JNIEXPORT jboolean JNICALL Java_eisbot_proxy_JNIBWAPI_unloadAll__I
   (JNIEnv *, jobject, jint);
 
 /*
  * Class:     eisbot_proxy_JNIBWAPI
  * Method:    unloadAll
- * Signature: (III)V
+ * Signature: (III)Z
  */
-JNIEXPORT void JNICALL Java_eisbot_proxy_JNIBWAPI_unloadAll__III
+JNIEXPORT jboolean JNICALL Java_eisbot_proxy_JNIBWAPI_unloadAll__III
   (JNIEnv *, jobject, jint, jint, jint);
 
 /*
  * Class:     eisbot_proxy_JNIBWAPI
  * Method:    rightClick
- * Signature: (III)V
+ * Signature: (III)Z
  */
-JNIEXPORT void JNICALL Java_eisbot_proxy_JNIBWAPI_rightClick__III
+JNIEXPORT jboolean JNICALL Java_eisbot_proxy_JNIBWAPI_rightClick__III
   (JNIEnv *, jobject, jint, jint, jint);
 
 /*
  * Class:     eisbot_proxy_JNIBWAPI
  * Method:    rightClick
- * Signature: (II)V
+ * Signature: (II)Z
  */
-JNIEXPORT void JNICALL Java_eisbot_proxy_JNIBWAPI_rightClick__II
+JNIEXPORT jboolean JNICALL Java_eisbot_proxy_JNIBWAPI_rightClick__II
   (JNIEnv *, jobject, jint, jint);
 
 /*
  * Class:     eisbot_proxy_JNIBWAPI
  * Method:    haltConstruction
- * Signature: (I)V
+ * Signature: (I)Z
  */
-JNIEXPORT void JNICALL Java_eisbot_proxy_JNIBWAPI_haltConstruction
+JNIEXPORT jboolean JNICALL Java_eisbot_proxy_JNIBWAPI_haltConstruction
   (JNIEnv *, jobject, jint);
 
 /*
  * Class:     eisbot_proxy_JNIBWAPI
  * Method:    cancelConstruction
- * Signature: (I)V
+ * Signature: (I)Z
  */
-JNIEXPORT void JNICALL Java_eisbot_proxy_JNIBWAPI_cancelConstruction
+JNIEXPORT jboolean JNICALL Java_eisbot_proxy_JNIBWAPI_cancelConstruction
   (JNIEnv *, jobject, jint);
 
 /*
  * Class:     eisbot_proxy_JNIBWAPI
  * Method:    cancelAddon
- * Signature: (I)V
+ * Signature: (I)Z
  */
-JNIEXPORT void JNICALL Java_eisbot_proxy_JNIBWAPI_cancelAddon
+JNIEXPORT jboolean JNICALL Java_eisbot_proxy_JNIBWAPI_cancelAddon
   (JNIEnv *, jobject, jint);
 
 /*
  * Class:     eisbot_proxy_JNIBWAPI
  * Method:    cancelTrain
- * Signature: (II)V
+ * Signature: (II)Z
  */
-JNIEXPORT void JNICALL Java_eisbot_proxy_JNIBWAPI_cancelTrain
+JNIEXPORT jboolean JNICALL Java_eisbot_proxy_JNIBWAPI_cancelTrain
   (JNIEnv *, jobject, jint, jint);
 
 /*
  * Class:     eisbot_proxy_JNIBWAPI
  * Method:    cancelMorph
- * Signature: (I)V
+ * Signature: (I)Z
  */
-JNIEXPORT void JNICALL Java_eisbot_proxy_JNIBWAPI_cancelMorph
+JNIEXPORT jboolean JNICALL Java_eisbot_proxy_JNIBWAPI_cancelMorph
   (JNIEnv *, jobject, jint);
 
 /*
  * Class:     eisbot_proxy_JNIBWAPI
  * Method:    cancelResearch
- * Signature: (I)V
+ * Signature: (I)Z
  */
-JNIEXPORT void JNICALL Java_eisbot_proxy_JNIBWAPI_cancelResearch
+JNIEXPORT jboolean JNICALL Java_eisbot_proxy_JNIBWAPI_cancelResearch
   (JNIEnv *, jobject, jint);
 
 /*
  * Class:     eisbot_proxy_JNIBWAPI
  * Method:    cancelUpgrade
- * Signature: (I)V
+ * Signature: (I)Z
  */
-JNIEXPORT void JNICALL Java_eisbot_proxy_JNIBWAPI_cancelUpgrade
+JNIEXPORT jboolean JNICALL Java_eisbot_proxy_JNIBWAPI_cancelUpgrade
   (JNIEnv *, jobject, jint);
 
 /*
  * Class:     eisbot_proxy_JNIBWAPI
  * Method:    useTech
- * Signature: (II)V
+ * Signature: (II)Z
  */
-JNIEXPORT void JNICALL Java_eisbot_proxy_JNIBWAPI_useTech__II
+JNIEXPORT jboolean JNICALL Java_eisbot_proxy_JNIBWAPI_useTech__II
   (JNIEnv *, jobject, jint, jint);
 
 /*
  * Class:     eisbot_proxy_JNIBWAPI
  * Method:    useTech
- * Signature: (IIII)V
+ * Signature: (IIII)Z
  */
-JNIEXPORT void JNICALL Java_eisbot_proxy_JNIBWAPI_useTech__IIII
+JNIEXPORT jboolean JNICALL Java_eisbot_proxy_JNIBWAPI_useTech__IIII
   (JNIEnv *, jobject, jint, jint, jint, jint);
 
 /*
  * Class:     eisbot_proxy_JNIBWAPI
  * Method:    useTech
- * Signature: (III)V
+ * Signature: (III)Z
  */
-JNIEXPORT void JNICALL Java_eisbot_proxy_JNIBWAPI_useTech__III
+JNIEXPORT jboolean JNICALL Java_eisbot_proxy_JNIBWAPI_useTech__III
+  (JNIEnv *, jobject, jint, jint, jint);
+
+/*
+ * Class:     eisbot_proxy_JNIBWAPI
+ * Method:    placeCOP
+ * Signature: (III)Z
+ */
+JNIEXPORT jboolean JNICALL Java_eisbot_proxy_JNIBWAPI_placeCOP
   (JNIEnv *, jobject, jint, jint, jint);
 
 /*
@@ -765,6 +773,14 @@ JNIEXPORT jboolean JNICALL Java_eisbot_proxy_JNIBWAPI_canBuildHere
  * Signature: (Ljava/lang/String;)V
  */
 JNIEXPORT void JNICALL Java_eisbot_proxy_JNIBWAPI_printText
+  (JNIEnv *, jobject, jstring);
+
+/*
+ * Class:     eisbot_proxy_JNIBWAPI
+ * Method:    sendText
+ * Signature: (Ljava/lang/String;)V
+ */
+JNIEXPORT void JNICALL Java_eisbot_proxy_JNIBWAPI_sendText
   (JNIEnv *, jobject, jstring);
 
 /*
