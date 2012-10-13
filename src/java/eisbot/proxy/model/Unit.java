@@ -6,7 +6,7 @@ package eisbot.proxy.model;
  */
 public class Unit {
 
-	public static final int numAttributes = 112;
+	public static final int numAttributes = 113;
 	public static final double TO_DEGREES = 180.0/Math.PI;
 	public static final double fixedScale = 100.0;
 
@@ -90,6 +90,7 @@ public class Unit {
 	private boolean carryingMinerals;
 	private boolean cloaked;
 	private boolean completed;
+	private boolean constructing;
 	private boolean defenseMatrixed;
 	private boolean detected;
 	private boolean ensnared;
@@ -213,6 +214,7 @@ public class Unit {
 		 carryingMinerals = data[index++] == 1;
 		 cloaked = data[index++] == 1;
 		 completed = data[index++] == 1;
+		 constructing = data[index++] == 1;
 		 defenseMatrixed = data[index++] == 1;
 		 detected = data[index++] == 1;
 		 ensnared = data[index++] == 1;
@@ -567,6 +569,10 @@ public class Unit {
 		return completed;
 	}
 
+	public boolean isConstructing() {
+		return constructing;
+	}
+	
 	public boolean isDefenseMatrixed() {
 		return defenseMatrixed;
 	}
