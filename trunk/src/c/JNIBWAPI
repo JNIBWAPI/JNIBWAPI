@@ -171,11 +171,62 @@ public class eisbot.proxy.JNIBWAPI {
   public void drawText(java.awt.Point, java.lang.String, boolean);
     Signature: (Ljava/awt/Point;Ljava/lang/String;Z)V
 
+  public native boolean isVisible(int, int);
+    Signature: (II)Z
+
+  public native boolean isExplored(int, int);
+    Signature: (II)Z
+
   public native boolean hasCreep(int, int);
     Signature: (II)Z
 
+  public native boolean hasPower(int, int);
+    Signature: (II)Z
+
+  public native boolean hasPower(int, int, int);
+    Signature: (III)Z
+
+  public native boolean hasPower(int, int, int, int);
+    Signature: (IIII)Z
+
+  public native boolean hasPower(int, int, int, int, int);
+    Signature: (IIIII)Z
+
+  public native boolean hasPowerPrecise(int, int);
+    Signature: (II)Z
+
+  public native boolean hasPath(int, int, int, int);
+    Signature: (IIII)Z
+
+  public native boolean hasPath(int, int);
+    Signature: (II)Z
+
+  public native boolean hasPath(int, int, int);
+    Signature: (III)Z
+
+  public native boolean canBuildHere(int, int, int, boolean);
+    Signature: (IIIZ)Z
+
   public native boolean canBuildHere(int, int, int, int, boolean);
     Signature: (IIIIZ)Z
+
+  public native boolean canMake(int);
+    Signature: (I)Z
+
+  public native boolean canMake(int, int);
+    Signature: (II)Z
+
+  public native boolean canResearch(int);
+    Signature: (I)Z
+
+  public native boolean canResearch(int, int);
+    Signature: (II)Z
+
+  public native boolean canUpgrade(int);
+    Signature: (I)Z
+
+  public native boolean canUpgrade(int, int);
+    Signature: (II)Z
 
   public native void printText(java.lang.String);
     Signature: (Ljava/lang/String;)V
@@ -250,6 +301,9 @@ public class eisbot.proxy.JNIBWAPI {
     Signature: ()I
 
   public eisbot.proxy.model.Player getSelf();
+    Signature: ()Leisbot/proxy/model/Player;
+
+  public eisbot.proxy.model.Player getNeutralPlayer();
     Signature: ()Leisbot/proxy/model/Player;
 
   public eisbot.proxy.model.Player getPlayer(int);

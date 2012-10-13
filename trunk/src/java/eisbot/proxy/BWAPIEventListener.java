@@ -23,7 +23,9 @@ public interface BWAPIEventListener {
 	
 	// BWAPI callbacks
 	public void matchEnded(boolean winner);
-	public void playerLeft(int id);
+	public void sendText(String text);
+	public void receiveText(String text);
+	public void playerLeft(int playerID);
 	public void nukeDetect(int x, int y);
 	public void nukeDetect();
 	public void unitDiscover(int unitID);
@@ -33,4 +35,8 @@ public interface BWAPIEventListener {
 	public void unitCreate(int unitID);
 	public void unitDestroy(int unitID);	
 	public void unitMorph(int unitID);
+	public void unitRenegade(int unitID);
+	public void saveGame(String gameName);
+	public void unitComplete(int unitID);
+	public void playerDropped(int playerID);
 }

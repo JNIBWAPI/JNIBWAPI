@@ -69,6 +69,7 @@ public class JNIBWAPI {
 	
 	// player lists
 	private Player self;
+	private Player neutralPlayer;
 	private HashSet<Integer> allyIDs = new HashSet<Integer>();
 	private HashSet<Integer> enemyIDs = new HashSet<Integer>();
 	private HashMap<Integer, Player> players = new HashMap<Integer, Player>();
@@ -184,9 +185,26 @@ public class JNIBWAPI {
 	public native void drawText(int x, int y, String msg, boolean screenCoords);
 	public void drawText(Point a, String msg, boolean screenCoords){drawText(a.x,a.y,msg,screenCoords);}
 	
-	// Extended Commands (Fobbah)
-	public native boolean hasCreep(int tx, int ty);
-	public native boolean canBuildHere(int unitID, int tx, int ty, int utypeID, boolean checkExplored);
+	// Extended Commands
+	public native boolean isVisible(int tileX, int tileY);
+	public native boolean isExplored(int tileX, int tileY);
+	public native boolean hasCreep(int tileX, int tileY);
+	public native boolean hasPower(int tileX, int tileY);
+	public native boolean hasPower(int tileX, int tileY, int unitTypeID);
+	public native boolean hasPower(int tileX, int tileY, int tileWidth, int tileHeight);
+	public native boolean hasPower(int tileX, int tileY, int tileWidth, int tileHeight, int unitTypeID);
+	public native boolean hasPowerPrecise(int x, int y);
+	public native boolean hasPath(int fromX, int fromY, int toX, int toY);
+	public native boolean hasPath(int unitID, int targetID);
+	public native boolean hasPath(int unitID, int toX, int toY);
+	public native boolean canBuildHere(int tileX, int tileY, int unitTypeID, boolean checkExplored);
+	public native boolean canBuildHere(int unitID, int tileX, int tileY, int unitTypeID, boolean checkExplored);
+	public native boolean canMake(int unitTypeID);
+	public native boolean canMake(int unitID, int unitTypeID);
+	public native boolean canResearch(int techTypeID);
+	public native boolean canResearch(int unitID, int techTypeID);
+	public native boolean canUpgrade(int upgradeTypeID);
+	public native boolean canUpgrade(int unitID, int upgradeTypeID);
 	public native void printText(String message);
 	public native void sendText(String message);
 	public native void setCommandOptimizationLevel(int level);
@@ -236,6 +254,10 @@ public class JNIBWAPI {
 		return self;
 	}
 
+	public Player getNeutralPlayer() {
+		return neutralPlayer;
+	}
+	
 	public Player getPlayer(int playerID) {
 		return players.get(playerID);
 	}
@@ -626,6 +648,9 @@ public class JNIBWAPI {
 					enemies.add(player);
 					enemyIDs.add(player.getID());
 				}
+				else if (player.isNeutral()) {
+					neutralPlayer = player;
+				}
 			}
 			
 			// get unit data
@@ -786,41 +811,59 @@ public class JNIBWAPI {
 	 * 
 	 * @param type - event type (should probably be an enum)
 	 */
-	private void eventOccured(int type, int param1, int param2) {
+	private void eventOccurred(int type, int param1, int param2, String param3) {
 		try {
 			switch (type) {
 			case 0:
 				listener.matchEnded(param1 == 1);
 				break;
 			case 1:
-				listener.playerLeft(param1);
+				listener.sendText(param3);
 				break;
 			case 2:
-				listener.nukeDetect(param2, param2);
+				listener.receiveText(param3);
 				break;
 			case 3:
-				listener.nukeDetect();
+				listener.playerLeft(param1);
 				break;
 			case 4:
-				listener.unitDiscover(param1);
+				listener.nukeDetect(param2, param2);
 				break;
 			case 5:
-				listener.unitEvade(param1);
+				listener.nukeDetect();
 				break;
 			case 6:
-				listener.unitShow(param1);
+				listener.unitDiscover(param1);
 				break;
 			case 7:
-				listener.unitHide(param1);
+				listener.unitEvade(param1);
 				break;
 			case 8:
-				listener.unitCreate(param1);
+				listener.unitShow(param1);
 				break;
 			case 9:
-				listener.unitDestroy(param1);
+				listener.unitHide(param1);
 				break;
 			case 10:
+				listener.unitCreate(param1);
+				break;
+			case 11:
+				listener.unitDestroy(param1);
+				break;
+			case 12:
 				listener.unitMorph(param1);
+				break;
+			case 13:
+				listener.unitRenegade(param1);
+				break;
+			case 14:
+				listener.saveGame(param3);
+				break;
+			case 15:
+				listener.unitComplete(param1);
+				break;
+			case 16:
+				listener.playerDropped(param1);
 				break;
 			}
 		}   
@@ -840,6 +883,6 @@ public class JNIBWAPI {
 		}
 		catch (Error e) {
 			e.printStackTrace();
-		}			
+		}
 	}
 }

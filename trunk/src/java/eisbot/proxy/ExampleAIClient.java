@@ -160,9 +160,11 @@ public class ExampleAIClient implements BWAPIEventListener {
 	public void gameEnded() {}
 	public void keyPressed(int keyCode) {}
 	public void matchEnded(boolean winner) {}
+	public void sendText(String text) {}
+	public void receiveText(String text) {}
 	public void nukeDetect(int x, int y) {}
 	public void nukeDetect() {}
-	public void playerLeft(int id) {}
+	public void playerLeft(int playerID) {}
 	public void unitCreate(int unitID) {}
 	public void unitDestroy(int unitID) {}
 	public void unitDiscover(int unitID) {}
@@ -170,4 +172,8 @@ public class ExampleAIClient implements BWAPIEventListener {
 	public void unitHide(int unitID) {}
 	public void unitMorph(int unitID) {}
 	public void unitShow(int unitID) {}
+	public void unitRenegade(int unitID) {}
+	public void saveGame(String gameName) {}
+	public void unitComplete(int unitID) {}
+	public void playerDropped(int playerID) {}
 }
