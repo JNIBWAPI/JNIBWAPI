@@ -1,12 +1,10 @@
-#include <stdio.h>
-#include <jni.h>
 #include <BWAPI.h>
-#include <BWAPI\Client.h>
+#include <BWAPI/Client.h>
 #include <BWTA.h>
-#include <windows.h>
-#include <string>
+#include <jni.h>
+#define _USE_MATH_DEFINES
+#include <math.h>
 #include "eisbot_proxy_JNIBWAPI.h"
-#include <sstream>
 
 #define JNI_NULL 0
 
@@ -15,7 +13,7 @@ using namespace BWAPI;
 // java callback vars
 JNIEnv *jEnv;
 jobject classref;
-void javaPrint(char* msg);
+void javaPrint(const char* msg);
 jmethodID printCallback;
 
 // mapping of IDs to types
@@ -41,16 +39,16 @@ const int bufferSize = 5000000;
 void drawHealth(void); 
 void drawTargets(void);
 void drawIDs(void);
-boolean showHealth = false;
-boolean showTargets = false;
-boolean showIDs = false;
+bool showHealth = false;
+bool showTargets = false;
+bool showIDs = false;
 
 void reconnect(void);
 void loadTypeData(void);
 bool keyState[256];
 
 // conversion ratios
-double TO_DEGREES = 180.0/3.14159;
+double TO_DEGREES = 180.0 / M_PI;
 double fixedScale = 100.0;
 
 /**
@@ -65,12 +63,12 @@ JNIEXPORT void JNICALL Java_eisbot_proxy_JNIBWAPI_startClient(JNIEnv* env, jobje
 	printCallback = env->GetMethodID(jc, "javaPrint", "(Ljava/lang/String;)V");
 
 	javaPrint("BWAPI Client launched!");
-	jmethodID connectedCallback = env->GetMethodID(jc, "connected","()V");
-	jmethodID gameStartCallback = env->GetMethodID(jc, "gameStarted","()V");
-	jmethodID gameUpdateCallback = env->GetMethodID(jc, "gameUpdate","()V");
-	jmethodID gameEndCallback = env->GetMethodID(jc, "gameEnded","()V");
+	jmethodID connectedCallback = env->GetMethodID(jc, "connected", "()V");
+	jmethodID gameStartCallback = env->GetMethodID(jc, "gameStarted", "()V");
+	jmethodID gameUpdateCallback = env->GetMethodID(jc, "gameUpdate", "()V");
+	jmethodID gameEndCallback = env->GetMethodID(jc, "gameEnded", "()V");
 	jmethodID eventCallback = env->GetMethodID(jc, "eventOccurred", "(IIILjava/lang/String;)V");
-	jmethodID keyPressCallback = env->GetMethodID(jc, "keyPressed","(I)V");
+	jmethodID keyPressCallback = env->GetMethodID(jc, "keyPressed", "(I)V");
 
 	// allocate room for return data structure
 	intBuf = new jint[bufferSize];
@@ -124,7 +122,7 @@ JNIEXPORT void JNICALL Java_eisbot_proxy_JNIBWAPI_startClient(JNIEnv* env, jobje
 						jEnv->CallObjectMethod(classref, eventCallback, 3, e->getPlayer()->getID(), 0, JNI_NULL);
 						break;
 					case EventType::NukeDetect:
-						if (e->getPosition()!=Positions::Unknown) {
+						if (e->getPosition() != Positions::Unknown) {
 							jEnv->CallObjectMethod(classref, eventCallback, 4, e->getPosition().x(), e->getPosition().y(), JNI_NULL);
 						} else {
 							jEnv->CallObjectMethod(classref, eventCallback, 5, 0, 0, JNI_NULL);
@@ -208,7 +206,7 @@ void reconnect(void)
 	}
 }
 
-void javaPrint(char* msg) 
+void javaPrint(const char* msg) 
 {
 	jEnv->CallObjectMethod(classref, printCallback, jEnv->NewStringUTF(msg));
 }
@@ -273,17 +271,17 @@ void loadTypeData(void)
 
 JNIEXPORT void JNICALL Java_eisbot_proxy_JNIBWAPI_drawHealth(JNIEnv* env, jobject jObj, jboolean enable)
 {
-	showHealth = enable;
+	showHealth = enable != JNI_FALSE;
 }
 
 JNIEXPORT void JNICALL Java_eisbot_proxy_JNIBWAPI_drawTargets(JNIEnv* env, jobject jObj, jboolean enable)
 {
-	showTargets = enable;
+	showTargets = enable != JNI_FALSE;
 }
 
 JNIEXPORT void JNICALL Java_eisbot_proxy_JNIBWAPI_drawIDs(JNIEnv* env, jobject jObj, jboolean enable)
 {
-	showIDs = enable;
+	showIDs = enable != JNI_FALSE;
 }
 
 JNIEXPORT void JNICALL Java_eisbot_proxy_JNIBWAPI_enableUserInput(JNIEnv* env, jobject jObj)
@@ -679,7 +677,6 @@ JNIEXPORT jintArray JNICALL Java_eisbot_proxy_JNIBWAPI_getUnitCommandTypes(JNIEn
 	return result;
 }
 
-
 JNIEXPORT jstring JNICALL Java_eisbot_proxy_JNIBWAPI_getOrderTypeName(JNIEnv* env, jobject jObj, jint unitCommandID)
 {
 	return jEnv->NewStringUTF(orderTypeMap[unitCommandID].getName().c_str());
@@ -699,11 +696,10 @@ JNIEXPORT jintArray JNICALL Java_eisbot_proxy_JNIBWAPI_getOrderTypes(JNIEnv* env
 	return result;
 }
 
-
 /**
  * Returns the list of active units in the game. 
  *
- * Each unit takes up a fixed number of integer values. Currently: 113
+ * Each unit takes up a fixed number of integer values. Currently: 117
  */
 JNIEXPORT jintArray JNICALL Java_eisbot_proxy_JNIBWAPI_getUnits(JNIEnv* env, jobject jObj) 
 {
@@ -718,9 +714,9 @@ JNIEXPORT jintArray JNICALL Java_eisbot_proxy_JNIBWAPI_getUnits(JNIEnv* env, job
 		intBuf[index++] = (*i)->getPosition().y();
 		intBuf[index++] = (*i)->getTilePosition().x();
 		intBuf[index++] = (*i)->getTilePosition().y();
-		intBuf[index++] = (int)(TO_DEGREES*(*i)->getAngle());
-		intBuf[index++] = (int)(fixedScale*(*i)->getVelocityX());
-		intBuf[index++] = (int)(fixedScale*(*i)->getVelocityY());
+		intBuf[index++] = static_cast<int>(TO_DEGREES * (*i)->getAngle());
+		intBuf[index++] = static_cast<int>(fixedScale * (*i)->getVelocityX());
+		intBuf[index++] = static_cast<int>(fixedScale * (*i)->getVelocityY());
 		intBuf[index++] = (*i)->getHitPoints();
 		intBuf[index++] = (*i)->getShields();
 		intBuf[index++] = (*i)->getEnergy();
@@ -814,12 +810,16 @@ JNIEXPORT jintArray JNICALL Java_eisbot_proxy_JNIBWAPI_getUnits(JNIEnv* env, job
 		intBuf[index++] = (*i)->isPatrolling() ? 1 : 0;
 		intBuf[index++] = (*i)->isPlagued() ? 1 : 0;
 		intBuf[index++] = (*i)->isRepairing() ? 1 : 0;
+		intBuf[index++] = (*i)->isSelected() ? 1 : 0;
 		intBuf[index++] = (*i)->isSieged() ? 1 : 0;
 		intBuf[index++] = (*i)->isStartingAttack() ? 1 : 0;
 		intBuf[index++] = (*i)->isStasised() ? 1 : 0;
 		intBuf[index++] = (*i)->isStimmed() ? 1 : 0;
 		intBuf[index++] = (*i)->isStuck() ? 1 : 0;
 		intBuf[index++] = (*i)->isTraining() ? 1 : 0;
+		intBuf[index++] = (*i)->isUnderAttack() ? 1 : 0;
+		intBuf[index++] = (*i)->isUnderDarkSwarm() ? 1 : 0;
+		intBuf[index++] = (*i)->isUnderDisruptionWeb() ? 1 : 0;
 		intBuf[index++] = (*i)->isUnderStorm() ? 1 : 0;
 		intBuf[index++] = (*i)->isUnpowered() ? 1 : 0;
 		intBuf[index++] = (*i)->isUpgrading() ? 1 : 0;
@@ -830,9 +830,6 @@ JNIEXPORT jintArray JNICALL Java_eisbot_proxy_JNIBWAPI_getUnits(JNIEnv* env, job
 		// Interceptors
 		// Hatchery
 		// Power up
-		// intBuf[index++] = (*i)->isUnderAttack() ? 1 : 0;
-		// intBuf[index++] = (*i)->isUnderDarkSwarm() ? 1 : 0;
-		// intBuf[index++] = (*i)->sUnderDisruptionWeb() ? 1 : 0;
 	}
 
 	jintArray result = env->NewIntArray(index);
@@ -938,7 +935,7 @@ JNIEXPORT jintArray JNICALL Java_eisbot_proxy_JNIBWAPI_getChokePoints(JNIEnv* en
 	for (std::set<BWTA::Chokepoint*>::iterator i = chokepoints.begin(); i != chokepoints.end(); ++i) {
 		intBuf[index++] = (*i)->getCenter().x();
 		intBuf[index++] = (*i)->getCenter().y();
-		intBuf[index++] = (int)((*i)->getWidth()*fixedScale);
+		intBuf[index++] = static_cast<int>((*i)->getWidth() * fixedScale);
 		intBuf[index++] = regionMap[(*i)->getRegions().first];
 		intBuf[index++] = regionMap[(*i)->getRegions().second];
 		intBuf[index++] = (*i)->getSides().first.x();
@@ -1497,12 +1494,12 @@ void drawHealth(void)
 			int r = (*i)->getType().dimensionRight();
 			int b = (*i)->getType().dimensionDown();
 			int max = (*i)->getType().maxHitPoints();
-			int width = ((r + l)*health)/max;
+			int width = ((r + l) * health) / max;
 
-			if (health*3<max) {
+			if (health * 3 < max) {
 				Broodwar->drawBoxMap(x - l, y - t - 5, x - l + width, y - t, BWAPI::Colors::Red, true);
 			}
-			else if (health*3<2*max) {
+			else if (health * 3 < 2 * max) {
 				Broodwar->drawBoxMap(x - l, y - t - 5, x - l + width, y - t, BWAPI::Colors::Yellow, true);
 			}
 			else {
@@ -1526,12 +1523,12 @@ void drawHealth(void)
 			int r = (*i)->getType().dimensionRight();
 			int b = (*i)->getType().dimensionDown();
 			int max = (*i)->getType().maxHitPoints();
-			int width = ((r + l)*health)/max;
+			int width = ((r + l) * health) / max;
 
-			if (health*3<max) {
+			if (health * 3 < max) {
 				Broodwar->drawBoxMap(x - l, y - t - 5, x - l + width, y - t, BWAPI::Colors::Red, true);
 			}
-			else if (health*3<2*max) {
+			else if (health * 3 < 2 * max) {
 				Broodwar->drawBoxMap(x - l, y - t - 5, x - l + width, y - t, BWAPI::Colors::Yellow, true);
 			}
 			else {
