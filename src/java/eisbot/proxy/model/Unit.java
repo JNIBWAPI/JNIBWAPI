@@ -6,7 +6,7 @@ package eisbot.proxy.model;
  */
 public class Unit {
 
-	public static final int numAttributes = 113;
+	public static final int numAttributes = 117;
 	public static final double TO_DEGREES = 180.0/Math.PI;
 	public static final double fixedScale = 100.0;
 
@@ -113,12 +113,16 @@ public class Unit {
 	private boolean patrolling;
 	private boolean plagued;
 	private boolean repairing;
+	private boolean selected;
 	private boolean sieged;
 	private boolean startingAttack;
 	private boolean stasised;
 	private boolean stimmed;
 	private boolean stuck;
 	private boolean training;
+	private boolean underAttack;
+	private boolean underDarkSwarm;
+	private boolean underDisruptionWeb;
 	private boolean underStorm;
 	private boolean unpowered;
 	private boolean upgrading;
@@ -237,12 +241,16 @@ public class Unit {
 		 patrolling = data[index++] == 1;
 		 plagued = data[index++] == 1;
 		 repairing = data[index++] == 1;
+		 selected = data[index++] == 1;
 		 sieged = data[index++] == 1;
 		 startingAttack = data[index++] == 1;
 		 stasised = data[index++] == 1;
 		 stimmed = data[index++] == 1;
 		 stuck = data[index++] == 1;
 		 training = data[index++] == 1;
+		 underAttack = data[index++] == 1;
+		 underDarkSwarm = data[index++] == 1;
+		 underDisruptionWeb = data[index++] == 1;
 		 underStorm = data[index++] == 1;
 		 unpowered = data[index++] == 1;
 		 upgrading = data[index++] == 1;
@@ -661,6 +669,10 @@ public class Unit {
 		return repairing;
 	}
 
+	public boolean isSelected() {
+		return selected;
+	}
+	
 	public boolean isSieged() {
 		return sieged;
 	}
@@ -685,6 +697,18 @@ public class Unit {
 		return training;
 	}
 
+	public boolean isUnderAttack() {
+		return underAttack;
+	}
+
+	public boolean isUnderDarkSwarm() {
+		return underDarkSwarm;
+	}
+
+	public boolean isUnderDisruptionWeb() {
+		return underDisruptionWeb;
+	}
+	
 	public boolean isUnderStorm() {
 		return underStorm;
 	}
