@@ -1606,6 +1606,14 @@ JNIEXPORT jboolean JNICALL Java_eisbot_proxy_JNIBWAPI_isExplored(JNIEnv* env, jo
 {
 	return Broodwar->isExplored(tileX, tileY);
 }
+JNIEXPORT jboolean JNICALL Java_javabot_JNIBWAPI_isBuildable(JNIEnv *, jobject, jint tx, jint ty, jboolean includeBuildings ){
+	bool checkBuildings = false;
+	if(includeBuildings)
+	{
+	    checkBuildings = true;
+	}
+	return Broodwar->isBuildable(tx, ty , checkBuildings);
+}
 
 JNIEXPORT jboolean JNICALL Java_eisbot_proxy_JNIBWAPI_hasCreep(JNIEnv* env, jobject jObj, jint tx, jint ty)
 {
@@ -1675,6 +1683,20 @@ JNIEXPORT jboolean JNICALL Java_eisbot_proxy_JNIBWAPI_hasPath__III(JNIEnv* env, 
 	}
 
 	return JNI_FALSE;
+}
+
+JNIEXPORT jboolean JNICALL Java_javabot_JNIBWAPI_hasLoadedUnit
+	(JNIEnv *, jobject, jint unitID1, jint unitID2){
+	Unit* unit = Broodwar->getUnit(unitID1);
+	if (unit != NULL) {
+		std::set<Unit*> loaded = unit->getLoadedUnits();
+		for(std::set<Unit*>::const_iterator it = loaded.begin(); it!=loaded.end(); it++){
+			if( (*it)->getID() == unitID2){
+				return true;
+			}
+		}
+	}
+	return false;
 }
 
 JNIEXPORT jboolean JNICALL Java_eisbot_proxy_JNIBWAPI_canBuildHere__IIIZ(JNIEnv* env, jobject jObj, jint tileX, jint tileY, jint unitTypeID, jboolean checkExplored)
@@ -1783,4 +1805,14 @@ JNIEXPORT void JNICALL Java_eisbot_proxy_JNIBWAPI_sendText(JNIEnv* env, jobject 
 JNIEXPORT void JNICALL Java_eisbot_proxy_JNIBWAPI_setCommandOptimizationLevel(JNIEnv* env, jobject jObj, jint level)
 {
 	Broodwar->setCommandOptimizationLevel(level);
+}
+
+JNIEXPORT jint JNICALL Java_javabot_JNIBWAPI_getLastError(JNIEnv *, jobject){
+	return Broodwar->getLastError().getID();
+}
+
+JNIEXPORT jint JNICALL Java_javabot_JNIBWAPI_getRemainingLatencyFrames
+	(JNIEnv *, jobject){
+
+		return Broodwar->getRemainingLatencyFrames();
 }

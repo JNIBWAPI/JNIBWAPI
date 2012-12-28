@@ -1,8 +1,5 @@
 Compiled from "JNIBWAPI.java"
 public class eisbot.proxy.JNIBWAPI {
-  static {};
-    Signature: ()V
-
   public native boolean attack(int, int, int);
     Signature: (III)Z
 
@@ -177,6 +174,12 @@ public class eisbot.proxy.JNIBWAPI {
   public native boolean isExplored(int, int);
     Signature: (II)Z
 
+  public native boolean isBuildable(int, int, boolean);
+    Signature: (IIZ)Z
+
+  public boolean isBuildable(int, int);
+    Signature: (II)Z
+
   public native boolean hasCreep(int, int);
     Signature: (II)Z
 
@@ -203,6 +206,9 @@ public class eisbot.proxy.JNIBWAPI {
 
   public native boolean hasPath(int, int, int);
     Signature: (III)Z
+
+  public native boolean hasLoadedUnit(int, int);
+    Signature: (II)Z
 
   public native boolean canBuildHere(int, int, int, boolean);
     Signature: (IIIZ)Z
@@ -236,6 +242,12 @@ public class eisbot.proxy.JNIBWAPI {
 
   public native void setCommandOptimizationLevel(int);
     Signature: (I)V
+
+  public native int getLastError();
+    Signature: ()I
+
+  public native int getRemainingLatencyFrames();
+    Signature: ()I
 
   public eisbot.proxy.types.UnitType getUnitType(int);
     Signature: (I)Leisbot/proxy/types/UnitType;
@@ -359,4 +371,7 @@ public class eisbot.proxy.JNIBWAPI {
 
   public void keyPressed(int);
     Signature: (I)V
+
+  static {};
+    Signature: ()V
 }
