@@ -769,6 +769,14 @@ JNIEXPORT jboolean JNICALL Java_eisbot_proxy_JNIBWAPI_isExplored
 
 /*
  * Class:     eisbot_proxy_JNIBWAPI
+ * Method:    isBuildable
+ * Signature: (IIZ)Z
+ */
+JNIEXPORT jboolean JNICALL Java_eisbot_proxy_JNIBWAPI_isBuildable
+  (JNIEnv *, jobject, jint, jint, jboolean);
+
+/*
+ * Class:     eisbot_proxy_JNIBWAPI
  * Method:    hasCreep
  * Signature: (II)Z
  */
@@ -838,6 +846,14 @@ JNIEXPORT jboolean JNICALL Java_eisbot_proxy_JNIBWAPI_hasPath__II
  */
 JNIEXPORT jboolean JNICALL Java_eisbot_proxy_JNIBWAPI_hasPath__III
   (JNIEnv *, jobject, jint, jint, jint);
+
+/*
+ * Class:     eisbot_proxy_JNIBWAPI
+ * Method:    hasLoadedUnit
+ * Signature: (II)Z
+ */
+JNIEXPORT jboolean JNICALL Java_eisbot_proxy_JNIBWAPI_hasLoadedUnit
+  (JNIEnv *, jobject, jint, jint);
 
 /*
  * Class:     eisbot_proxy_JNIBWAPI
@@ -933,6 +949,22 @@ JNIEXPORT void JNICALL Java_eisbot_proxy_JNIBWAPI_setCommandOptimizationLevel
  * Signature: ()Z
  */
 JNIEXPORT jboolean JNICALL Java_eisbot_proxy_JNIBWAPI_isReplay
+  (JNIEnv *, jobject);
+
+/*
+ * Class:     eisbot_proxy_JNIBWAPI
+ * Method:    getLastError
+ * Signature: ()I
+ */
+JNIEXPORT jint JNICALL Java_eisbot_proxy_JNIBWAPI_getLastError
+  (JNIEnv *, jobject);
+
+/*
+ * Class:     eisbot_proxy_JNIBWAPI
+ * Method:    getRemainingLatencyFrames
+ * Signature: ()I
+ */
+JNIEXPORT jint JNICALL Java_eisbot_proxy_JNIBWAPI_getRemainingLatencyFrames
   (JNIEnv *, jobject);
 
 #ifdef __cplusplus
