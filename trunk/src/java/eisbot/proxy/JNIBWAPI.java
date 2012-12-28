@@ -1,32 +1,14 @@
 package eisbot.proxy;
 
-import java.awt.Point;
-import java.io.BufferedReader;
-import java.io.BufferedWriter;
-import java.io.File;
-import java.io.FileReader;
-import java.io.FileWriter;
+import eisbot.proxy.model.*;
+import eisbot.proxy.types.*;
+
+import java.awt.*;
+import java.io.*;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.HashSet;
-
-import eisbot.proxy.model.BaseLocation;
-import eisbot.proxy.model.ChokePoint;
-import eisbot.proxy.model.Map;
-import eisbot.proxy.model.Player;
-import eisbot.proxy.model.Region;
-import eisbot.proxy.model.Unit;
-import eisbot.proxy.types.BulletType;
-import eisbot.proxy.types.DamageType;
-import eisbot.proxy.types.ExplosionType;
-import eisbot.proxy.types.OrderType;
-import eisbot.proxy.types.TechType;
-import eisbot.proxy.types.UnitCommandType;
-import eisbot.proxy.types.UnitSizeType;
-import eisbot.proxy.types.UnitType;
-import eisbot.proxy.types.UpgradeType;
-import eisbot.proxy.types.WeaponType;
 
 /**
  * JNI interface for the Brood War API.
@@ -188,6 +170,8 @@ public class JNIBWAPI {
 	// Extended Commands
 	public native boolean isVisible(int tileX, int tileY);
 	public native boolean isExplored(int tileX, int tileY);
+    public native boolean isBuildable(int tx, int ty, boolean includeBuildings);
+    public boolean isBuildable(int tx, int ty) { return isBuildable(tx, ty, false);}
 	public native boolean hasCreep(int tileX, int tileY);
 	public native boolean hasPower(int tileX, int tileY);
 	public native boolean hasPower(int tileX, int tileY, int unitTypeID);
@@ -197,6 +181,7 @@ public class JNIBWAPI {
 	public native boolean hasPath(int fromX, int fromY, int toX, int toY);
 	public native boolean hasPath(int unitID, int targetID);
 	public native boolean hasPath(int unitID, int toX, int toY);
+    public native boolean hasLoadedUnit(int unitID1, int unitID2);
 	public native boolean canBuildHere(int tileX, int tileY, int unitTypeID, boolean checkExplored);
 	public native boolean canBuildHere(int unitID, int tileX, int tileY, int unitTypeID, boolean checkExplored);
 	public native boolean canMake(int unitTypeID);
@@ -209,7 +194,9 @@ public class JNIBWAPI {
 	public native void sendText(String message);
 	public native void setCommandOptimizationLevel(int level);
 	private native boolean isReplay();
-	
+    public native int getLastError();
+    public native int getRemainingLatencyFrames();
+
 	// type data
 	private HashMap<Integer, UnitType> unitTypes = new HashMap<Integer, UnitType>();
 	private HashMap<Integer, TechType> techTypes = new HashMap<Integer, TechType>();
