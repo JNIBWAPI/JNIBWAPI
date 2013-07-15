@@ -1,14 +1,15 @@
 package jnibwapi.types;
+
 /**
  * Represents a StarCraft explosion type.
  * 
  * For a description of fields see: http://code.google.com/p/bwapi/wiki/ExplosionType
  */
 public class ExplosionType {
-
+	
 	public static final int numAttributes = 1;
-
-	private String name;	
+	
+	private String name;
 	private int ID;
 	
 	public enum ExplosionTypes {
@@ -37,22 +38,21 @@ public class ExplosionType {
 		Maelstrom,
 		Undefined23,
 		Air_Splash,
-		Unknown,		
+		Unknown,
 	};
-
 	
 	public ExplosionType(int[] data, int index) {
-		ID = data[index++];	
+		ID = data[index++];
 	}
 	
 	public String getName() {
 		return name;
 	}
-
+	
 	public void setName(String name) {
 		this.name = name;
 	}
-
+	
 	public int getID() {
 		return ID;
 	}

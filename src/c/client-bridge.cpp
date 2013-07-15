@@ -52,8 +52,8 @@ double TO_DEGREES = 180.0 / M_PI;
 double fixedScale = 100.0;
 
 /**
- * Entry point from Java
- */
+* Entry point from Java
+*/
 JNIEXPORT void JNICALL Java_jnibwapi_JNIBWAPI_startClient(JNIEnv* env, jobject jObj, jobject classRef)
 {
 	// get the java callback functions
@@ -107,17 +107,17 @@ JNIEXPORT void JNICALL Java_jnibwapi_JNIBWAPI_startClient(JNIEnv* env, jobject j
 						jEnv->CallObjectMethod(classref, eventCallback, 0, e->isWinner() ? 1 : 0, 0, JNI_NULL);
 						break;
 					case EventType::SendText: {
-							jstring string = env->NewStringUTF(e->getText().c_str());
-							jEnv->CallObjectMethod(classref, eventCallback, 1, 0, 0, string);
-							env->DeleteLocalRef(string);
-						}
-						break;
+						jstring string = env->NewStringUTF(e->getText().c_str());
+						jEnv->CallObjectMethod(classref, eventCallback, 1, 0, 0, string);
+						env->DeleteLocalRef(string);
+											  }
+											  break;
 					case EventType::ReceiveText: {
-							jstring string = env->NewStringUTF(e->getText().c_str());
-							jEnv->CallObjectMethod(classref, eventCallback, 2, 0, 0, string);
-							env->DeleteLocalRef(string);
-						}
-						break;
+						jstring string = env->NewStringUTF(e->getText().c_str());
+						jEnv->CallObjectMethod(classref, eventCallback, 2, 0, 0, string);
+						env->DeleteLocalRef(string);
+												 }
+												 break;
 					case EventType::PlayerLeft:
 						jEnv->CallObjectMethod(classref, eventCallback, 3, e->getPlayer()->getID(), 0, JNI_NULL);
 						break;
@@ -153,11 +153,11 @@ JNIEXPORT void JNICALL Java_jnibwapi_JNIBWAPI_startClient(JNIEnv* env, jobject j
 						jEnv->CallObjectMethod(classref, eventCallback, 13, e->getUnit()->getID(), 0, JNI_NULL);
 						break;
 					case EventType::SaveGame: {
-							jstring string = env->NewStringUTF(e->getText().c_str());
-							jEnv->CallObjectMethod(classref, eventCallback, 14, 0, 0, string);
-							env->DeleteLocalRef(string);
-						}
-						break;
+						jstring string = env->NewStringUTF(e->getText().c_str());
+						jEnv->CallObjectMethod(classref, eventCallback, 14, 0, 0, string);
+						env->DeleteLocalRef(string);
+											  }
+											  break;
 					case EventType::UnitComplete:
 						jEnv->CallObjectMethod(classref, eventCallback, 15, e->getUnit()->getID(), 0, JNI_NULL);
 						break;
@@ -341,7 +341,7 @@ JNIEXPORT jintArray JNICALL Java_jnibwapi_JNIBWAPI_getPlayerInfo(JNIEnv* env, jo
 	env->SetIntArrayRegion(result, 0, index, intBuf);
 	return result;
 }
- 
+
 JNIEXPORT jintArray JNICALL Java_jnibwapi_JNIBWAPI_getPlayerUpdate(JNIEnv* env, jobject jObj, jint playerID)
 {
 	int index = 0;
@@ -361,7 +361,7 @@ JNIEXPORT jintArray JNICALL Java_jnibwapi_JNIBWAPI_getPlayerUpdate(JNIEnv* env, 
 	env->SetIntArrayRegion(result, 0, index, intBuf);
 	return result;
 } 
- 
+
 JNIEXPORT jintArray JNICALL Java_jnibwapi_JNIBWAPI_getResearchStatus(JNIEnv* env, jobject jObj, jint playerID)
 {
 	int index = 0;
@@ -697,10 +697,10 @@ JNIEXPORT jintArray JNICALL Java_jnibwapi_JNIBWAPI_getOrderTypes(JNIEnv* env, jo
 }
 
 /**
- * Returns the list of active units in the game. 
- *
- * Each unit takes up a fixed number of integer values. Currently: 117
- */
+* Returns the list of active units in the game. 
+*
+* Each unit takes up a fixed number of integer values. Currently: 117
+*/
 JNIEXPORT jintArray JNICALL Java_jnibwapi_JNIBWAPI_getUnits(JNIEnv* env, jobject jObj) 
 {
 	int index = 0;
@@ -1478,8 +1478,8 @@ JNIEXPORT void JNICALL Java_jnibwapi_JNIBWAPI_drawText(JNIEnv* env, jobject jObj
 }
 
 /**
- * Draws health boxes for units
- */
+* Draws health boxes for units
+*/
 void drawHealth(void) 
 {
 	std::set<Unit*> units = Broodwar->isReplay() ? Broodwar->getAllUnits() : Broodwar->self()->getUnits();
@@ -1541,10 +1541,10 @@ void drawHealth(void)
 		}
 	}
 }
- 
+
 /**
- * Draws the targets of each unit.
- */
+* Draws the targets of each unit.
+*/
 void drawTargets(void) {
 	std::set<Unit*> units = Broodwar->isReplay() ? Broodwar->getAllUnits() : Broodwar->self()->getUnits();
 	for (std::set<Unit*>::iterator i = units.begin(); i != units.end(); ++i) {
@@ -1580,8 +1580,8 @@ void drawTargets(void) {
 }
 
 /**
- * Draws the IDs of each unit.
- */
+* Draws the IDs of each unit.
+*/
 void drawIDs(void) {
 
 	std::set<Unit*> units = Broodwar->getAllUnits();
@@ -1610,7 +1610,7 @@ JNIEXPORT jboolean JNICALL Java_jnibwapi_JNIBWAPI_isBuildable(JNIEnv *, jobject,
 	bool checkBuildings = false;
 	if(includeBuildings)
 	{
-	    checkBuildings = true;
+		checkBuildings = true;
 	}
 	return Broodwar->isBuildable(tx, ty , checkBuildings);
 }
@@ -1687,16 +1687,16 @@ JNIEXPORT jboolean JNICALL Java_jnibwapi_JNIBWAPI_hasPath__III(JNIEnv* env, jobj
 
 JNIEXPORT jboolean JNICALL Java_jnibwapi_JNIBWAPI_hasLoadedUnit
 	(JNIEnv *, jobject, jint unitID1, jint unitID2){
-	Unit* unit = Broodwar->getUnit(unitID1);
-	if (unit != NULL) {
-		std::set<Unit*> loaded = unit->getLoadedUnits();
-		for(std::set<Unit*>::const_iterator it = loaded.begin(); it!=loaded.end(); it++){
-			if( (*it)->getID() == unitID2){
-				return true;
+		Unit* unit = Broodwar->getUnit(unitID1);
+		if (unit != NULL) {
+			std::set<Unit*> loaded = unit->getLoadedUnits();
+			for(std::set<Unit*>::const_iterator it = loaded.begin(); it!=loaded.end(); it++){
+				if( (*it)->getID() == unitID2){
+					return true;
+				}
 			}
 		}
-	}
-	return false;
+		return false;
 }
 
 JNIEXPORT jboolean JNICALL Java_jnibwapi_JNIBWAPI_canBuildHere__IIIZ(JNIEnv* env, jobject jObj, jint tileX, jint tileY, jint unitTypeID, jboolean checkExplored)

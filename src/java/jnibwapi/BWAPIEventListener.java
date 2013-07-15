@@ -1,17 +1,18 @@
 package jnibwapi;
+
 /**
  * Interface for BWAPI callback methods;
  * 
  * For BWAPI specific events see: http://code.google.com/p/bwapi/wiki/AIModule
  */
 public interface BWAPIEventListener {
-
+	
 	/** connected to bridge */
 	public void connected();
-
+	
 	/** game has just started, game settings can be turned on here */
 	public void gameStarted();
-
+	
 	/** perform AI logic here */
 	public void gameUpdate();
 	
@@ -33,7 +34,7 @@ public interface BWAPIEventListener {
 	public void unitShow(int unitID);
 	public void unitHide(int unitID);
 	public void unitCreate(int unitID);
-	public void unitDestroy(int unitID);	
+	public void unitDestroy(int unitID);
 	public void unitMorph(int unitID);
 	public void unitRenegade(int unitID);
 	public void saveGame(String gameName);

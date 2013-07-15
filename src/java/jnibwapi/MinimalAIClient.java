@@ -1,28 +1,36 @@
 package jnibwapi;
+
 /**
  * Example of a Java AI Client that does nothing.
  */
 import jnibwapi.model.Unit;
 import jnibwapi.util.BWColor;
+
 public class MinimalAIClient implements BWAPIEventListener {
 	private JNIBWAPI bwapi;
-
+	
 	public static void main(String[] args) {
 		new MinimalAIClient();
 	}
-
+	
 	public MinimalAIClient() {
 		bwapi = new JNIBWAPI(this);
 		bwapi.start();
-	} 
-
-	public void connected() {}	
+	}
+	
+	@Override
+	public void connected() {}
+	
+	@Override
 	public void gameStarted() {}
+	
+	@Override
 	public void gameUpdate() {
 		for (Unit u : bwapi.getAllUnits()) {
 			bwapi.drawCircle(u.getX(), u.getY(), 5, BWColor.RED, true, false);
 		}
 	}
+	
 	public void gameEnded() {}
 	public void keyPressed(int keyCode) {}
 	public void matchEnded(boolean winner) {}
