@@ -1,4 +1,4 @@
-package eisbot.proxy;
+package jnibwapi;
 /**
  * Interface for BWAPI callback methods;
  * 

@@ -4,7 +4,7 @@
 #include <jni.h>
 #define _USE_MATH_DEFINES
 #include <math.h>
-#include "eisbot_proxy_JNIBWAPI.h"
+#include "jnibwapi_JNIBWAPI.h"
 
 #define JNI_NULL 0
 
@@ -54,7 +54,7 @@ double fixedScale = 100.0;
 /**
  * Entry point from Java
  */
-JNIEXPORT void JNICALL Java_eisbot_proxy_JNIBWAPI_startClient(JNIEnv* env, jobject jObj, jobject classRef)
+JNIEXPORT void JNICALL Java_jnibwapi_JNIBWAPI_startClient(JNIEnv* env, jobject jObj, jobject classRef)
 {
 	// get the java callback functions
 	jEnv = env;
@@ -269,32 +269,32 @@ void loadTypeData(void)
 // Game options
 /*****************************************************************************************************************/
 
-JNIEXPORT void JNICALL Java_eisbot_proxy_JNIBWAPI_drawHealth(JNIEnv* env, jobject jObj, jboolean enable)
+JNIEXPORT void JNICALL Java_jnibwapi_JNIBWAPI_drawHealth(JNIEnv* env, jobject jObj, jboolean enable)
 {
 	showHealth = enable != JNI_FALSE;
 }
 
-JNIEXPORT void JNICALL Java_eisbot_proxy_JNIBWAPI_drawTargets(JNIEnv* env, jobject jObj, jboolean enable)
+JNIEXPORT void JNICALL Java_jnibwapi_JNIBWAPI_drawTargets(JNIEnv* env, jobject jObj, jboolean enable)
 {
 	showTargets = enable != JNI_FALSE;
 }
 
-JNIEXPORT void JNICALL Java_eisbot_proxy_JNIBWAPI_drawIDs(JNIEnv* env, jobject jObj, jboolean enable)
+JNIEXPORT void JNICALL Java_jnibwapi_JNIBWAPI_drawIDs(JNIEnv* env, jobject jObj, jboolean enable)
 {
 	showIDs = enable != JNI_FALSE;
 }
 
-JNIEXPORT void JNICALL Java_eisbot_proxy_JNIBWAPI_enableUserInput(JNIEnv* env, jobject jObj)
+JNIEXPORT void JNICALL Java_jnibwapi_JNIBWAPI_enableUserInput(JNIEnv* env, jobject jObj)
 {
 	Broodwar->enableFlag(Flag::UserInput);
 }
 
-JNIEXPORT void JNICALL Java_eisbot_proxy_JNIBWAPI_enablePerfectInformation(JNIEnv* env, jobject jObj) 
+JNIEXPORT void JNICALL Java_jnibwapi_JNIBWAPI_enablePerfectInformation(JNIEnv* env, jobject jObj) 
 {
 	Broodwar->enableFlag(Flag::CompleteMapInformation);
 }
 
-JNIEXPORT void JNICALL Java_eisbot_proxy_JNIBWAPI_setGameSpeed(JNIEnv* env, jobject jObj, jint speed)
+JNIEXPORT void JNICALL Java_jnibwapi_JNIBWAPI_setGameSpeed(JNIEnv* env, jobject jObj, jint speed)
 {
 	Broodwar->setLocalSpeed(speed);
 }
@@ -303,12 +303,12 @@ JNIEXPORT void JNICALL Java_eisbot_proxy_JNIBWAPI_setGameSpeed(JNIEnv* env, jobj
 // Game state queries
 /*****************************************************************************************************************/
 
-JNIEXPORT jint JNICALL Java_eisbot_proxy_JNIBWAPI_getGameFrame(JNIEnv* env, jobject jObj) 
+JNIEXPORT jint JNICALL Java_jnibwapi_JNIBWAPI_getGameFrame(JNIEnv* env, jobject jObj) 
 {
 	return Broodwar->getFrameCount();
 }
 
-JNIEXPORT jintArray JNICALL Java_eisbot_proxy_JNIBWAPI_getPlayerInfo(JNIEnv* env, jobject jObj)
+JNIEXPORT jintArray JNICALL Java_jnibwapi_JNIBWAPI_getPlayerInfo(JNIEnv* env, jobject jObj)
 {
 	int index = 0;
 
@@ -342,7 +342,7 @@ JNIEXPORT jintArray JNICALL Java_eisbot_proxy_JNIBWAPI_getPlayerInfo(JNIEnv* env
 	return result;
 }
  
-JNIEXPORT jintArray JNICALL Java_eisbot_proxy_JNIBWAPI_getPlayerUpdate(JNIEnv* env, jobject jObj, jint playerID)
+JNIEXPORT jintArray JNICALL Java_jnibwapi_JNIBWAPI_getPlayerUpdate(JNIEnv* env, jobject jObj, jint playerID)
 {
 	int index = 0;
 	Player* p = Broodwar->getPlayer(playerID);
@@ -362,7 +362,7 @@ JNIEXPORT jintArray JNICALL Java_eisbot_proxy_JNIBWAPI_getPlayerUpdate(JNIEnv* e
 	return result;
 } 
  
-JNIEXPORT jintArray JNICALL Java_eisbot_proxy_JNIBWAPI_getResearchStatus(JNIEnv* env, jobject jObj, jint playerID)
+JNIEXPORT jintArray JNICALL Java_jnibwapi_JNIBWAPI_getResearchStatus(JNIEnv* env, jobject jObj, jint playerID)
 {
 	int index = 0;
 	Player* p = Broodwar->getPlayer(playerID);
@@ -378,7 +378,7 @@ JNIEXPORT jintArray JNICALL Java_eisbot_proxy_JNIBWAPI_getResearchStatus(JNIEnv*
 	return result;
 }
 
-JNIEXPORT jintArray JNICALL Java_eisbot_proxy_JNIBWAPI_getUpgradeStatus(JNIEnv* env, jobject jObj, jint playerID)
+JNIEXPORT jintArray JNICALL Java_jnibwapi_JNIBWAPI_getUpgradeStatus(JNIEnv* env, jobject jObj, jint playerID)
 {
 	int index = 0;
 	Player* p = Broodwar->getPlayer(playerID);
@@ -394,7 +394,7 @@ JNIEXPORT jintArray JNICALL Java_eisbot_proxy_JNIBWAPI_getUpgradeStatus(JNIEnv* 
 	return result;
 }
 
-JNIEXPORT jintArray JNICALL Java_eisbot_proxy_JNIBWAPI_getUnitTypes(JNIEnv* env, jobject jObj) 
+JNIEXPORT jintArray JNICALL Java_jnibwapi_JNIBWAPI_getUnitTypes(JNIEnv* env, jobject jObj) 
 {
 	int index = 0;
 
@@ -477,12 +477,12 @@ JNIEXPORT jintArray JNICALL Java_eisbot_proxy_JNIBWAPI_getUnitTypes(JNIEnv* env,
 	return result;
 }
 
-JNIEXPORT jstring JNICALL Java_eisbot_proxy_JNIBWAPI_getUnitTypeName(JNIEnv* env, jobject jObj, jint typeID) 
+JNIEXPORT jstring JNICALL Java_jnibwapi_JNIBWAPI_getUnitTypeName(JNIEnv* env, jobject jObj, jint typeID) 
 {
 	return jEnv->NewStringUTF(unitTypeMap[typeID].getName().c_str());
 }
 
-JNIEXPORT jintArray JNICALL Java_eisbot_proxy_JNIBWAPI_getTechTypes(JNIEnv* env, jobject jObj)
+JNIEXPORT jintArray JNICALL Java_jnibwapi_JNIBWAPI_getTechTypes(JNIEnv* env, jobject jObj)
 {
 	int index = 0;
 
@@ -507,12 +507,12 @@ JNIEXPORT jintArray JNICALL Java_eisbot_proxy_JNIBWAPI_getTechTypes(JNIEnv* env,
 	return result;
 }
 
-JNIEXPORT jstring JNICALL Java_eisbot_proxy_JNIBWAPI_getTechTypeName(JNIEnv* env, jobject jObj, jint techID)
+JNIEXPORT jstring JNICALL Java_jnibwapi_JNIBWAPI_getTechTypeName(JNIEnv* env, jobject jObj, jint techID)
 {
 	return jEnv->NewStringUTF(techTypeMap[techID].getName().c_str());
 }
 
-JNIEXPORT jintArray JNICALL Java_eisbot_proxy_JNIBWAPI_getUpgradeTypes(JNIEnv* env, jobject jObj)
+JNIEXPORT jintArray JNICALL Java_jnibwapi_JNIBWAPI_getUpgradeTypes(JNIEnv* env, jobject jObj)
 {
 	int index = 0;
 
@@ -535,12 +535,12 @@ JNIEXPORT jintArray JNICALL Java_eisbot_proxy_JNIBWAPI_getUpgradeTypes(JNIEnv* e
 	return result;
 }
 
-JNIEXPORT jstring JNICALL Java_eisbot_proxy_JNIBWAPI_getUpgradeTypeName(JNIEnv* env, jobject jObj, jint upgradeID)
+JNIEXPORT jstring JNICALL Java_jnibwapi_JNIBWAPI_getUpgradeTypeName(JNIEnv* env, jobject jObj, jint upgradeID)
 {
 	return jEnv->NewStringUTF(upgradeTypeMap[upgradeID].getName().c_str());
 }
 
-JNIEXPORT jintArray JNICALL Java_eisbot_proxy_JNIBWAPI_getWeaponTypes(JNIEnv* env, jobject jObj)
+JNIEXPORT jintArray JNICALL Java_jnibwapi_JNIBWAPI_getWeaponTypes(JNIEnv* env, jobject jObj)
 {
 	int index = 0;
 
@@ -577,12 +577,12 @@ JNIEXPORT jintArray JNICALL Java_eisbot_proxy_JNIBWAPI_getWeaponTypes(JNIEnv* en
 	return result;
 }
 
-JNIEXPORT jstring JNICALL Java_eisbot_proxy_JNIBWAPI_getWeaponTypeName(JNIEnv* env, jobject jObj, jint weaponID)
+JNIEXPORT jstring JNICALL Java_jnibwapi_JNIBWAPI_getWeaponTypeName(JNIEnv* env, jobject jObj, jint weaponID)
 {
 	return jEnv->NewStringUTF(weaponTypeMap[weaponID].getName().c_str());
 }
 
-JNIEXPORT jintArray JNICALL Java_eisbot_proxy_JNIBWAPI_getUnitSizeTypes(JNIEnv* env, jobject jObj) 
+JNIEXPORT jintArray JNICALL Java_jnibwapi_JNIBWAPI_getUnitSizeTypes(JNIEnv* env, jobject jObj) 
 {
 	int index = 0;
 
@@ -596,12 +596,12 @@ JNIEXPORT jintArray JNICALL Java_eisbot_proxy_JNIBWAPI_getUnitSizeTypes(JNIEnv* 
 	return result;
 }
 
-JNIEXPORT jstring JNICALL Java_eisbot_proxy_JNIBWAPI_getUnitSizeTypeName(JNIEnv* env, jobject jObj, jint sizeID)
+JNIEXPORT jstring JNICALL Java_jnibwapi_JNIBWAPI_getUnitSizeTypeName(JNIEnv* env, jobject jObj, jint sizeID)
 {
 	return jEnv->NewStringUTF(unitSizeTypeMap[sizeID].getName().c_str());
 }
 
-JNIEXPORT jintArray JNICALL Java_eisbot_proxy_JNIBWAPI_getBulletTypes(JNIEnv* env, jobject jObj)
+JNIEXPORT jintArray JNICALL Java_jnibwapi_JNIBWAPI_getBulletTypes(JNIEnv* env, jobject jObj)
 {
 	int index = 0;
 
@@ -615,12 +615,12 @@ JNIEXPORT jintArray JNICALL Java_eisbot_proxy_JNIBWAPI_getBulletTypes(JNIEnv* en
 	return result;
 }
 
-JNIEXPORT jstring JNICALL Java_eisbot_proxy_JNIBWAPI_getBulletTypeName(JNIEnv* env, jobject jObj, jint bulletID)
+JNIEXPORT jstring JNICALL Java_jnibwapi_JNIBWAPI_getBulletTypeName(JNIEnv* env, jobject jObj, jint bulletID)
 {
 	return jEnv->NewStringUTF(bulletTypeMap[bulletID].getName().c_str());
 }
 
-JNIEXPORT jintArray JNICALL Java_eisbot_proxy_JNIBWAPI_getDamageTypes(JNIEnv* env, jobject jObj)
+JNIEXPORT jintArray JNICALL Java_jnibwapi_JNIBWAPI_getDamageTypes(JNIEnv* env, jobject jObj)
 {
 	int index = 0;
 
@@ -634,12 +634,12 @@ JNIEXPORT jintArray JNICALL Java_eisbot_proxy_JNIBWAPI_getDamageTypes(JNIEnv* en
 	return result;
 }
 
-JNIEXPORT jstring JNICALL Java_eisbot_proxy_JNIBWAPI_getDamageTypeName(JNIEnv* env, jobject jObj, jint damageID)
+JNIEXPORT jstring JNICALL Java_jnibwapi_JNIBWAPI_getDamageTypeName(JNIEnv* env, jobject jObj, jint damageID)
 {
 	return jEnv->NewStringUTF(damageTypeMap[damageID].getName().c_str());
 }
 
-JNIEXPORT jintArray JNICALL Java_eisbot_proxy_JNIBWAPI_getExplosionTypes(JNIEnv* env, jobject jObj)
+JNIEXPORT jintArray JNICALL Java_jnibwapi_JNIBWAPI_getExplosionTypes(JNIEnv* env, jobject jObj)
 {
 	int index = 0;
 
@@ -653,17 +653,17 @@ JNIEXPORT jintArray JNICALL Java_eisbot_proxy_JNIBWAPI_getExplosionTypes(JNIEnv*
 	return result;
 }
 
-JNIEXPORT jstring JNICALL Java_eisbot_proxy_JNIBWAPI_getExplosionTypeName(JNIEnv* env, jobject jObj, jint explosionID)
+JNIEXPORT jstring JNICALL Java_jnibwapi_JNIBWAPI_getExplosionTypeName(JNIEnv* env, jobject jObj, jint explosionID)
 {
 	return jEnv->NewStringUTF(explosionTypeMap[explosionID].getName().c_str());
 }
 
-JNIEXPORT jstring JNICALL Java_eisbot_proxy_JNIBWAPI_getUnitCommandTypeName(JNIEnv* env, jobject jObj, jint unitCommandID)
+JNIEXPORT jstring JNICALL Java_jnibwapi_JNIBWAPI_getUnitCommandTypeName(JNIEnv* env, jobject jObj, jint unitCommandID)
 {
 	return jEnv->NewStringUTF(unitCommandTypeMap[unitCommandID].getName().c_str());
 }
 
-JNIEXPORT jintArray JNICALL Java_eisbot_proxy_JNIBWAPI_getUnitCommandTypes(JNIEnv* env, jobject jObj)
+JNIEXPORT jintArray JNICALL Java_jnibwapi_JNIBWAPI_getUnitCommandTypes(JNIEnv* env, jobject jObj)
 {
 	int index = 0;
 
@@ -677,12 +677,12 @@ JNIEXPORT jintArray JNICALL Java_eisbot_proxy_JNIBWAPI_getUnitCommandTypes(JNIEn
 	return result;
 }
 
-JNIEXPORT jstring JNICALL Java_eisbot_proxy_JNIBWAPI_getOrderTypeName(JNIEnv* env, jobject jObj, jint unitCommandID)
+JNIEXPORT jstring JNICALL Java_jnibwapi_JNIBWAPI_getOrderTypeName(JNIEnv* env, jobject jObj, jint unitCommandID)
 {
 	return jEnv->NewStringUTF(orderTypeMap[unitCommandID].getName().c_str());
 }
 
-JNIEXPORT jintArray JNICALL Java_eisbot_proxy_JNIBWAPI_getOrderTypes(JNIEnv* env, jobject jObj)
+JNIEXPORT jintArray JNICALL Java_jnibwapi_JNIBWAPI_getOrderTypes(JNIEnv* env, jobject jObj)
 {
 	int index = 0;
 
@@ -701,7 +701,7 @@ JNIEXPORT jintArray JNICALL Java_eisbot_proxy_JNIBWAPI_getOrderTypes(JNIEnv* env
  *
  * Each unit takes up a fixed number of integer values. Currently: 117
  */
-JNIEXPORT jintArray JNICALL Java_eisbot_proxy_JNIBWAPI_getUnits(JNIEnv* env, jobject jObj) 
+JNIEXPORT jintArray JNICALL Java_jnibwapi_JNIBWAPI_getUnits(JNIEnv* env, jobject jObj) 
 {
 	int index = 0;
 
@@ -841,27 +841,27 @@ JNIEXPORT jintArray JNICALL Java_eisbot_proxy_JNIBWAPI_getUnits(JNIEnv* env, job
 // Map queries
 /*****************************************************************************************************************/
 
-JNIEXPORT jint JNICALL Java_eisbot_proxy_JNIBWAPI_getMapWidth(JNIEnv* env, jobject jObj)
+JNIEXPORT jint JNICALL Java_jnibwapi_JNIBWAPI_getMapWidth(JNIEnv* env, jobject jObj)
 {
 	return Broodwar->mapWidth();
 }
 
-JNIEXPORT jint JNICALL Java_eisbot_proxy_JNIBWAPI_getMapHeight(JNIEnv* env, jobject jObj)
+JNIEXPORT jint JNICALL Java_jnibwapi_JNIBWAPI_getMapHeight(JNIEnv* env, jobject jObj)
 {
 	return Broodwar->mapHeight();
 }
 
-JNIEXPORT jstring JNICALL Java_eisbot_proxy_JNIBWAPI_getMapName(JNIEnv* env, jobject jObj)
+JNIEXPORT jstring JNICALL Java_jnibwapi_JNIBWAPI_getMapName(JNIEnv* env, jobject jObj)
 {
 	return jEnv->NewStringUTF(Broodwar->mapFileName().c_str());
 }
 
-JNIEXPORT jstring JNICALL Java_eisbot_proxy_JNIBWAPI_getMapHash(JNIEnv* env, jobject jObj)
+JNIEXPORT jstring JNICALL Java_jnibwapi_JNIBWAPI_getMapHash(JNIEnv* env, jobject jObj)
 {
 	return jEnv->NewStringUTF(Broodwar->mapHash().c_str());
 }
 
-JNIEXPORT jintArray JNICALL Java_eisbot_proxy_JNIBWAPI_getHeightData(JNIEnv* env, jobject jObj)
+JNIEXPORT jintArray JNICALL Java_jnibwapi_JNIBWAPI_getHeightData(JNIEnv* env, jobject jObj)
 {
 	int index = 0;
 	int width = Broodwar->mapWidth();
@@ -878,7 +878,7 @@ JNIEXPORT jintArray JNICALL Java_eisbot_proxy_JNIBWAPI_getHeightData(JNIEnv* env
 	return result;
 }
 
-JNIEXPORT jintArray JNICALL Java_eisbot_proxy_JNIBWAPI_getWalkableData(JNIEnv* env, jobject jObj)
+JNIEXPORT jintArray JNICALL Java_jnibwapi_JNIBWAPI_getWalkableData(JNIEnv* env, jobject jObj)
 {
 	// Note: walk tiles are 8x8 pixels, build tiles are 32x32 pixels
 	int index = 0;	
@@ -896,7 +896,7 @@ JNIEXPORT jintArray JNICALL Java_eisbot_proxy_JNIBWAPI_getWalkableData(JNIEnv* e
 	return result;
 }
 
-JNIEXPORT jintArray JNICALL Java_eisbot_proxy_JNIBWAPI_getBuildableData(JNIEnv* env, jobject jObj)
+JNIEXPORT jintArray JNICALL Java_jnibwapi_JNIBWAPI_getBuildableData(JNIEnv* env, jobject jObj)
 {
 	int index = 0;
 	int width = Broodwar->mapWidth();
@@ -913,7 +913,7 @@ JNIEXPORT jintArray JNICALL Java_eisbot_proxy_JNIBWAPI_getBuildableData(JNIEnv* 
 	return result;
 }
 
-JNIEXPORT void JNICALL Java_eisbot_proxy_JNIBWAPI_analyzeTerrain(JNIEnv* env, jobject jObj)
+JNIEXPORT void JNICALL Java_jnibwapi_JNIBWAPI_analyzeTerrain(JNIEnv* env, jobject jObj)
 {
 	regionMap.clear();
 	BWTA::readMap();
@@ -927,7 +927,7 @@ JNIEXPORT void JNICALL Java_eisbot_proxy_JNIBWAPI_analyzeTerrain(JNIEnv* env, jo
 	}
 }
 
-JNIEXPORT jintArray JNICALL Java_eisbot_proxy_JNIBWAPI_getChokePoints(JNIEnv* env, jobject jObj)
+JNIEXPORT jintArray JNICALL Java_jnibwapi_JNIBWAPI_getChokePoints(JNIEnv* env, jobject jObj)
 {
 	int index = 0;
 
@@ -949,7 +949,7 @@ JNIEXPORT jintArray JNICALL Java_eisbot_proxy_JNIBWAPI_getChokePoints(JNIEnv* en
 	return result;
 }
 
-JNIEXPORT jintArray JNICALL Java_eisbot_proxy_JNIBWAPI_getRegions(JNIEnv* env, jobject jObj)
+JNIEXPORT jintArray JNICALL Java_jnibwapi_JNIBWAPI_getRegions(JNIEnv* env, jobject jObj)
 {
 	int index = 0;
 
@@ -965,7 +965,7 @@ JNIEXPORT jintArray JNICALL Java_eisbot_proxy_JNIBWAPI_getRegions(JNIEnv* env, j
 	return result;
 } 
 
-JNIEXPORT jintArray JNICALL Java_eisbot_proxy_JNIBWAPI_getPolygon(JNIEnv* env, jobject jObj, jint regionID)
+JNIEXPORT jintArray JNICALL Java_jnibwapi_JNIBWAPI_getPolygon(JNIEnv* env, jobject jObj, jint regionID)
 {
 	int index = 0;
 	std::set<BWTA::Region*> regions = BWTA::getRegions();
@@ -983,7 +983,7 @@ JNIEXPORT jintArray JNICALL Java_eisbot_proxy_JNIBWAPI_getPolygon(JNIEnv* env, j
 	return result;
 }
 
-JNIEXPORT jintArray JNICALL Java_eisbot_proxy_JNIBWAPI_getBaseLocations(JNIEnv* env, jobject jObj)
+JNIEXPORT jintArray JNICALL Java_jnibwapi_JNIBWAPI_getBaseLocations(JNIEnv* env, jobject jObj)
 {
 	int index = 0;
 
@@ -1010,7 +1010,7 @@ JNIEXPORT jintArray JNICALL Java_eisbot_proxy_JNIBWAPI_getBaseLocations(JNIEnv* 
 // Unit Commands
 /*****************************************************************************************************************/
 
-JNIEXPORT jboolean JNICALL Java_eisbot_proxy_JNIBWAPI_attack__III(JNIEnv* env, jobject jObj, jint unitID, jint x, jint y)
+JNIEXPORT jboolean JNICALL Java_jnibwapi_JNIBWAPI_attack__III(JNIEnv* env, jobject jObj, jint unitID, jint x, jint y)
 {
 	Unit* unit = Broodwar->getUnit(unitID);
 	if (unit != NULL) {
@@ -1019,7 +1019,7 @@ JNIEXPORT jboolean JNICALL Java_eisbot_proxy_JNIBWAPI_attack__III(JNIEnv* env, j
 	return JNI_FALSE;
 }
 
-JNIEXPORT jboolean JNICALL Java_eisbot_proxy_JNIBWAPI_attack__II(JNIEnv* env, jobject jObj, jint unitID, jint targetID)
+JNIEXPORT jboolean JNICALL Java_jnibwapi_JNIBWAPI_attack__II(JNIEnv* env, jobject jObj, jint unitID, jint targetID)
 {
 	Unit* unit = Broodwar->getUnit(unitID);
 	Unit* target = Broodwar->getUnit(targetID);
@@ -1029,7 +1029,7 @@ JNIEXPORT jboolean JNICALL Java_eisbot_proxy_JNIBWAPI_attack__II(JNIEnv* env, jo
 	return JNI_FALSE;
 }
 
-JNIEXPORT jboolean JNICALL Java_eisbot_proxy_JNIBWAPI_build(JNIEnv* env, jobject jObj, jint unitID, jint tx, jint ty, jint typeID)
+JNIEXPORT jboolean JNICALL Java_jnibwapi_JNIBWAPI_build(JNIEnv* env, jobject jObj, jint unitID, jint tx, jint ty, jint typeID)
 { 
 	Unit* unit = Broodwar->getUnit(unitID);
 	if (unit != NULL) {
@@ -1040,7 +1040,7 @@ JNIEXPORT jboolean JNICALL Java_eisbot_proxy_JNIBWAPI_build(JNIEnv* env, jobject
 	return JNI_FALSE;
 }
 
-JNIEXPORT jboolean JNICALL Java_eisbot_proxy_JNIBWAPI_buildAddon(JNIEnv* env, jobject jObj, jint unitID, jint typeID)
+JNIEXPORT jboolean JNICALL Java_jnibwapi_JNIBWAPI_buildAddon(JNIEnv* env, jobject jObj, jint unitID, jint typeID)
 { 
 	Unit* unit = Broodwar->getUnit(unitID);
 	if (unit != NULL) {
@@ -1051,7 +1051,7 @@ JNIEXPORT jboolean JNICALL Java_eisbot_proxy_JNIBWAPI_buildAddon(JNIEnv* env, jo
 	return JNI_FALSE;
 }
 
-JNIEXPORT jboolean JNICALL Java_eisbot_proxy_JNIBWAPI_train(JNIEnv* env, jobject jObj, jint unitID, jint typeID)
+JNIEXPORT jboolean JNICALL Java_jnibwapi_JNIBWAPI_train(JNIEnv* env, jobject jObj, jint unitID, jint typeID)
 { 
 	Unit* unit = Broodwar->getUnit(unitID);
 	if (unit != NULL) {
@@ -1062,7 +1062,7 @@ JNIEXPORT jboolean JNICALL Java_eisbot_proxy_JNIBWAPI_train(JNIEnv* env, jobject
 	return JNI_FALSE;
 }
 
-JNIEXPORT jboolean JNICALL Java_eisbot_proxy_JNIBWAPI_morph(JNIEnv* env, jobject jObj, jint unitID, jint typeID)
+JNIEXPORT jboolean JNICALL Java_jnibwapi_JNIBWAPI_morph(JNIEnv* env, jobject jObj, jint unitID, jint typeID)
 { 
 	Unit* unit = Broodwar->getUnit(unitID);
 	if (unit != NULL) {
@@ -1073,7 +1073,7 @@ JNIEXPORT jboolean JNICALL Java_eisbot_proxy_JNIBWAPI_morph(JNIEnv* env, jobject
 	return JNI_FALSE;
 }
 
-JNIEXPORT jboolean JNICALL Java_eisbot_proxy_JNIBWAPI_research(JNIEnv* env, jobject jObj, jint unitID, jint techID)
+JNIEXPORT jboolean JNICALL Java_jnibwapi_JNIBWAPI_research(JNIEnv* env, jobject jObj, jint unitID, jint techID)
 { 
 	Unit* unit = Broodwar->getUnit(unitID);
 	if (unit != NULL) {
@@ -1084,7 +1084,7 @@ JNIEXPORT jboolean JNICALL Java_eisbot_proxy_JNIBWAPI_research(JNIEnv* env, jobj
 	return JNI_FALSE;
 }
 
-JNIEXPORT jboolean JNICALL Java_eisbot_proxy_JNIBWAPI_upgrade(JNIEnv* env, jobject jObj, jint unitID, jint upgradeID)
+JNIEXPORT jboolean JNICALL Java_jnibwapi_JNIBWAPI_upgrade(JNIEnv* env, jobject jObj, jint unitID, jint upgradeID)
 { 
 	Unit* unit = Broodwar->getUnit(unitID);
 	if (unit != NULL) {
@@ -1095,7 +1095,7 @@ JNIEXPORT jboolean JNICALL Java_eisbot_proxy_JNIBWAPI_upgrade(JNIEnv* env, jobje
 	return JNI_FALSE;
 }
 
-JNIEXPORT jboolean JNICALL Java_eisbot_proxy_JNIBWAPI_setRallyPoint__III(JNIEnv* env, jobject jObj, jint unitID, jint x, jint y)
+JNIEXPORT jboolean JNICALL Java_jnibwapi_JNIBWAPI_setRallyPoint__III(JNIEnv* env, jobject jObj, jint unitID, jint x, jint y)
 { 
 	Unit* unit = Broodwar->getUnit(unitID);
 	if (unit != NULL) {
@@ -1104,7 +1104,7 @@ JNIEXPORT jboolean JNICALL Java_eisbot_proxy_JNIBWAPI_setRallyPoint__III(JNIEnv*
 	return JNI_FALSE;
 }
 
-JNIEXPORT jboolean JNICALL Java_eisbot_proxy_JNIBWAPI_setRallyPoint__II(JNIEnv* env, jobject jObj, jint unitID, jint targetID)
+JNIEXPORT jboolean JNICALL Java_jnibwapi_JNIBWAPI_setRallyPoint__II(JNIEnv* env, jobject jObj, jint unitID, jint targetID)
 { 
 	Unit* unit = Broodwar->getUnit(unitID);
 	Unit* target = Broodwar->getUnit(targetID);
@@ -1114,7 +1114,7 @@ JNIEXPORT jboolean JNICALL Java_eisbot_proxy_JNIBWAPI_setRallyPoint__II(JNIEnv* 
 	return JNI_FALSE;
 }
 
-JNIEXPORT jboolean JNICALL Java_eisbot_proxy_JNIBWAPI_move(JNIEnv* env, jobject jObj, jint unitID, jint x, jint y)
+JNIEXPORT jboolean JNICALL Java_jnibwapi_JNIBWAPI_move(JNIEnv* env, jobject jObj, jint unitID, jint x, jint y)
 { 
 	Unit* unit = Broodwar->getUnit(unitID);
 	if (unit != NULL) {
@@ -1123,7 +1123,7 @@ JNIEXPORT jboolean JNICALL Java_eisbot_proxy_JNIBWAPI_move(JNIEnv* env, jobject 
 	return JNI_FALSE;
 }
 
-JNIEXPORT jboolean JNICALL Java_eisbot_proxy_JNIBWAPI_patrol(JNIEnv* env, jobject jObj, jint unitID, jint x, jint y)
+JNIEXPORT jboolean JNICALL Java_jnibwapi_JNIBWAPI_patrol(JNIEnv* env, jobject jObj, jint unitID, jint x, jint y)
 { 
 	Unit* unit = Broodwar->getUnit(unitID);
 	if (unit != NULL) {
@@ -1132,7 +1132,7 @@ JNIEXPORT jboolean JNICALL Java_eisbot_proxy_JNIBWAPI_patrol(JNIEnv* env, jobjec
 	return JNI_FALSE;
 }
 
-JNIEXPORT jboolean JNICALL Java_eisbot_proxy_JNIBWAPI_holdPosition(JNIEnv* env, jobject jObj, jint unitID)
+JNIEXPORT jboolean JNICALL Java_jnibwapi_JNIBWAPI_holdPosition(JNIEnv* env, jobject jObj, jint unitID)
 { 
 	Unit* unit = Broodwar->getUnit(unitID);
 	if (unit != NULL) {
@@ -1141,7 +1141,7 @@ JNIEXPORT jboolean JNICALL Java_eisbot_proxy_JNIBWAPI_holdPosition(JNIEnv* env, 
 	return JNI_FALSE;
 }
 
-JNIEXPORT jboolean JNICALL Java_eisbot_proxy_JNIBWAPI_stop(JNIEnv* env, jobject jObj, jint unitID)
+JNIEXPORT jboolean JNICALL Java_jnibwapi_JNIBWAPI_stop(JNIEnv* env, jobject jObj, jint unitID)
 { 
 	Unit* unit = Broodwar->getUnit(unitID);
 	if (unit != NULL) {
@@ -1150,7 +1150,7 @@ JNIEXPORT jboolean JNICALL Java_eisbot_proxy_JNIBWAPI_stop(JNIEnv* env, jobject 
 	return JNI_FALSE;
 }
 
-JNIEXPORT jboolean JNICALL Java_eisbot_proxy_JNIBWAPI_follow(JNIEnv* env, jobject jObj, jint unitID, jint targetID)
+JNIEXPORT jboolean JNICALL Java_jnibwapi_JNIBWAPI_follow(JNIEnv* env, jobject jObj, jint unitID, jint targetID)
 { 
 	Unit* unit = Broodwar->getUnit(unitID);
 	Unit* target = Broodwar->getUnit(targetID);
@@ -1160,7 +1160,7 @@ JNIEXPORT jboolean JNICALL Java_eisbot_proxy_JNIBWAPI_follow(JNIEnv* env, jobjec
 	return JNI_FALSE;
 }
 
-JNIEXPORT jboolean JNICALL Java_eisbot_proxy_JNIBWAPI_gather(JNIEnv* env, jobject jObj, jint unitID, jint targetID)
+JNIEXPORT jboolean JNICALL Java_jnibwapi_JNIBWAPI_gather(JNIEnv* env, jobject jObj, jint unitID, jint targetID)
 { 
 	Unit* unit = Broodwar->getUnit(unitID);
 	Unit* target = Broodwar->getUnit(targetID);
@@ -1170,7 +1170,7 @@ JNIEXPORT jboolean JNICALL Java_eisbot_proxy_JNIBWAPI_gather(JNIEnv* env, jobjec
 	return JNI_FALSE;
 }
 
-JNIEXPORT jboolean JNICALL Java_eisbot_proxy_JNIBWAPI_returnCargo(JNIEnv* env, jobject jObj, jint unitID)
+JNIEXPORT jboolean JNICALL Java_jnibwapi_JNIBWAPI_returnCargo(JNIEnv* env, jobject jObj, jint unitID)
 { 
 	Unit* unit = Broodwar->getUnit(unitID);
 	if (unit != NULL) {
@@ -1179,7 +1179,7 @@ JNIEXPORT jboolean JNICALL Java_eisbot_proxy_JNIBWAPI_returnCargo(JNIEnv* env, j
 	return JNI_FALSE;
 }
 
-JNIEXPORT jboolean JNICALL Java_eisbot_proxy_JNIBWAPI_repair(JNIEnv* env, jobject jObj, jint unitID, jint targetID)
+JNIEXPORT jboolean JNICALL Java_jnibwapi_JNIBWAPI_repair(JNIEnv* env, jobject jObj, jint unitID, jint targetID)
 { 
 	Unit* unit = Broodwar->getUnit(unitID);
 	Unit* target = Broodwar->getUnit(targetID);
@@ -1189,7 +1189,7 @@ JNIEXPORT jboolean JNICALL Java_eisbot_proxy_JNIBWAPI_repair(JNIEnv* env, jobjec
 	return JNI_FALSE;
 }
 
-JNIEXPORT jboolean JNICALL Java_eisbot_proxy_JNIBWAPI_burrow(JNIEnv* env, jobject jObj, jint unitID)
+JNIEXPORT jboolean JNICALL Java_jnibwapi_JNIBWAPI_burrow(JNIEnv* env, jobject jObj, jint unitID)
 { 
 	Unit* unit = Broodwar->getUnit(unitID);
 	if (unit != NULL) {
@@ -1198,7 +1198,7 @@ JNIEXPORT jboolean JNICALL Java_eisbot_proxy_JNIBWAPI_burrow(JNIEnv* env, jobjec
 	return JNI_FALSE;
 }
 
-JNIEXPORT jboolean JNICALL Java_eisbot_proxy_JNIBWAPI_unburrow(JNIEnv* env, jobject jObj, jint unitID)
+JNIEXPORT jboolean JNICALL Java_jnibwapi_JNIBWAPI_unburrow(JNIEnv* env, jobject jObj, jint unitID)
 { 
 	Unit* unit = Broodwar->getUnit(unitID);
 	if (unit != NULL) {
@@ -1207,7 +1207,7 @@ JNIEXPORT jboolean JNICALL Java_eisbot_proxy_JNIBWAPI_unburrow(JNIEnv* env, jobj
 	return JNI_FALSE;
 }
 
-JNIEXPORT jboolean JNICALL Java_eisbot_proxy_JNIBWAPI_cloak(JNIEnv* env, jobject jObj, jint unitID)
+JNIEXPORT jboolean JNICALL Java_jnibwapi_JNIBWAPI_cloak(JNIEnv* env, jobject jObj, jint unitID)
 { 
 	Unit* unit = Broodwar->getUnit(unitID);
 	if (unit != NULL) {
@@ -1216,7 +1216,7 @@ JNIEXPORT jboolean JNICALL Java_eisbot_proxy_JNIBWAPI_cloak(JNIEnv* env, jobject
 	return JNI_FALSE;
 }
 
-JNIEXPORT jboolean JNICALL Java_eisbot_proxy_JNIBWAPI_decloak(JNIEnv* env, jobject jObj, jint unitID)
+JNIEXPORT jboolean JNICALL Java_jnibwapi_JNIBWAPI_decloak(JNIEnv* env, jobject jObj, jint unitID)
 { 
 	Unit* unit = Broodwar->getUnit(unitID);
 	if (unit != NULL) {
@@ -1225,7 +1225,7 @@ JNIEXPORT jboolean JNICALL Java_eisbot_proxy_JNIBWAPI_decloak(JNIEnv* env, jobje
 	return JNI_FALSE;
 }
 
-JNIEXPORT jboolean JNICALL Java_eisbot_proxy_JNIBWAPI_siege(JNIEnv* env, jobject jObj, jint unitID)
+JNIEXPORT jboolean JNICALL Java_jnibwapi_JNIBWAPI_siege(JNIEnv* env, jobject jObj, jint unitID)
 { 
 	Unit* unit = Broodwar->getUnit(unitID);
 	if (unit != NULL) {
@@ -1234,7 +1234,7 @@ JNIEXPORT jboolean JNICALL Java_eisbot_proxy_JNIBWAPI_siege(JNIEnv* env, jobject
 	return JNI_FALSE;
 }
 
-JNIEXPORT jboolean JNICALL Java_eisbot_proxy_JNIBWAPI_unsiege(JNIEnv* env, jobject jObj, jint unitID)
+JNIEXPORT jboolean JNICALL Java_jnibwapi_JNIBWAPI_unsiege(JNIEnv* env, jobject jObj, jint unitID)
 { 
 	Unit* unit = Broodwar->getUnit(unitID);
 	if (unit != NULL) {
@@ -1243,7 +1243,7 @@ JNIEXPORT jboolean JNICALL Java_eisbot_proxy_JNIBWAPI_unsiege(JNIEnv* env, jobje
 	return JNI_FALSE;
 }
 
-JNIEXPORT jboolean JNICALL Java_eisbot_proxy_JNIBWAPI_lift(JNIEnv* env, jobject jObj, jint unitID)
+JNIEXPORT jboolean JNICALL Java_jnibwapi_JNIBWAPI_lift(JNIEnv* env, jobject jObj, jint unitID)
 { 
 	Unit* unit = Broodwar->getUnit(unitID);
 	if (unit != NULL) {
@@ -1252,7 +1252,7 @@ JNIEXPORT jboolean JNICALL Java_eisbot_proxy_JNIBWAPI_lift(JNIEnv* env, jobject 
 	return JNI_FALSE;
 }
 
-JNIEXPORT jboolean JNICALL Java_eisbot_proxy_JNIBWAPI_land(JNIEnv* env, jobject jObj, jint unitID, jint tx, jint ty)
+JNIEXPORT jboolean JNICALL Java_jnibwapi_JNIBWAPI_land(JNIEnv* env, jobject jObj, jint unitID, jint tx, jint ty)
 { 
 	Unit* unit = Broodwar->getUnit(unitID);
 	if (unit != NULL) {
@@ -1261,7 +1261,7 @@ JNIEXPORT jboolean JNICALL Java_eisbot_proxy_JNIBWAPI_land(JNIEnv* env, jobject 
 	return JNI_FALSE;
 }
 
-JNIEXPORT jboolean JNICALL Java_eisbot_proxy_JNIBWAPI_load(JNIEnv* env, jobject jObj, jint unitID, jint targetID)
+JNIEXPORT jboolean JNICALL Java_jnibwapi_JNIBWAPI_load(JNIEnv* env, jobject jObj, jint unitID, jint targetID)
 { 
 	Unit* unit = Broodwar->getUnit(unitID);
 	Unit* target = Broodwar->getUnit(targetID);
@@ -1271,7 +1271,7 @@ JNIEXPORT jboolean JNICALL Java_eisbot_proxy_JNIBWAPI_load(JNIEnv* env, jobject 
 	return JNI_FALSE;
 }
 
-JNIEXPORT jboolean JNICALL Java_eisbot_proxy_JNIBWAPI_unload(JNIEnv* env, jobject jObj, jint unitID, jint targetID)
+JNIEXPORT jboolean JNICALL Java_jnibwapi_JNIBWAPI_unload(JNIEnv* env, jobject jObj, jint unitID, jint targetID)
 { 
 	Unit* unit = Broodwar->getUnit(unitID);
 	Unit* target = Broodwar->getUnit(targetID);
@@ -1281,7 +1281,7 @@ JNIEXPORT jboolean JNICALL Java_eisbot_proxy_JNIBWAPI_unload(JNIEnv* env, jobjec
 	return JNI_FALSE;
 }
 
-JNIEXPORT jboolean JNICALL Java_eisbot_proxy_JNIBWAPI_unloadAll__I(JNIEnv* env, jobject jObj, jint unitID)
+JNIEXPORT jboolean JNICALL Java_jnibwapi_JNIBWAPI_unloadAll__I(JNIEnv* env, jobject jObj, jint unitID)
 { 
 	Unit* unit = Broodwar->getUnit(unitID);
 	if (unit != NULL) {
@@ -1290,7 +1290,7 @@ JNIEXPORT jboolean JNICALL Java_eisbot_proxy_JNIBWAPI_unloadAll__I(JNIEnv* env, 
 	return JNI_FALSE;
 }
 
-JNIEXPORT jboolean JNICALL Java_eisbot_proxy_JNIBWAPI_unloadAll__III(JNIEnv* env, jobject jObj, jint unitID, jint x, jint y)
+JNIEXPORT jboolean JNICALL Java_jnibwapi_JNIBWAPI_unloadAll__III(JNIEnv* env, jobject jObj, jint unitID, jint x, jint y)
 { 
 	Unit* unit = Broodwar->getUnit(unitID);
 	if (unit != NULL) {
@@ -1299,7 +1299,7 @@ JNIEXPORT jboolean JNICALL Java_eisbot_proxy_JNIBWAPI_unloadAll__III(JNIEnv* env
 	return JNI_FALSE;
 }
 
-JNIEXPORT jboolean JNICALL Java_eisbot_proxy_JNIBWAPI_rightClick__III(JNIEnv* env, jobject jObj, jint unitID, jint x, jint y)
+JNIEXPORT jboolean JNICALL Java_jnibwapi_JNIBWAPI_rightClick__III(JNIEnv* env, jobject jObj, jint unitID, jint x, jint y)
 { 
 	Unit* unit = Broodwar->getUnit(unitID);
 	if (unit != NULL) {
@@ -1308,7 +1308,7 @@ JNIEXPORT jboolean JNICALL Java_eisbot_proxy_JNIBWAPI_rightClick__III(JNIEnv* en
 	return JNI_FALSE;
 }
 
-JNIEXPORT jboolean JNICALL Java_eisbot_proxy_JNIBWAPI_rightClick__II(JNIEnv* env, jobject jObj, jint unitID, jint targetID)
+JNIEXPORT jboolean JNICALL Java_jnibwapi_JNIBWAPI_rightClick__II(JNIEnv* env, jobject jObj, jint unitID, jint targetID)
 { 
 	Unit* unit = Broodwar->getUnit(unitID);
 	Unit* target = Broodwar->getUnit(targetID);
@@ -1318,7 +1318,7 @@ JNIEXPORT jboolean JNICALL Java_eisbot_proxy_JNIBWAPI_rightClick__II(JNIEnv* env
 	return JNI_FALSE;
 }
 
-JNIEXPORT jboolean JNICALL Java_eisbot_proxy_JNIBWAPI_haltConstruction(JNIEnv* env, jobject jObj, jint unitID)
+JNIEXPORT jboolean JNICALL Java_jnibwapi_JNIBWAPI_haltConstruction(JNIEnv* env, jobject jObj, jint unitID)
 { 
 	Unit* unit = Broodwar->getUnit(unitID);
 	if (unit != NULL) {
@@ -1327,7 +1327,7 @@ JNIEXPORT jboolean JNICALL Java_eisbot_proxy_JNIBWAPI_haltConstruction(JNIEnv* e
 	return JNI_FALSE;
 }
 
-JNIEXPORT jboolean JNICALL Java_eisbot_proxy_JNIBWAPI_cancelConstruction(JNIEnv* env, jobject jObj, jint unitID)
+JNIEXPORT jboolean JNICALL Java_jnibwapi_JNIBWAPI_cancelConstruction(JNIEnv* env, jobject jObj, jint unitID)
 { 
 	Unit* unit = Broodwar->getUnit(unitID);
 	if (unit != NULL) {
@@ -1336,7 +1336,7 @@ JNIEXPORT jboolean JNICALL Java_eisbot_proxy_JNIBWAPI_cancelConstruction(JNIEnv*
 	return JNI_FALSE;
 }
 
-JNIEXPORT jboolean JNICALL Java_eisbot_proxy_JNIBWAPI_cancelAddon(JNIEnv* env, jobject jObj, jint unitID)
+JNIEXPORT jboolean JNICALL Java_jnibwapi_JNIBWAPI_cancelAddon(JNIEnv* env, jobject jObj, jint unitID)
 { 
 	Unit* unit = Broodwar->getUnit(unitID);
 	if (unit != NULL) {
@@ -1345,7 +1345,7 @@ JNIEXPORT jboolean JNICALL Java_eisbot_proxy_JNIBWAPI_cancelAddon(JNIEnv* env, j
 	return JNI_FALSE;
 }
 
-JNIEXPORT jboolean JNICALL Java_eisbot_proxy_JNIBWAPI_cancelTrain(JNIEnv* env, jobject jObj, jint unitID, jint slot)
+JNIEXPORT jboolean JNICALL Java_jnibwapi_JNIBWAPI_cancelTrain(JNIEnv* env, jobject jObj, jint unitID, jint slot)
 { 
 	Unit* unit = Broodwar->getUnit(unitID);
 	if (unit != NULL) {
@@ -1354,7 +1354,7 @@ JNIEXPORT jboolean JNICALL Java_eisbot_proxy_JNIBWAPI_cancelTrain(JNIEnv* env, j
 	return JNI_FALSE;
 }
 
-JNIEXPORT jboolean JNICALL Java_eisbot_proxy_JNIBWAPI_cancelMorph(JNIEnv* env, jobject jObj, jint unitID)
+JNIEXPORT jboolean JNICALL Java_jnibwapi_JNIBWAPI_cancelMorph(JNIEnv* env, jobject jObj, jint unitID)
 { 
 	Unit* unit = Broodwar->getUnit(unitID);
 	if (unit != NULL) {
@@ -1363,7 +1363,7 @@ JNIEXPORT jboolean JNICALL Java_eisbot_proxy_JNIBWAPI_cancelMorph(JNIEnv* env, j
 	return JNI_FALSE;
 }
 
-JNIEXPORT jboolean JNICALL Java_eisbot_proxy_JNIBWAPI_cancelResearch(JNIEnv* env, jobject jObj, jint unitID)
+JNIEXPORT jboolean JNICALL Java_jnibwapi_JNIBWAPI_cancelResearch(JNIEnv* env, jobject jObj, jint unitID)
 { 
 	Unit* unit = Broodwar->getUnit(unitID);
 	if (unit != NULL) {
@@ -1372,7 +1372,7 @@ JNIEXPORT jboolean JNICALL Java_eisbot_proxy_JNIBWAPI_cancelResearch(JNIEnv* env
 	return JNI_FALSE;
 }
 
-JNIEXPORT jboolean JNICALL Java_eisbot_proxy_JNIBWAPI_cancelUpgrade(JNIEnv* env, jobject jObj, jint unitID)
+JNIEXPORT jboolean JNICALL Java_jnibwapi_JNIBWAPI_cancelUpgrade(JNIEnv* env, jobject jObj, jint unitID)
 { 
 	Unit* unit = Broodwar->getUnit(unitID);
 	if (unit != NULL) {
@@ -1381,7 +1381,7 @@ JNIEXPORT jboolean JNICALL Java_eisbot_proxy_JNIBWAPI_cancelUpgrade(JNIEnv* env,
 	return JNI_FALSE;
 }
 
-JNIEXPORT jboolean JNICALL Java_eisbot_proxy_JNIBWAPI_useTech__II(JNIEnv* env, jobject jObj, jint unitID, jint techID)
+JNIEXPORT jboolean JNICALL Java_jnibwapi_JNIBWAPI_useTech__II(JNIEnv* env, jobject jObj, jint unitID, jint techID)
 { 
 	Unit* unit = Broodwar->getUnit(unitID);
 	if (unit != NULL) {
@@ -1392,7 +1392,7 @@ JNIEXPORT jboolean JNICALL Java_eisbot_proxy_JNIBWAPI_useTech__II(JNIEnv* env, j
 	return JNI_FALSE;
 }
 
-JNIEXPORT jboolean JNICALL Java_eisbot_proxy_JNIBWAPI_useTech__IIII(JNIEnv* env, jobject jObj, jint unitID, jint techID, jint x, jint y)
+JNIEXPORT jboolean JNICALL Java_jnibwapi_JNIBWAPI_useTech__IIII(JNIEnv* env, jobject jObj, jint unitID, jint techID, jint x, jint y)
 { 
 	Unit* unit = Broodwar->getUnit(unitID);
 	if (unit != NULL) {
@@ -1403,7 +1403,7 @@ JNIEXPORT jboolean JNICALL Java_eisbot_proxy_JNIBWAPI_useTech__IIII(JNIEnv* env,
 	return JNI_FALSE;
 }
 
-JNIEXPORT jboolean JNICALL Java_eisbot_proxy_JNIBWAPI_useTech__III(JNIEnv* env, jobject jObj, jint unitID, jint techID, jint targetID)
+JNIEXPORT jboolean JNICALL Java_jnibwapi_JNIBWAPI_useTech__III(JNIEnv* env, jobject jObj, jint unitID, jint techID, jint targetID)
 { 
 	Unit* unit = Broodwar->getUnit(unitID);
 	Unit* target = Broodwar->getUnit(targetID);
@@ -1415,7 +1415,7 @@ JNIEXPORT jboolean JNICALL Java_eisbot_proxy_JNIBWAPI_useTech__III(JNIEnv* env, 
 	return JNI_FALSE;
 }
 
-JNIEXPORT jboolean JNICALL Java_eisbot_proxy_JNIBWAPI_placeCOP(JNIEnv* env, jobject jObj, jint unitID, jint tx, jint ty)
+JNIEXPORT jboolean JNICALL Java_jnibwapi_JNIBWAPI_placeCOP(JNIEnv* env, jobject jObj, jint unitID, jint tx, jint ty)
 {
 	Unit* unit = Broodwar->getUnit(unitID);
 	if (unit != NULL) {
@@ -1428,7 +1428,7 @@ JNIEXPORT jboolean JNICALL Java_eisbot_proxy_JNIBWAPI_placeCOP(JNIEnv* env, jobj
 // Utility functions
 /*****************************************************************************************************************/
 
-JNIEXPORT void JNICALL Java_eisbot_proxy_JNIBWAPI_drawBox(JNIEnv* env, jobject jObj, jint left, jint top, jint right, jint bottom, jint color, jboolean fill, jboolean screenCoords)
+JNIEXPORT void JNICALL Java_jnibwapi_JNIBWAPI_drawBox(JNIEnv* env, jobject jObj, jint left, jint top, jint right, jint bottom, jint color, jboolean fill, jboolean screenCoords)
 {
 	if (screenCoords) {
 		Broodwar->drawBoxScreen(left, top, right, bottom, BWAPI::Color(color), fill ? true : false);
@@ -1437,7 +1437,7 @@ JNIEXPORT void JNICALL Java_eisbot_proxy_JNIBWAPI_drawBox(JNIEnv* env, jobject j
 	}
 }
 
-JNIEXPORT void JNICALL Java_eisbot_proxy_JNIBWAPI_drawCircle(JNIEnv* env, jobject jObj, jint x, jint y, jint radius, jint color, jboolean fill, jboolean screenCoords)
+JNIEXPORT void JNICALL Java_jnibwapi_JNIBWAPI_drawCircle(JNIEnv* env, jobject jObj, jint x, jint y, jint radius, jint color, jboolean fill, jboolean screenCoords)
 {
 	if (screenCoords) {
 		Broodwar->drawCircleScreen(x, y, radius, BWAPI::Color(color), fill ? true : false);
@@ -1446,7 +1446,7 @@ JNIEXPORT void JNICALL Java_eisbot_proxy_JNIBWAPI_drawCircle(JNIEnv* env, jobjec
 	}
 }
 
-JNIEXPORT void JNICALL Java_eisbot_proxy_JNIBWAPI_drawLine(JNIEnv* env, jobject jObj, jint x1, jint y1, jint x2, jint y2, jint color, jboolean screenCoords)
+JNIEXPORT void JNICALL Java_jnibwapi_JNIBWAPI_drawLine(JNIEnv* env, jobject jObj, jint x1, jint y1, jint x2, jint y2, jint color, jboolean screenCoords)
 {
 	if (screenCoords) {
 		Broodwar->drawLineScreen(x1, y1, x2, y2, BWAPI::Color(color));
@@ -1455,7 +1455,7 @@ JNIEXPORT void JNICALL Java_eisbot_proxy_JNIBWAPI_drawLine(JNIEnv* env, jobject 
 	}
 }
 
-JNIEXPORT void JNICALL Java_eisbot_proxy_JNIBWAPI_drawDot(JNIEnv* env, jobject jObj, jint x, jint y, jint color, jboolean screenCoords)
+JNIEXPORT void JNICALL Java_jnibwapi_JNIBWAPI_drawDot(JNIEnv* env, jobject jObj, jint x, jint y, jint color, jboolean screenCoords)
 {
 	if (screenCoords) {
 		Broodwar->drawDotScreen(x, y, BWAPI::Color(color));	  
@@ -1464,7 +1464,7 @@ JNIEXPORT void JNICALL Java_eisbot_proxy_JNIBWAPI_drawDot(JNIEnv* env, jobject j
 	}
 }
 
-JNIEXPORT void JNICALL Java_eisbot_proxy_JNIBWAPI_drawText(JNIEnv* env, jobject jObj, jint x, jint y, jstring msg, jboolean screenCoords)
+JNIEXPORT void JNICALL Java_jnibwapi_JNIBWAPI_drawText(JNIEnv* env, jobject jObj, jint x, jint y, jstring msg, jboolean screenCoords)
 {
 	const char* text = env->GetStringUTFChars(msg, 0);
 
@@ -1597,16 +1597,16 @@ void drawIDs(void) {
 // Extended functions
 /*****************************************************************************************************************/
 
-JNIEXPORT jboolean JNICALL Java_eisbot_proxy_JNIBWAPI_isVisible(JNIEnv* env, jobject jObj, jint tileX, jint tileY)
+JNIEXPORT jboolean JNICALL Java_jnibwapi_JNIBWAPI_isVisible(JNIEnv* env, jobject jObj, jint tileX, jint tileY)
 {
 	return Broodwar->isVisible(tileX, tileY);
 }
 
-JNIEXPORT jboolean JNICALL Java_eisbot_proxy_JNIBWAPI_isExplored(JNIEnv* env, jobject jObj, jint tileX, jint tileY)
+JNIEXPORT jboolean JNICALL Java_jnibwapi_JNIBWAPI_isExplored(JNIEnv* env, jobject jObj, jint tileX, jint tileY)
 {
 	return Broodwar->isExplored(tileX, tileY);
 }
-JNIEXPORT jboolean JNICALL Java_javabot_JNIBWAPI_isBuildable(JNIEnv *, jobject, jint tx, jint ty, jboolean includeBuildings ){
+JNIEXPORT jboolean JNICALL Java_jnibwapi_JNIBWAPI_isBuildable(JNIEnv *, jobject, jint tx, jint ty, jboolean includeBuildings ){
 	bool checkBuildings = false;
 	if(includeBuildings)
 	{
@@ -1615,17 +1615,17 @@ JNIEXPORT jboolean JNICALL Java_javabot_JNIBWAPI_isBuildable(JNIEnv *, jobject, 
 	return Broodwar->isBuildable(tx, ty , checkBuildings);
 }
 
-JNIEXPORT jboolean JNICALL Java_eisbot_proxy_JNIBWAPI_hasCreep(JNIEnv* env, jobject jObj, jint tx, jint ty)
+JNIEXPORT jboolean JNICALL Java_jnibwapi_JNIBWAPI_hasCreep(JNIEnv* env, jobject jObj, jint tx, jint ty)
 {
 	return Broodwar->hasCreep(tx, ty);
 }
 
-JNIEXPORT jboolean JNICALL Java_eisbot_proxy_JNIBWAPI_hasPower__II(JNIEnv* env, jobject jObj, jint tileX, jint tileY)
+JNIEXPORT jboolean JNICALL Java_jnibwapi_JNIBWAPI_hasPower__II(JNIEnv* env, jobject jObj, jint tileX, jint tileY)
 {
 	return Broodwar->hasPower(tileX, tileY);
 }
 
-JNIEXPORT jboolean JNICALL Java_eisbot_proxy_JNIBWAPI_hasPower__III(JNIEnv* env, jobject jObj, jint tileX, jint tileY, jint unitID)
+JNIEXPORT jboolean JNICALL Java_jnibwapi_JNIBWAPI_hasPower__III(JNIEnv* env, jobject jObj, jint tileX, jint tileY, jint unitID)
 {
 	Unit* unit = Broodwar->getUnit(unitID);
 
@@ -1636,12 +1636,12 @@ JNIEXPORT jboolean JNICALL Java_eisbot_proxy_JNIBWAPI_hasPower__III(JNIEnv* env,
 	return JNI_FALSE;
 }
 
-JNIEXPORT jboolean JNICALL Java_eisbot_proxy_JNIBWAPI_hasPower__IIII(JNIEnv* env, jobject jObj, jint tileX, jint tileY, jint tileWidth, jint tileHeight)
+JNIEXPORT jboolean JNICALL Java_jnibwapi_JNIBWAPI_hasPower__IIII(JNIEnv* env, jobject jObj, jint tileX, jint tileY, jint tileWidth, jint tileHeight)
 {
 	return Broodwar->hasPower(tileX, tileY, tileWidth, tileHeight);
 }
 
-JNIEXPORT jboolean JNICALL Java_eisbot_proxy_JNIBWAPI_hasPower__IIIII(JNIEnv* env, jobject jObj, jint tileX, jint tileY, jint tileWidth, jint tileHeight, jint unitID)
+JNIEXPORT jboolean JNICALL Java_jnibwapi_JNIBWAPI_hasPower__IIIII(JNIEnv* env, jobject jObj, jint tileX, jint tileY, jint tileWidth, jint tileHeight, jint unitID)
 {
 	Unit* unit = Broodwar->getUnit(unitID);
 
@@ -1652,17 +1652,17 @@ JNIEXPORT jboolean JNICALL Java_eisbot_proxy_JNIBWAPI_hasPower__IIIII(JNIEnv* en
 	return JNI_FALSE;
 }
 
-JNIEXPORT jboolean JNICALL Java_eisbot_proxy_JNIBWAPI_hasPowerPrecise(JNIEnv* env, jobject jObj, jint x, jint y)
+JNIEXPORT jboolean JNICALL Java_jnibwapi_JNIBWAPI_hasPowerPrecise(JNIEnv* env, jobject jObj, jint x, jint y)
 {
 	return Broodwar->hasPowerPrecise(x, y);
 }
 
-JNIEXPORT jboolean JNICALL Java_eisbot_proxy_JNIBWAPI_hasPath__IIII(JNIEnv* env, jobject jObj, jint fromX, jint fromY, jint toX, jint toY)
+JNIEXPORT jboolean JNICALL Java_jnibwapi_JNIBWAPI_hasPath__IIII(JNIEnv* env, jobject jObj, jint fromX, jint fromY, jint toX, jint toY)
 {
 	return Broodwar->hasPath(BWAPI::Position(fromX, fromY), BWAPI::Position(toX, toY));
 }
 
-JNIEXPORT jboolean JNICALL Java_eisbot_proxy_JNIBWAPI_hasPath__II(JNIEnv* env, jobject jObj, jint unitID, jint targetID)
+JNIEXPORT jboolean JNICALL Java_jnibwapi_JNIBWAPI_hasPath__II(JNIEnv* env, jobject jObj, jint unitID, jint targetID)
 {
 	Unit* unit = Broodwar->getUnit(unitID);
 	Unit* target = Broodwar->getUnit(targetID);
@@ -1674,7 +1674,7 @@ JNIEXPORT jboolean JNICALL Java_eisbot_proxy_JNIBWAPI_hasPath__II(JNIEnv* env, j
 	return JNI_FALSE;
 }
 
-JNIEXPORT jboolean JNICALL Java_eisbot_proxy_JNIBWAPI_hasPath__III(JNIEnv* env, jobject jObj, jint unitID, jint toX, jint toY)
+JNIEXPORT jboolean JNICALL Java_jnibwapi_JNIBWAPI_hasPath__III(JNIEnv* env, jobject jObj, jint unitID, jint toX, jint toY)
 {
 	Unit* unit = Broodwar->getUnit(unitID);
 
@@ -1685,7 +1685,7 @@ JNIEXPORT jboolean JNICALL Java_eisbot_proxy_JNIBWAPI_hasPath__III(JNIEnv* env, 
 	return JNI_FALSE;
 }
 
-JNIEXPORT jboolean JNICALL Java_javabot_JNIBWAPI_hasLoadedUnit
+JNIEXPORT jboolean JNICALL Java_jnibwapi_JNIBWAPI_hasLoadedUnit
 	(JNIEnv *, jobject, jint unitID1, jint unitID2){
 	Unit* unit = Broodwar->getUnit(unitID1);
 	if (unit != NULL) {
@@ -1699,7 +1699,7 @@ JNIEXPORT jboolean JNICALL Java_javabot_JNIBWAPI_hasLoadedUnit
 	return false;
 }
 
-JNIEXPORT jboolean JNICALL Java_eisbot_proxy_JNIBWAPI_canBuildHere__IIIZ(JNIEnv* env, jobject jObj, jint tileX, jint tileY, jint unitTypeID, jboolean checkExplored)
+JNIEXPORT jboolean JNICALL Java_jnibwapi_JNIBWAPI_canBuildHere__IIIZ(JNIEnv* env, jobject jObj, jint tileX, jint tileY, jint unitTypeID, jboolean checkExplored)
 {
 	if (unitTypeMap.count(unitTypeID) > 0) {
 		BWAPI::UnitType unitType = unitTypeMap[unitTypeID];
@@ -1709,7 +1709,7 @@ JNIEXPORT jboolean JNICALL Java_eisbot_proxy_JNIBWAPI_canBuildHere__IIIZ(JNIEnv*
 	return JNI_FALSE;
 }
 
-JNIEXPORT jboolean JNICALL Java_eisbot_proxy_JNIBWAPI_canBuildHere__IIIIZ(JNIEnv* env, jobject jObj, jint unitID, jint tileX, jint tileY, jint unitTypeID, jboolean checkExplored)
+JNIEXPORT jboolean JNICALL Java_jnibwapi_JNIBWAPI_canBuildHere__IIIIZ(JNIEnv* env, jobject jObj, jint unitID, jint tileX, jint tileY, jint unitTypeID, jboolean checkExplored)
 {
 	if (unitTypeMap.count(unitTypeID) > 0) {
 		BWAPI::Unit* unit = Broodwar->getUnit(unitID);
@@ -1720,7 +1720,7 @@ JNIEXPORT jboolean JNICALL Java_eisbot_proxy_JNIBWAPI_canBuildHere__IIIIZ(JNIEnv
 	return JNI_FALSE;
 }
 
-JNIEXPORT jboolean JNICALL Java_eisbot_proxy_JNIBWAPI_canMake__I(JNIEnv* env, jobject jObj, jint unitTypeID)
+JNIEXPORT jboolean JNICALL Java_jnibwapi_JNIBWAPI_canMake__I(JNIEnv* env, jobject jObj, jint unitTypeID)
 {
 	if (unitTypeMap.count(unitTypeID) > 0) {
 		BWAPI::UnitType unitType = unitTypeMap[unitTypeID];
@@ -1730,7 +1730,7 @@ JNIEXPORT jboolean JNICALL Java_eisbot_proxy_JNIBWAPI_canMake__I(JNIEnv* env, jo
 	return JNI_FALSE;
 }
 
-JNIEXPORT jboolean JNICALL Java_eisbot_proxy_JNIBWAPI_canMake__II(JNIEnv* env, jobject jObj, jint unitID, jint unitTypeID)
+JNIEXPORT jboolean JNICALL Java_jnibwapi_JNIBWAPI_canMake__II(JNIEnv* env, jobject jObj, jint unitID, jint unitTypeID)
 {
 	if (unitTypeMap.count(unitTypeID) > 0) {
 		BWAPI::Unit* unit = Broodwar->getUnit(unitID);
@@ -1741,7 +1741,7 @@ JNIEXPORT jboolean JNICALL Java_eisbot_proxy_JNIBWAPI_canMake__II(JNIEnv* env, j
 	return JNI_FALSE;
 }
 
-JNIEXPORT jboolean JNICALL Java_eisbot_proxy_JNIBWAPI_canResearch__I(JNIEnv* env, jobject jObj, jint techTypeID)
+JNIEXPORT jboolean JNICALL Java_jnibwapi_JNIBWAPI_canResearch__I(JNIEnv* env, jobject jObj, jint techTypeID)
 {
 	if (techTypeMap.count(techTypeID) > 0) {
 		BWAPI::TechType techType = techTypeMap[techTypeID];
@@ -1751,7 +1751,7 @@ JNIEXPORT jboolean JNICALL Java_eisbot_proxy_JNIBWAPI_canResearch__I(JNIEnv* env
 	return JNI_FALSE;
 }
 
-JNIEXPORT jboolean JNICALL Java_eisbot_proxy_JNIBWAPI_canResearch__II(JNIEnv* env, jobject jObj, jint unitID, jint techTypeID)
+JNIEXPORT jboolean JNICALL Java_jnibwapi_JNIBWAPI_canResearch__II(JNIEnv* env, jobject jObj, jint unitID, jint techTypeID)
 {
 	if (techTypeMap.count(techTypeID) > 0) {
 		BWAPI::Unit* unit = Broodwar->getUnit(unitID);
@@ -1762,7 +1762,7 @@ JNIEXPORT jboolean JNICALL Java_eisbot_proxy_JNIBWAPI_canResearch__II(JNIEnv* en
 	return JNI_FALSE;
 }
 
-JNIEXPORT jboolean JNICALL Java_eisbot_proxy_JNIBWAPI_canUpgrade__I(JNIEnv* env, jobject jObj, jint upgradeTypeID)
+JNIEXPORT jboolean JNICALL Java_jnibwapi_JNIBWAPI_canUpgrade__I(JNIEnv* env, jobject jObj, jint upgradeTypeID)
 {
 	if (upgradeTypeMap.count(upgradeTypeID) > 0) {
 		BWAPI::UpgradeType upgradeType = upgradeTypeMap[upgradeTypeID];
@@ -1772,7 +1772,7 @@ JNIEXPORT jboolean JNICALL Java_eisbot_proxy_JNIBWAPI_canUpgrade__I(JNIEnv* env,
 	return JNI_FALSE;
 }
 
-JNIEXPORT jboolean JNICALL Java_eisbot_proxy_JNIBWAPI_canUpgrade__II(JNIEnv* env, jobject jObj, jint unitID, jint upgradeTypeID)
+JNIEXPORT jboolean JNICALL Java_jnibwapi_JNIBWAPI_canUpgrade__II(JNIEnv* env, jobject jObj, jint unitID, jint upgradeTypeID)
 {
 	if (upgradeTypeMap.count(upgradeTypeID) > 0) {
 		BWAPI::Unit* unit = Broodwar->getUnit(unitID);
@@ -1783,35 +1783,35 @@ JNIEXPORT jboolean JNICALL Java_eisbot_proxy_JNIBWAPI_canUpgrade__II(JNIEnv* env
 	return JNI_FALSE;
 }
 
-JNIEXPORT jboolean JNICALL Java_eisbot_proxy_JNIBWAPI_isReplay(JNIEnv *env, jobject jObj)
+JNIEXPORT jboolean JNICALL Java_jnibwapi_JNIBWAPI_isReplay(JNIEnv *env, jobject jObj)
 {
 	return Broodwar->isReplay();
 }
 
-JNIEXPORT void JNICALL Java_eisbot_proxy_JNIBWAPI_printText(JNIEnv* env, jobject jObj, jstring message)
+JNIEXPORT void JNICALL Java_jnibwapi_JNIBWAPI_printText(JNIEnv* env, jobject jObj, jstring message)
 {
 	const char* messagechars = env->GetStringUTFChars(message, 0);
 	Broodwar->printf("%s", messagechars);
 	env->ReleaseStringUTFChars(message, messagechars);
 }
 
-JNIEXPORT void JNICALL Java_eisbot_proxy_JNIBWAPI_sendText(JNIEnv* env, jobject jObj, jstring message)
+JNIEXPORT void JNICALL Java_jnibwapi_JNIBWAPI_sendText(JNIEnv* env, jobject jObj, jstring message)
 {
 	const char* messagechars = env->GetStringUTFChars(message, 0);
 	Broodwar->sendText("%s", messagechars);
 	env->ReleaseStringUTFChars(message, messagechars);
 }
 
-JNIEXPORT void JNICALL Java_eisbot_proxy_JNIBWAPI_setCommandOptimizationLevel(JNIEnv* env, jobject jObj, jint level)
+JNIEXPORT void JNICALL Java_jnibwapi_JNIBWAPI_setCommandOptimizationLevel(JNIEnv* env, jobject jObj, jint level)
 {
 	Broodwar->setCommandOptimizationLevel(level);
 }
 
-JNIEXPORT jint JNICALL Java_javabot_JNIBWAPI_getLastError(JNIEnv *, jobject){
+JNIEXPORT jint JNICALL Java_jnibwapi_JNIBWAPI_getLastError(JNIEnv *, jobject){
 	return Broodwar->getLastError().getID();
 }
 
-JNIEXPORT jint JNICALL Java_javabot_JNIBWAPI_getRemainingLatencyFrames
+JNIEXPORT jint JNICALL Java_jnibwapi_JNIBWAPI_getRemainingLatencyFrames
 	(JNIEnv *, jobject){
 
 		return Broodwar->getRemainingLatencyFrames();

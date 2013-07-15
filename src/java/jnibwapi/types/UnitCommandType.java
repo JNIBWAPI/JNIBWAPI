@@ -1,4 +1,4 @@
-package eisbot.proxy.types;
+package jnibwapi.types;
 /**
  * Represents a StarCraft explosion type.
  * 

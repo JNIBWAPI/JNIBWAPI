@@ -1,4 +1,4 @@
-package eisbot.proxy.util;
+package jnibwapi.util;
 
 public class BWColor 
 {

@@ -1,9 +1,9 @@
-package eisbot.proxy;
+package jnibwapi;
 /**
  * Example of a Java AI Client that does nothing.
  */
-import eisbot.proxy.model.Unit;
-import eisbot.proxy.util.BWColor;
+import jnibwapi.model.Unit;
+import jnibwapi.util.BWColor;
 public class MinimalAIClient implements BWAPIEventListener {
 	private JNIBWAPI bwapi;
 

@@ -1,9 +1,10 @@
-package eisbot.proxy;
+package jnibwapi;
 
 import java.util.HashSet;
 
-import eisbot.proxy.model.Unit;
-import eisbot.proxy.types.UnitType.UnitTypes;
+import jnibwapi.model.Unit;
+import jnibwapi.types.UnitType.UnitTypes;
+
 /**
  * Example Java AI Client using JNI-BWAPI. 
  * 
