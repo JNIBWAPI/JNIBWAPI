@@ -1,26 +1,27 @@
-package eisbot.proxy.types;
+package jnibwapi.types;
 /**
- * Represents a StarCraft unit size type.
+ * Represents a StarCraft damage type.
  * 
- * For a description of fields see: http://code.google.com/p/bwapi/wiki/UnitSizeType
+ * For a description of fields see: http://code.google.com/p/bwapi/wiki/DamageType
  */
-public class UnitSizeType {
+public class DamageType {
 
 	public static final int numAttributes = 1;
 
 	private String name;	
 	private int ID;
 	
-	public enum UnitSizes {
+	public enum DamageTypes {
 		Independent,
-		Small,
-		Medium,
-		Large,
+		Explosive,
+		Concussive,
+		Normal,
+		Ignore_Armor,
 		None,
-		Unknown,	
+		Unknown,
 	};
 	
-	public UnitSizeType(int[] data, int index) {
+	public DamageType(int[] data, int index) {
 		ID = data[index++];	
 	}
 	

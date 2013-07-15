@@ -1,4 +1,4 @@
-package eisbot.proxy.util;
+package jnibwapi.util;
 
 /**
  * see http://code.google.com/p/bwapi/wiki/Error for descriptions

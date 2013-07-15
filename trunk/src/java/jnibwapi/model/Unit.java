@@ -1,4 +1,4 @@
-package eisbot.proxy.model;
+package jnibwapi.model;
 /**
  * Represents a StarCraft unit.
  * 

@@ -1,7 +1,5 @@
-package eisbot.proxy;
+package jnibwapi;
 
-import eisbot.proxy.model.*;
-import eisbot.proxy.types.*;
 
 import java.awt.*;
 import java.io.*;
@@ -9,6 +7,9 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.HashSet;
+
+import jnibwapi.model.*;
+import jnibwapi.types.*;
 
 /**
  * JNI interface for the Brood War API.

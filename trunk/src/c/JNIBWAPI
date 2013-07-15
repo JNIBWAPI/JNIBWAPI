@@ -1,5 +1,8 @@
 Compiled from "JNIBWAPI.java"
-public class eisbot.proxy.JNIBWAPI {
+public class jnibwapi.JNIBWAPI {
+  static {};
+    Signature: ()V
+
   public native boolean attack(int, int, int);
     Signature: (III)Z
 
@@ -249,104 +252,104 @@ public class eisbot.proxy.JNIBWAPI {
   public native int getRemainingLatencyFrames();
     Signature: ()I
 
-  public eisbot.proxy.types.UnitType getUnitType(int);
-    Signature: (I)Leisbot/proxy/types/UnitType;
+  public jnibwapi.types.UnitType getUnitType(int);
+    Signature: (I)Ljnibwapi/types/UnitType;
 
-  public eisbot.proxy.types.TechType getTechType(int);
-    Signature: (I)Leisbot/proxy/types/TechType;
+  public jnibwapi.types.TechType getTechType(int);
+    Signature: (I)Ljnibwapi/types/TechType;
 
-  public eisbot.proxy.types.UpgradeType getUpgradeType(int);
-    Signature: (I)Leisbot/proxy/types/UpgradeType;
+  public jnibwapi.types.UpgradeType getUpgradeType(int);
+    Signature: (I)Ljnibwapi/types/UpgradeType;
 
-  public eisbot.proxy.types.WeaponType getWeaponType(int);
-    Signature: (I)Leisbot/proxy/types/WeaponType;
+  public jnibwapi.types.WeaponType getWeaponType(int);
+    Signature: (I)Ljnibwapi/types/WeaponType;
 
-  public eisbot.proxy.types.UnitSizeType getUnitSizeType(int);
-    Signature: (I)Leisbot/proxy/types/UnitSizeType;
+  public jnibwapi.types.UnitSizeType getUnitSizeType(int);
+    Signature: (I)Ljnibwapi/types/UnitSizeType;
 
-  public eisbot.proxy.types.BulletType getBulletType(int);
-    Signature: (I)Leisbot/proxy/types/BulletType;
+  public jnibwapi.types.BulletType getBulletType(int);
+    Signature: (I)Ljnibwapi/types/BulletType;
 
-  public eisbot.proxy.types.DamageType getDamageType(int);
-    Signature: (I)Leisbot/proxy/types/DamageType;
+  public jnibwapi.types.DamageType getDamageType(int);
+    Signature: (I)Ljnibwapi/types/DamageType;
 
-  public eisbot.proxy.types.ExplosionType getExplosionType(int);
-    Signature: (I)Leisbot/proxy/types/ExplosionType;
+  public jnibwapi.types.ExplosionType getExplosionType(int);
+    Signature: (I)Ljnibwapi/types/ExplosionType;
 
-  public eisbot.proxy.types.UnitCommandType getUnitCommandType(int);
-    Signature: (I)Leisbot/proxy/types/UnitCommandType;
+  public jnibwapi.types.UnitCommandType getUnitCommandType(int);
+    Signature: (I)Ljnibwapi/types/UnitCommandType;
 
-  public eisbot.proxy.types.OrderType getOrderType(int);
-    Signature: (I)Leisbot/proxy/types/OrderType;
+  public jnibwapi.types.OrderType getOrderType(int);
+    Signature: (I)Ljnibwapi/types/OrderType;
 
-  public java.util.Collection<eisbot.proxy.types.UnitType> unitTypes();
+  public java.util.Collection<jnibwapi.types.UnitType> unitTypes();
     Signature: ()Ljava/util/Collection;
 
-  public java.util.Collection<eisbot.proxy.types.TechType> techTypes();
+  public java.util.Collection<jnibwapi.types.TechType> techTypes();
     Signature: ()Ljava/util/Collection;
 
-  public java.util.Collection<eisbot.proxy.types.UpgradeType> upgradeTypes();
+  public java.util.Collection<jnibwapi.types.UpgradeType> upgradeTypes();
     Signature: ()Ljava/util/Collection;
 
-  public java.util.Collection<eisbot.proxy.types.WeaponType> weaponTypes();
+  public java.util.Collection<jnibwapi.types.WeaponType> weaponTypes();
     Signature: ()Ljava/util/Collection;
 
-  public java.util.Collection<eisbot.proxy.types.UnitSizeType> unitSizeTypes();
+  public java.util.Collection<jnibwapi.types.UnitSizeType> unitSizeTypes();
     Signature: ()Ljava/util/Collection;
 
-  public java.util.Collection<eisbot.proxy.types.BulletType> bulletTypes();
+  public java.util.Collection<jnibwapi.types.BulletType> bulletTypes();
     Signature: ()Ljava/util/Collection;
 
-  public java.util.Collection<eisbot.proxy.types.DamageType> damageTypes();
+  public java.util.Collection<jnibwapi.types.DamageType> damageTypes();
     Signature: ()Ljava/util/Collection;
 
-  public java.util.Collection<eisbot.proxy.types.ExplosionType> explosionTypes();
+  public java.util.Collection<jnibwapi.types.ExplosionType> explosionTypes();
     Signature: ()Ljava/util/Collection;
 
-  public java.util.Collection<eisbot.proxy.types.UnitCommandType> unitCommandTypes();
+  public java.util.Collection<jnibwapi.types.UnitCommandType> unitCommandTypes();
     Signature: ()Ljava/util/Collection;
 
-  public java.util.Collection<eisbot.proxy.types.OrderType> orderTypes();
+  public java.util.Collection<jnibwapi.types.OrderType> orderTypes();
     Signature: ()Ljava/util/Collection;
 
   public int getFrameCount();
     Signature: ()I
 
-  public eisbot.proxy.model.Player getSelf();
-    Signature: ()Leisbot/proxy/model/Player;
+  public jnibwapi.model.Player getSelf();
+    Signature: ()Ljnibwapi/model/Player;
 
-  public eisbot.proxy.model.Player getNeutralPlayer();
-    Signature: ()Leisbot/proxy/model/Player;
+  public jnibwapi.model.Player getNeutralPlayer();
+    Signature: ()Ljnibwapi/model/Player;
 
-  public eisbot.proxy.model.Player getPlayer(int);
-    Signature: (I)Leisbot/proxy/model/Player;
+  public jnibwapi.model.Player getPlayer(int);
+    Signature: (I)Ljnibwapi/model/Player;
 
-  public java.util.ArrayList<eisbot.proxy.model.Player> getAllies();
+  public java.util.ArrayList<jnibwapi.model.Player> getAllies();
     Signature: ()Ljava/util/ArrayList;
 
-  public java.util.ArrayList<eisbot.proxy.model.Player> getEnemies();
+  public java.util.ArrayList<jnibwapi.model.Player> getEnemies();
     Signature: ()Ljava/util/ArrayList;
 
-  public eisbot.proxy.model.Unit getUnit(int);
-    Signature: (I)Leisbot/proxy/model/Unit;
+  public jnibwapi.model.Unit getUnit(int);
+    Signature: (I)Ljnibwapi/model/Unit;
 
-  public java.util.Collection<eisbot.proxy.model.Unit> getAllUnits();
+  public java.util.Collection<jnibwapi.model.Unit> getAllUnits();
     Signature: ()Ljava/util/Collection;
 
-  public java.util.ArrayList<eisbot.proxy.model.Unit> getMyUnits();
+  public java.util.ArrayList<jnibwapi.model.Unit> getMyUnits();
     Signature: ()Ljava/util/ArrayList;
 
-  public java.util.ArrayList<eisbot.proxy.model.Unit> getAlliedUnits();
+  public java.util.ArrayList<jnibwapi.model.Unit> getAlliedUnits();
     Signature: ()Ljava/util/ArrayList;
 
-  public java.util.ArrayList<eisbot.proxy.model.Unit> getEnemyUnits();
+  public java.util.ArrayList<jnibwapi.model.Unit> getEnemyUnits();
     Signature: ()Ljava/util/ArrayList;
 
-  public java.util.ArrayList<eisbot.proxy.model.Unit> getNeutralUnits();
+  public java.util.ArrayList<jnibwapi.model.Unit> getNeutralUnits();
     Signature: ()Ljava/util/ArrayList;
 
-  public eisbot.proxy.model.Map getMap();
-    Signature: ()Leisbot/proxy/model/Map;
+  public jnibwapi.model.Map getMap();
+    Signature: ()Ljnibwapi/model/Map;
 
   public void loadTypeData();
     Signature: ()V
@@ -354,8 +357,8 @@ public class eisbot.proxy.JNIBWAPI {
   public void loadMapData(boolean);
     Signature: (Z)V
 
-  public eisbot.proxy.JNIBWAPI(eisbot.proxy.BWAPIEventListener);
-    Signature: (Leisbot/proxy/BWAPIEventListener;)V
+  public jnibwapi.JNIBWAPI(jnibwapi.BWAPIEventListener);
+    Signature: (Ljnibwapi/BWAPIEventListener;)V
 
   public void start();
     Signature: ()V
@@ -371,7 +374,4 @@ public class eisbot.proxy.JNIBWAPI {
 
   public void keyPressed(int);
     Signature: (I)V
-
-  static {};
-    Signature: ()V
 }
