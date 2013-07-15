@@ -1,14 +1,15 @@
 package jnibwapi.types;
+
 /**
  * Represents a StarCraft weapon type.
  * 
  * For a description of fields see: http://code.google.com/p/bwapi/wiki/WeaponType
  */
 public class WeaponType {
-
+	
 	public static final int numAttributes = 24;
-
-	private String name;	
+	
+	private String name;
 	private int ID;
 	private int techID;
 	private int whatUsesTypeID;
@@ -166,136 +167,136 @@ public class WeaponType {
 		Undefined128,
 		Undefined129,
 		None,
-		Unknown,	
+		Unknown,
 	};
 	
 	public WeaponType(int[] data, int index) {
-		ID = data[index++];	
-		techID = data[index++];	
-		whatUsesTypeID = data[index++];	
-		damageAmount = data[index++];	
-		damageBonus = data[index++];	
-		damageCooldown = data[index++];	
-		damageFactor = data[index++];	
-		upgradeTypeID = data[index++];	
-		damageTypeID = data[index++];	
-		explosionType = data[index++];	
-		minRange = data[index++];	
-		maxRange = data[index++];	
-		innerSplashRadius = data[index++];	
-		medianSplashRadius = data[index++];	
-		outerSplashRadius = data[index++];	
-		targetsAir = data[index++]== 1;	
-		targetsGround = data[index++]== 1;	
-		targetsMechanical = data[index++]== 1;	
-		targetsOrganic = data[index++]== 1;	
-		targetsNonBuilding = data[index++]== 1;	
-		targetsNonRobotic = data[index++]== 1;	
-		targetsTerrain = data[index++]== 1;	
-		targetsOrgOrMech = data[index++]== 1;	
-		targetsOwn = data[index++]== 1;			
+		ID = data[index++];
+		techID = data[index++];
+		whatUsesTypeID = data[index++];
+		damageAmount = data[index++];
+		damageBonus = data[index++];
+		damageCooldown = data[index++];
+		damageFactor = data[index++];
+		upgradeTypeID = data[index++];
+		damageTypeID = data[index++];
+		explosionType = data[index++];
+		minRange = data[index++];
+		maxRange = data[index++];
+		innerSplashRadius = data[index++];
+		medianSplashRadius = data[index++];
+		outerSplashRadius = data[index++];
+		targetsAir = data[index++] == 1;
+		targetsGround = data[index++] == 1;
+		targetsMechanical = data[index++] == 1;
+		targetsOrganic = data[index++] == 1;
+		targetsNonBuilding = data[index++] == 1;
+		targetsNonRobotic = data[index++] == 1;
+		targetsTerrain = data[index++] == 1;
+		targetsOrgOrMech = data[index++] == 1;
+		targetsOwn = data[index++] == 1;
 	}
-
+	
 	public String getName() {
 		return name;
 	}
-
+	
 	public void setName(String name) {
 		this.name = name;
 	}
-
+	
 	public int getID() {
 		return ID;
 	}
-
+	
 	public int getTechID() {
 		return techID;
 	}
-
+	
 	public int getWhatUsesTypeID() {
 		return whatUsesTypeID;
 	}
-
+	
 	public int getDamageAmount() {
 		return damageAmount;
 	}
-
+	
 	public int getDamageBonus() {
 		return damageBonus;
 	}
-
+	
 	public int getDamageCooldown() {
 		return damageCooldown;
 	}
-
+	
 	public int getDamageFactor() {
 		return damageFactor;
 	}
-
+	
 	public int getUpgradeTypeID() {
 		return upgradeTypeID;
 	}
-
+	
 	public int getDamageTypeID() {
 		return damageTypeID;
 	}
-
+	
 	public int getExplosionType() {
 		return explosionType;
 	}
-
+	
 	public int getMinRange() {
 		return minRange;
 	}
-
+	
 	public int getMaxRange() {
 		return maxRange;
 	}
-
+	
 	public int getInnerSplashRadius() {
 		return innerSplashRadius;
 	}
-
+	
 	public int getMedianSplashRadius() {
 		return medianSplashRadius;
 	}
-
+	
 	public int getOuterSplashRadius() {
 		return outerSplashRadius;
 	}
-
+	
 	public boolean isTargetsAir() {
 		return targetsAir;
 	}
-
+	
 	public boolean isTargetsGround() {
 		return targetsGround;
 	}
-
+	
 	public boolean isTargetsMechanical() {
 		return targetsMechanical;
 	}
-
+	
 	public boolean isTargetsOrganic() {
 		return targetsOrganic;
 	}
-
+	
 	public boolean isTargetsNonBuilding() {
 		return targetsNonBuilding;
 	}
-
+	
 	public boolean isTargetsNonRobotic() {
 		return targetsNonRobotic;
 	}
-
+	
 	public boolean isTargetsTerrain() {
 		return targetsTerrain;
 	}
-
+	
 	public boolean isTargetsOrgOrMech() {
 		return targetsOrgOrMech;
 	}
-
+	
 	public boolean isTargetsOwn() {
 		return targetsOwn;
 	}

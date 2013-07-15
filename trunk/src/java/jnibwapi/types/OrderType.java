@@ -7,10 +7,10 @@ package jnibwapi.types;
  */
 public class OrderType {
 	public static final int numAttributes = 1;
-
-	private String name = null;	
+	
+	private String name = null;
 	private int ID = 0;
-
+	
 	public enum OrderTypeTypes {
 		Die,
 		Stop,
@@ -93,13 +93,14 @@ public class OrderType {
 		SpawningLarva,
 		Harvest1,
 		Harvest2,
-		MoveToGas, //- Unit is moving to refinery
+		MoveToGas, // - Unit is moving to refinery
 		WaitForGas, // - Unit is waiting to enter the refinery (another unit is currently in it)
-		HarvestGas, //- Unit is in refinery
-		ReturnGas, //- Unit is returning gas to center
-		MoveToMinerals,// - Unit is moving to mineral patch
-		WaitForMinerals,// - Unit is waiting to use the mineral patch (another unit is currently mining from it)
-		MiningMinerals,// - Unit is mining minerals from mineral patch
+		HarvestGas, // - Unit is in refinery
+		ReturnGas, // - Unit is returning gas to center
+		MoveToMinerals, // - Unit is moving to mineral patch
+		WaitForMinerals, // - Unit is waiting to use the mineral patch (another unit is currently
+							// mining from it)
+		MiningMinerals, // - Unit is mining minerals from mineral patch
 		Harvest3,
 		Harvest4,
 		ReturnMinerals, // - Unit is returning minerals to center
@@ -204,19 +205,19 @@ public class OrderType {
 		None,
 		Unknown
 	};
-
+	
 	public OrderType(int[] data, int index) {
-		this.ID = data[index++];	
+		ID = data[index++];
 	}
-
+	
 	public String getName() {
 		return name;
 	}
-
+	
 	public void setName(String name) {
 		this.name = name;
 	}
-
+	
 	public int getID() {
 		return ID;
 	}

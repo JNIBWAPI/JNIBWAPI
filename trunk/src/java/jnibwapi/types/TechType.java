@@ -1,14 +1,15 @@
 package jnibwapi.types;
+
 /**
  * Represents a StarCraft tech (research) type.
  * 
  * For a description of fields see: http://code.google.com/p/bwapi/wiki/TechType
  */
 public class TechType {
-
+	
 	public static final int numAttributes = 10;
-
-	private String name;	
+	
+	private String name;
 	private int ID;
 	private int raceID;
 	private int mineralPrice;
@@ -67,66 +68,66 @@ public class TechType {
 		Undefined43,
 		None,
 		Unknown,
-		Nuclear_Strike,		
+		Nuclear_Strike,
 	};
 	
 	public TechType(int[] data, int index) {
-		ID = data[index++];		
-		raceID = data[index++];	
-		mineralPrice = data[index++];	
-		gasPrice = data[index++];	
-		researchTime = data[index++];	
-		energyUsed = data[index++];	
-		whatResearchesTypeID = data[index++];	
-		getWeaponID = data[index++];	
-		targetsUnits = data[index++] == 1;	
-		targetsPosition = data[index++] == 1;	
+		ID = data[index++];
+		raceID = data[index++];
+		mineralPrice = data[index++];
+		gasPrice = data[index++];
+		researchTime = data[index++];
+		energyUsed = data[index++];
+		whatResearchesTypeID = data[index++];
+		getWeaponID = data[index++];
+		targetsUnits = data[index++] == 1;
+		targetsPosition = data[index++] == 1;
 	}
-
+	
 	public String getName() {
 		return name;
 	}
-
+	
 	public void setName(String name) {
 		this.name = name;
 	}
-
+	
 	public int getID() {
 		return ID;
 	}
-
+	
 	public int getRaceID() {
 		return raceID;
 	}
-
+	
 	public int getMineralPrice() {
 		return mineralPrice;
 	}
-
+	
 	public int getGasPrice() {
 		return gasPrice;
 	}
-
+	
 	public int getResearchTime() {
 		return researchTime;
 	}
-
+	
 	public int getEnergyUsed() {
 		return energyUsed;
 	}
-
+	
 	public int getWhatResearchesTypeID() {
 		return whatResearchesTypeID;
 	}
-
+	
 	public int getGetWeaponID() {
 		return getWeaponID;
 	}
-
+	
 	public boolean isTargetsUnits() {
 		return targetsUnits;
 	}
-
+	
 	public boolean isTargetsPosition() {
 		return targetsPosition;
 	}

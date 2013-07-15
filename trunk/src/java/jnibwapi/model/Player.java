@@ -1,13 +1,14 @@
 package jnibwapi.model;
+
 /**
  * Represents a StarCraft player.
  * 
  * For a description of fields see: http://code.google.com/p/bwapi/wiki/Player
  */
 public class Player {
-
+	
 	public static final int numAttributes = 8;
-
+	
 	private int ID;
 	private int raceID;
 	private int typeID;
@@ -32,18 +33,18 @@ public class Player {
 	private boolean[] researched = null;
 	private boolean[] upgrading = null;
 	private int[] upgradeLevel = null;
-		
+	
 	public Player(int[] data, int index) {
-		ID = data[index++];	
-		raceID = data[index++];	
-		typeID = data[index++];	
-		self = (data[index++] == 1);	
-		ally = (data[index++] == 1);	
-		enemy = (data[index++] == 1);	
-		neutral = (data[index++] == 1);	
-		color = data[index++];	
+		ID = data[index++];
+		raceID = data[index++];
+		typeID = data[index++];
+		self = (data[index++] == 1);
+		ally = (data[index++] == 1);
+		enemy = (data[index++] == 1);
+		neutral = (data[index++] == 1);
+		color = data[index++];
 	}
-
+	
 	public void update(int[] data) {
 		int index = 0;
 		minerals = data[index++];
@@ -59,51 +60,51 @@ public class Player {
 	}
 	
 	public void updateResearch(int[] researchData, int[] upgradeData) {
-		researched = new boolean[researchData.length/2];
-		researching = new boolean[researchData.length/2];
+		researched = new boolean[researchData.length / 2];
+		researching = new boolean[researchData.length / 2];
 		
-		for (int i=0; i<researchData.length; i+=2) {
-			researched[i/2] = (researchData[i] == 1);
-			researching[i/2] = (researchData[i + 1] == 1);
+		for (int i = 0; i < researchData.length; i += 2) {
+			researched[i / 2] = (researchData[i] == 1);
+			researching[i / 2] = (researchData[i + 1] == 1);
 		}
 		
-		upgradeLevel = new int[upgradeData.length/2];
-		upgrading = new boolean[upgradeData.length/2];
+		upgradeLevel = new int[upgradeData.length / 2];
+		upgrading = new boolean[upgradeData.length / 2];
 		
-		for (int i=0; i<upgradeData.length; i+=2) {
-			upgradeLevel[i/2] = upgradeData[i];
-			upgrading[i/2] = (upgradeData[i + 1] == 1);
+		for (int i = 0; i < upgradeData.length; i += 2) {
+			upgradeLevel[i / 2] = upgradeData[i];
+			upgrading[i / 2] = (upgradeData[i + 1] == 1);
 		}
 	}
 	
 	public int getID() {
 		return ID;
 	}
-
+	
 	public int getRaceID() {
 		return raceID;
 	}
-
+	
 	public int getTypeID() {
 		return typeID;
 	}
-
+	
 	public boolean isSelf() {
 		return self;
 	}
-
+	
 	public boolean isAlly() {
 		return ally;
 	}
-
+	
 	public boolean isEnemy() {
 		return enemy;
 	}
-
+	
 	public boolean isNeutral() {
 		return neutral;
 	}
-
+	
 	public int getColor() {
 		return color;
 	}
@@ -111,39 +112,39 @@ public class Player {
 	public int getMinerals() {
 		return minerals;
 	}
-
+	
 	public int getGas() {
 		return gas;
 	}
-
+	
 	public int getSupplyUsed() {
 		return supplyUsed;
 	}
-
+	
 	public int getSupplyTotal() {
 		return supplyTotal;
 	}
-
+	
 	public int getCumulativeMinerals() {
 		return cumulativeMinerals;
 	}
-
+	
 	public int getCumulativeGas() {
 		return cumulativeGas;
 	}
-
+	
 	public int getUnitScore() {
 		return unitScore;
 	}
-
+	
 	public int getKillScore() {
 		return killScore;
 	}
-
+	
 	public int getBuildingScore() {
 		return buildingScore;
 	}
-
+	
 	public int getRazingScore() {
 		return razingScore;
 	}
@@ -155,11 +156,12 @@ public class Player {
 	public boolean isResearching(int techID) {
 		return (researching != null && techID < researching.length) ? researching[techID] : false;
 	}
-
+	
 	public int upgradeLevel(int upgradeID) {
-		return (upgradeLevel != null && upgradeID < upgradeLevel.length) ? upgradeLevel[upgradeID] : 0;
+		return (upgradeLevel != null && upgradeID < upgradeLevel.length) ?
+				upgradeLevel[upgradeID] : 0;
 	}
-
+	
 	public boolean isUpgrading(int upgradeID) {
 		return (upgrading != null && upgradeID < upgrading.length) ? upgrading[upgradeID] : false;
 	}

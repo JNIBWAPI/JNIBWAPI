@@ -1,14 +1,15 @@
 package jnibwapi.types;
+
 /**
  * Represents a StarCraft unit type.
  * 
  * For a description of fields see: http://code.google.com/p/bwapi/wiki/UnitType
  */
 public class UnitType {
-
+	
 	public static final int numAttributes = 56;
 	public static final double fixedScale = 100.0;
-
+	
 	private String name;
 	private int ID;
 	private int raceID;
@@ -301,9 +302,9 @@ public class UnitType {
 		Undefined230,
 		Undefined231,
 		Undefined232,
-		Unknown,		
+		Unknown,
 	};
-
+	
 	public UnitType(int[] data, int index) {
 		ID = data[index++];
 		raceID = data[index++];
@@ -335,7 +336,7 @@ public class UnitType {
 		maxGroundHits = data[index++];
 		airWeaponID = data[index++];
 		maxAirHits = data[index++];
-		topSpeed = ((double)data[index++])/fixedScale;
+		topSpeed = data[index++] / fixedScale;
 		acceleration = data[index++];
 		haltDistance = data[index++];
 		turnRadius = data[index++];
@@ -366,231 +367,231 @@ public class UnitType {
 	public String getName() {
 		return name;
 	}
-
+	
 	public void setName(String name) {
 		this.name = name;
 	}
-
+	
 	public int getID() {
 		return ID;
 	}
-
+	
 	public int getRaceID() {
 		return raceID;
 	}
-
+	
 	public int getWhatBuildID() {
 		return whatBuildID;
 	}
-
+	
 	public int getArmorUpgradeID() {
 		return armorUpgradeID;
 	}
-
+	
 	public int getMaxHitPoints() {
 		return maxHitPoints;
 	}
-
+	
 	public int getMaxShields() {
 		return maxShields;
 	}
-
+	
 	public int getMaxEnergy() {
 		return maxEnergy;
 	}
-
+	
 	public int getArmor() {
 		return armor;
 	}
-
+	
 	public int getMineralPrice() {
 		return mineralPrice;
 	}
-
+	
 	public int getGasPrice() {
 		return gasPrice;
 	}
-
+	
 	public int getBuildTime() {
 		return buildTime;
 	}
-
+	
 	public int getSupplyRequired() {
 		return supplyRequired;
 	}
-
+	
 	public int getSupplyProvided() {
 		return supplyProvided;
 	}
-
+	
 	public int getSpaceRequired() {
 		return spaceRequired;
 	}
-
+	
 	public int getSpaceProvided() {
 		return spaceProvided;
 	}
-
+	
 	public int getBuildScore() {
 		return buildScore;
 	}
-
+	
 	public int getDestroyScore() {
 		return destroyScore;
 	}
-
+	
 	public int getSizeID() {
 		return sizeID;
 	}
-
+	
 	public int getTileWidth() {
 		return tileWidth;
 	}
-
+	
 	public int getTileHeight() {
 		return tileHeight;
 	}
-
+	
 	public int getDimensionLeft() {
 		return dimensionLeft;
 	}
-
+	
 	public int getDimensionUp() {
 		return dimensionUp;
 	}
-
+	
 	public int getDimensionRight() {
 		return dimensionRight;
 	}
-
+	
 	public int getDimensionDown() {
 		return dimensionDown;
 	}
-
+	
 	public int getSeekRange() {
 		return seekRange;
 	}
-
+	
 	public int getSightRange() {
 		return sightRange;
 	}
-
+	
 	public int getGroundWeaponID() {
 		return groundWeaponID;
 	}
-
+	
 	public int getMaxGroundHits() {
 		return maxGroundHits;
 	}
-
+	
 	public int getAirWeaponID() {
 		return airWeaponID;
 	}
-
+	
 	public int getMaxAirHits() {
 		return maxAirHits;
 	}
-
+	
 	public double getTopSpeed() {
 		return topSpeed;
 	}
-
+	
 	public int getAcceleration() {
 		return acceleration;
 	}
-
+	
 	public int getHaltDistance() {
 		return haltDistance;
 	}
-
+	
 	public int getTurnRadius() {
 		return turnRadius;
 	}
-
+	
 	public boolean isProduceCapable() {
 		return produceCapable;
 	}
-
+	
 	public boolean isAttackCapable() {
 		return attackCapable;
 	}
-
+	
 	public boolean isCanMove() {
 		return canMove;
 	}
-
+	
 	public boolean isFlyer() {
 		return flyer;
 	}
-
+	
 	public boolean isRegenerates() {
 		return regenerates;
 	}
-
+	
 	public boolean isSpellcaster() {
 		return spellcaster;
 	}
-
+	
 	public boolean isInvincible() {
 		return invincible;
 	}
-
+	
 	public boolean isOrganic() {
 		return organic;
 	}
-
+	
 	public boolean isMechanical() {
 		return mechanical;
 	}
-
+	
 	public boolean isRobotic() {
 		return robotic;
 	}
-
+	
 	public boolean isDetector() {
 		return detector;
 	}
-
+	
 	public boolean isResourceContainer() {
 		return resourceContainer;
 	}
-
+	
 	public boolean isRefinery() {
 		return refinery;
 	}
-
+	
 	public boolean isWorker() {
 		return worker;
 	}
-
+	
 	public boolean isRequiresPsi() {
 		return requiresPsi;
 	}
-
+	
 	public boolean isRequiresCreep() {
 		return requiresCreep;
 	}
-
+	
 	public boolean isBurrowable() {
 		return burrowable;
 	}
-
+	
 	public boolean isCloakable() {
 		return cloakable;
 	}
-
+	
 	public boolean isBuilding() {
 		return building;
 	}
-
+	
 	public boolean isAddon() {
 		return addon;
 	}
-
+	
 	public boolean isFlyingBuilding() {
 		return flyingBuilding;
 	}
-
+	
 	public boolean isSpell() {
 		return spell;
 	}

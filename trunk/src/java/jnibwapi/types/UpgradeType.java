@@ -1,14 +1,15 @@
 package jnibwapi.types;
+
 /**
  * Represents a StarCraft upgrade type.
  * 
  * For a description of fields see: http://code.google.com/p/bwapi/wiki/UpgradeType
  */
-public class UpgradeType { 
+public class UpgradeType {
 	
 	public static final int numAttributes = 10;
-
-	private String name;	
+	
+	private String name;
 	private int ID;
 	private int raceID;
 	private int mineralPriceBase;
@@ -83,11 +84,11 @@ public class UpgradeType {
 		Undefined59,
 		Undefined60,
 		None,
-		Unknown,		
+		Unknown,
 	};
 	
 	public UpgradeType(int[] data, int index) {
-		ID = data[index++];		
+		ID = data[index++];
 		raceID = data[index++];
 		mineralPriceBase = data[index++];
 		mineralPriceFactor = data[index++];
@@ -98,51 +99,51 @@ public class UpgradeType {
 		maxRepeats = data[index++];
 		whatUpgradesTypeID = data[index++];
 	}
-
+	
 	public String getName() {
 		return name;
 	}
-
+	
 	public void setName(String name) {
 		this.name = name;
 	}
-
+	
 	public int getID() {
 		return ID;
 	}
-
+	
 	public int getRaceID() {
 		return raceID;
 	}
-
+	
 	public int getMineralPriceBase() {
 		return mineralPriceBase;
 	}
-
+	
 	public int getMineralPriceFactor() {
 		return mineralPriceFactor;
 	}
-
+	
 	public int getGasPriceBase() {
 		return gasPriceBase;
 	}
-
+	
 	public int getGasPriceFactor() {
 		return gasPriceFactor;
 	}
-
+	
 	public int getUpgradeTimeBase() {
 		return upgradeTimeBase;
 	}
-
+	
 	public int getUpgradeTimeFactor() {
 		return upgradeTimeFactor;
 	}
-
+	
 	public int getMaxRepeats() {
 		return maxRepeats;
 	}
-
+	
 	public int getWhatUpgradesTypeID() {
 		return whatUpgradesTypeID;
 	}
