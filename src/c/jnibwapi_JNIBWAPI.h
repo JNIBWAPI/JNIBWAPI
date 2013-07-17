@@ -17,10 +17,18 @@ JNIEXPORT void JNICALL Java_jnibwapi_JNIBWAPI_startClient
 
 /*
  * Class:     jnibwapi_JNIBWAPI
- * Method:    getGameFrame
+ * Method:    getFrame
  * Signature: ()I
  */
-JNIEXPORT jint JNICALL Java_jnibwapi_JNIBWAPI_getGameFrame
+JNIEXPORT jint JNICALL Java_jnibwapi_JNIBWAPI_getFrame
+  (JNIEnv *, jobject);
+
+/*
+ * Class:     jnibwapi_JNIBWAPI
+ * Method:    getReplayFrameTotal
+ * Signature: ()I
+ */
+JNIEXPORT jint JNICALL Java_jnibwapi_JNIBWAPI_getReplayFrameTotal
   (JNIEnv *, jobject);
 
 /*
@@ -57,10 +65,10 @@ JNIEXPORT jintArray JNICALL Java_jnibwapi_JNIBWAPI_getUpgradeStatus
 
 /*
  * Class:     jnibwapi_JNIBWAPI
- * Method:    getUnits
+ * Method:    getAllUnitsData
  * Signature: ()[I
  */
-JNIEXPORT jintArray JNICALL Java_jnibwapi_JNIBWAPI_getUnits
+JNIEXPORT jintArray JNICALL Java_jnibwapi_JNIBWAPI_getAllUnitsData
   (JNIEnv *, jobject);
 
 /*
@@ -225,6 +233,14 @@ JNIEXPORT jstring JNICALL Java_jnibwapi_JNIBWAPI_getOrderTypeName
 
 /*
  * Class:     jnibwapi_JNIBWAPI
+ * Method:    getUnitIdsOnTile
+ * Signature: (II)[I
+ */
+JNIEXPORT jintArray JNICALL Java_jnibwapi_JNIBWAPI_getUnitIdsOnTile
+  (JNIEnv *, jobject, jint, jint);
+
+/*
+ * Class:     jnibwapi_JNIBWAPI
  * Method:    analyzeTerrain
  * Signature: ()V
  */
@@ -250,9 +266,17 @@ JNIEXPORT jint JNICALL Java_jnibwapi_JNIBWAPI_getMapHeight
 /*
  * Class:     jnibwapi_JNIBWAPI
  * Method:    getMapName
+ * Signature: ()[B
+ */
+JNIEXPORT jbyteArray JNICALL Java_jnibwapi_JNIBWAPI_getMapName
+  (JNIEnv *, jobject);
+
+/*
+ * Class:     jnibwapi_JNIBWAPI
+ * Method:    getMapFileName
  * Signature: ()Ljava/lang/String;
  */
-JNIEXPORT jstring JNICALL Java_jnibwapi_JNIBWAPI_getMapName
+JNIEXPORT jstring JNICALL Java_jnibwapi_JNIBWAPI_getMapFileName
   (JNIEnv *, jobject);
 
 /*
@@ -269,6 +293,14 @@ JNIEXPORT jstring JNICALL Java_jnibwapi_JNIBWAPI_getMapHash
  * Signature: ()[I
  */
 JNIEXPORT jintArray JNICALL Java_jnibwapi_JNIBWAPI_getHeightData
+  (JNIEnv *, jobject);
+
+/*
+ * Class:     jnibwapi_JNIBWAPI
+ * Method:    getRegionMap
+ * Signature: ()[I
+ */
+JNIEXPORT jintArray JNICALL Java_jnibwapi_JNIBWAPI_getRegionMap
   (JNIEnv *, jobject);
 
 /*
@@ -713,6 +745,22 @@ JNIEXPORT void JNICALL Java_jnibwapi_JNIBWAPI_setGameSpeed
 
 /*
  * Class:     jnibwapi_JNIBWAPI
+ * Method:    setFrameSkip
+ * Signature: (I)V
+ */
+JNIEXPORT void JNICALL Java_jnibwapi_JNIBWAPI_setFrameSkip
+  (JNIEnv *, jobject, jint);
+
+/*
+ * Class:     jnibwapi_JNIBWAPI
+ * Method:    leaveGame
+ * Signature: ()V
+ */
+JNIEXPORT void JNICALL Java_jnibwapi_JNIBWAPI_leaveGame
+  (JNIEnv *, jobject);
+
+/*
+ * Class:     jnibwapi_JNIBWAPI
  * Method:    drawBox
  * Signature: (IIIIIZZ)V
  */
@@ -950,6 +998,14 @@ JNIEXPORT void JNICALL Java_jnibwapi_JNIBWAPI_setCommandOptimizationLevel
  */
 JNIEXPORT jboolean JNICALL Java_jnibwapi_JNIBWAPI_isReplay
   (JNIEnv *, jobject);
+
+/*
+ * Class:     jnibwapi_JNIBWAPI
+ * Method:    isVisibleToPlayer
+ * Signature: (II)Z
+ */
+JNIEXPORT jboolean JNICALL Java_jnibwapi_JNIBWAPI_isVisibleToPlayer
+  (JNIEnv *, jobject, jint, jint);
 
 /*
  * Class:     jnibwapi_JNIBWAPI
