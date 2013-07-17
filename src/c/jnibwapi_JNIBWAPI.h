@@ -49,6 +49,14 @@ JNIEXPORT jintArray JNICALL Java_jnibwapi_JNIBWAPI_getPlayerUpdate
 
 /*
  * Class:     jnibwapi_JNIBWAPI
+ * Method:    getPlayerName
+ * Signature: (I)[B
+ */
+JNIEXPORT jbyteArray JNICALL Java_jnibwapi_JNIBWAPI_getPlayerName
+  (JNIEnv *, jobject, jint);
+
+/*
+ * Class:     jnibwapi_JNIBWAPI
  * Method:    getResearchStatus
  * Signature: (I)[I
  */
@@ -70,6 +78,22 @@ JNIEXPORT jintArray JNICALL Java_jnibwapi_JNIBWAPI_getUpgradeStatus
  */
 JNIEXPORT jintArray JNICALL Java_jnibwapi_JNIBWAPI_getAllUnitsData
   (JNIEnv *, jobject);
+
+/*
+ * Class:     jnibwapi_JNIBWAPI
+ * Method:    getRaceTypes
+ * Signature: ()[I
+ */
+JNIEXPORT jintArray JNICALL Java_jnibwapi_JNIBWAPI_getRaceTypes
+  (JNIEnv *, jobject);
+
+/*
+ * Class:     jnibwapi_JNIBWAPI
+ * Method:    getRaceTypeName
+ * Signature: (I)Ljava/lang/String;
+ */
+JNIEXPORT jstring JNICALL Java_jnibwapi_JNIBWAPI_getRaceTypeName
+  (JNIEnv *, jobject, jint);
 
 /*
  * Class:     jnibwapi_JNIBWAPI
