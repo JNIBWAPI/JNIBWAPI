@@ -15,8 +15,6 @@ import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 
-import jnibwapi.model.BaseLocation;
-import jnibwapi.model.ChokePoint;
 import jnibwapi.model.Map;
 import jnibwapi.model.Player;
 import jnibwapi.model.Region;
@@ -449,15 +447,16 @@ public class JNIBWAPI {
 	 */
 	public void loadMapData(boolean enableBWTA) {
 		String mapName = new String(getMapName());
-		map = new Map(getMapWidth(), getMapHeight(), mapName, getMapHash(), getHeightData(),
-				getBuildableData(), getWalkableData());
+		map = new Map(getMapWidth(), getMapHeight(), mapName, getMapFileName(), getMapHash(),
+				getHeightData(), getBuildableData(), getWalkableData());
 		if (!enableBWTA) {
 			return;
 		}
 		
 		// get region and choke point data
-		File bwtaFile = new File(map.getHash() + ".bwta");
+		File bwtaFile = new File(map.getHash() + ".jbwta");
 		boolean analyzed = bwtaFile.exists();
+		int[] regionMapData = null;
 		int[] regionData = null;
 		int[] chokePointData = null;
 		int[] baseLocationData = null;
@@ -466,6 +465,7 @@ public class JNIBWAPI {
 		// run BWTA
 		if (!analyzed) {
 			analyzeTerrain();
+			regionMapData = getRegionMap();
 			regionData = getRegions();
 			chokePointData = getChokePoints();
 			baseLocationData = getBaseLocations();
@@ -478,6 +478,7 @@ public class JNIBWAPI {
 			try {
 				BufferedWriter writer = new BufferedWriter(new FileWriter(bwtaFile));
 				
+				writeMapData(writer, regionMapData);
 				writeMapData(writer, regionData);
 				writeMapData(writer, chokePointData);
 				writeMapData(writer, baseLocationData);
@@ -496,6 +497,7 @@ public class JNIBWAPI {
 			try {
 				BufferedReader reader = new BufferedReader(new FileReader(bwtaFile));
 				
+				regionMapData = readMapData(reader);
 				regionData = readMapData(reader);
 				chokePointData = readMapData(reader);
 				baseLocationData = readMapData(reader);
@@ -513,43 +515,7 @@ public class JNIBWAPI {
 			}
 		}
 		
-		// regions
-		HashMap<Integer, Region> regionMap = new HashMap<Integer, Region>();
-		for (int index = 0; index < regionData.length; index += Region.numAttributes) {
-			Region region = new Region(regionData, index);
-			region.setCoordinates(polygons.get(region.getID()));
-			map.getRegions().add(region);
-			regionMap.put(region.getID(), region);
-		}
-		
-		// choke points
-		if (chokePointData != null) {
-			for (int index = 0; index < chokePointData.length; index += ChokePoint.numAttributes) {
-				ChokePoint chokePoint = new ChokePoint(chokePointData, index);
-				chokePoint.setFirstRegion(regionMap.get(chokePoint.getFirstRegionID()));
-				chokePoint.setSecondRegion(regionMap.get(chokePoint.getSecondRegionID()));
-				map.getChokePoints().add(chokePoint);
-			}
-		}
-		
-		// base locations
-		if (baseLocationData != null) {
-			for (int index = 0; index < baseLocationData.length; index += BaseLocation.numAttributes) {
-				BaseLocation baseLocation = new BaseLocation(baseLocationData, index);
-				map.getBaseLocations().add(baseLocation);
-			}
-		}
-		
-		// connect the region graph
-		for (Region region : map.getRegions()) {
-			for (ChokePoint chokePoint : map.getChokePoints()) {
-				if (chokePoint.getFirstRegion().equals(region)
-						|| chokePoint.getSecondRegion().equals(region)) {
-					region.getChokePoints().add(chokePoint);
-					region.getConnectedRegions().add(chokePoint.getOtherRegion(region));
-				}
-			}
-		}
+		map.initialize(regionMapData, regionData, polygons, chokePointData, baseLocationData);
 	}
 	
 	/** Convenience method to write out each part of BWTA map data to a stream */
