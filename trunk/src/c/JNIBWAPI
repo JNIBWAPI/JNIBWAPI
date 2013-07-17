@@ -270,6 +270,9 @@ public class jnibwapi.JNIBWAPI {
   public jnibwapi.types.UnitType getUnitType(int);
     Signature: (I)Ljnibwapi/types/UnitType;
 
+  public jnibwapi.types.RaceType getRaceType(int);
+    Signature: (I)Ljnibwapi/types/RaceType;
+
   public jnibwapi.types.TechType getTechType(int);
     Signature: (I)Ljnibwapi/types/TechType;
 
@@ -298,6 +301,9 @@ public class jnibwapi.JNIBWAPI {
     Signature: (I)Ljnibwapi/types/OrderType;
 
   public java.util.Collection<jnibwapi.types.UnitType> unitTypes();
+    Signature: ()Ljava/util/Collection;
+
+  public java.util.Collection<jnibwapi.types.RaceType> raceTypes();
     Signature: ()Ljava/util/Collection;
 
   public java.util.Collection<jnibwapi.types.TechType> techTypes();

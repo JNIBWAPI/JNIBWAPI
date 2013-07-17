@@ -18,6 +18,7 @@ jmethodID printCallback;
 
 // mapping of IDs to types
 std::map<int, UnitType> unitTypeMap;
+std::map<int, Race> raceTypeMap;
 std::map<int, TechType> techTypeMap;
 std::map<int, UpgradeType> upgradeTypeMap;
 std::map<int, WeaponType> weaponTypeMap;
@@ -217,6 +218,11 @@ void loadTypeData(void)
 	std::set<UnitType> types = UnitTypes::allUnitTypes();
 	for (std::set<UnitType>::iterator i = types.begin(); i != types.end(); ++i) {
 		unitTypeMap[i->getID()] = (*i);
+	}
+
+	std::set<Race> raceTypes = Races::allRaces();
+	for (std::set<Race>::iterator i = raceTypes.begin(); i != raceTypes.end(); ++i) {
+		raceTypeMap[i->getID()] = (*i);
 	}
 
 	std::set<TechType> techTypes = TechTypes::allTechTypes();
@@ -504,6 +510,31 @@ JNIEXPORT jintArray JNICALL Java_jnibwapi_JNIBWAPI_getUnitTypes(JNIEnv* env, job
 JNIEXPORT jstring JNICALL Java_jnibwapi_JNIBWAPI_getUnitTypeName(JNIEnv* env, jobject jObj, jint typeID) 
 {
 	return env->NewStringUTF(unitTypeMap[typeID].getName().c_str());
+}
+
+JNIEXPORT jintArray JNICALL Java_jnibwapi_JNIBWAPI_getRaceTypes(JNIEnv* env, jobject jObj) 
+{
+	int index = 0;
+
+	std::set<Race> types = Races::allRaces();
+	for (std::set<Race>::iterator i = types.begin(); i != types.end(); ++i)
+	{
+		intBuf[index++] = i->getID();
+		intBuf[index++] = i->getWorker().getID();
+		intBuf[index++] = i->getCenter().getID();
+		intBuf[index++] = i->getRefinery().getID();
+		intBuf[index++] = i->getTransport().getID();
+		intBuf[index++] = i->getSupplyProvider().getID();
+	}
+
+	jintArray result =env->NewIntArray(index);
+	env->SetIntArrayRegion(result, 0, index, intBuf);
+	return result;
+}
+
+JNIEXPORT jstring JNICALL Java_jnibwapi_JNIBWAPI_getRaceTypeName(JNIEnv* env, jobject jObj, jint typeID) 
+{
+	return env->NewStringUTF(raceTypeMap[typeID].getName().c_str());
 }
 
 JNIEXPORT jintArray JNICALL Java_jnibwapi_JNIBWAPI_getTechTypes(JNIEnv* env, jobject jObj)

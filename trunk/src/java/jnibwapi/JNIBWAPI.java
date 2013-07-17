@@ -79,9 +79,13 @@ public class JNIBWAPI {
 	public native int getReplayFrameTotal();
 	private native int[] getPlayerInfo();
 	private native int[] getPlayerUpdate(int playerID);
+	/** Returns string as a byte[] to properly handle ASCII-extended characters */
+	private native byte[] getPlayerName(int playerID);
 	private native int[] getResearchStatus(int playerID);
 	private native int[] getUpgradeStatus(int playerID);
 	private native int[] getAllUnitsData();
+	private native int[] getRaceTypes();
+	private native String getRaceTypeName(int typeID);
 	private native int[] getUnitTypes();
 	private native String getUnitTypeName(int typeID);
 	private native int[] getTechTypes();
@@ -228,6 +232,7 @@ public class JNIBWAPI {
 
 	// type data
 	private HashMap<Integer, UnitType> unitTypes = new HashMap<Integer, UnitType>();
+	private HashMap<Integer, RaceType> raceTypes = new HashMap<Integer, RaceType>();
 	private HashMap<Integer, TechType> techTypes = new HashMap<Integer, TechType>();
 	private HashMap<Integer, UpgradeType> upgradeTypes = new HashMap<Integer, UpgradeType>();
 	private HashMap<Integer, WeaponType> weaponTypes = new HashMap<Integer, WeaponType>();
@@ -240,6 +245,7 @@ public class JNIBWAPI {
 	
 	// type data accessors
 	public UnitType getUnitType(int typeID) { return unitTypes.get(typeID); }
+	public RaceType getRaceType(int typeID) { return raceTypes.get(typeID); }
 	public TechType getTechType(int typeID) { return techTypes.get(typeID); }
 	public UpgradeType getUpgradeType(int upgradeID) { return upgradeTypes.get(upgradeID); }
 	public WeaponType getWeaponType(int weaponID) { return weaponTypes.get(weaponID); }
@@ -251,6 +257,7 @@ public class JNIBWAPI {
 	public OrderType getOrderType(int orderID) { return orderTypes.get(orderID); }
 	
 	public Collection<UnitType> unitTypes() { return unitTypes.values(); }
+	public Collection<RaceType> raceTypes() { return raceTypes.values(); }
 	public Collection<TechType> techTypes() { return techTypes.values(); }
 	public Collection<UpgradeType> upgradeTypes() { return upgradeTypes.values(); }
 	public Collection<WeaponType> weaponTypes() { return weaponTypes.values(); }
@@ -346,6 +353,14 @@ public class JNIBWAPI {
 	 * Loads type data from BWAPI.
 	 */
 	public void loadTypeData() {
+		// race types
+		int[] raceTypeData = getRaceTypes();
+		for (int index = 0; index < raceTypeData.length; index += RaceType.numAttributes) {
+			RaceType type = new RaceType(raceTypeData, index);
+			type.setName(getRaceTypeName(type.getID()));
+			raceTypes.put(type.getID(), type);
+		}
+		
 		// unit types
 		int[] unitTypeData = getUnitTypes();
 		for (int index = 0; index < unitTypeData.length; index += UnitType.numAttributes) {
