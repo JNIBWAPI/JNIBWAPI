@@ -6,10 +6,14 @@ import java.io.BufferedWriter;
 import java.io.File;
 import java.io.FileReader;
 import java.io.FileWriter;
+import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Collection;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.List;
 
 import jnibwapi.model.BaseLocation;
 import jnibwapi.model.ChokePoint;
@@ -39,8 +43,8 @@ public class JNIBWAPI {
 	// load the BWAPI client library
 	static {
 		try {
-			System.loadLibrary("ExampleAIClient");
-			System.out.println("Load ExampleAI");
+			System.loadLibrary("client-bridge-" + System.getProperty("os.arch"));
+			System.out.println("Loaded client bridge library.");
 		} catch (UnsatisfiedLinkError e) {
 			System.err.println("Native code library failed to load.\n" + e);
 		}
@@ -71,12 +75,13 @@ public class JNIBWAPI {
 	private native void startClient(JNIBWAPI jniBWAPI);
 	
 	// query methods
-	private native int getGameFrame();
+	private native int getFrame();
+	public native int getReplayFrameTotal();
 	private native int[] getPlayerInfo();
 	private native int[] getPlayerUpdate(int playerID);
 	private native int[] getResearchStatus(int playerID);
 	private native int[] getUpgradeStatus(int playerID);
-	private native int[] getUnits();
+	private native int[] getAllUnitsData();
 	private native int[] getUnitTypes();
 	private native String getUnitTypeName(int typeID);
 	private native int[] getTechTypes();
@@ -97,21 +102,26 @@ public class JNIBWAPI {
 	private native String getUnitCommandTypeName(int unitCommandID);
 	private native int[] getOrderTypes();
 	private native String getOrderTypeName(int unitCommandID);
-
+	private native int[] getUnitIdsOnTile(int tx, int ty);
+	
 	// map data
 	private native void analyzeTerrain();
 	private native int getMapWidth();
 	private native int getMapHeight();
-	private native String getMapName();
+	/** Returns string as a byte[] to properly handle ASCII-extended characters */
+	private native byte[] getMapName();
+	private native String getMapFileName();
 	private native String getMapHash();
 	private native int[] getHeightData();
+	/** Returns the regionId for each map tile */
+	private native int[] getRegionMap();
 	private native int[] getWalkableData();
 	private native int[] getBuildableData();
 	private native int[] getChokePoints();
 	private native int[] getRegions();
 	private native int[] getPolygon(int regionID);
 	private native int[] getBaseLocations();
-
+	
 	// unit commands: http://code.google.com/p/bwapi/wiki/Unit
 	public native boolean attack(int unitID, int x, int y);
 	public native boolean attack(int unitID, int targetID);
@@ -164,17 +174,23 @@ public class JNIBWAPI {
 	public native void enableUserInput();
 	public native void enablePerfectInformation();
 	public native void setGameSpeed(int speed);
-	 
+	public native void setFrameSkip(int frameSkip);
+	public native void leaveGame();
+	
 	// draw commands
-	public native void drawBox(int left, int top, int right, int bottom, int color, boolean fill, boolean screenCoords);
-	public native void drawCircle(int x, int y, int radius, int color, boolean fill, boolean screenCoords);
+	public native void drawBox(int left, int top, int right, int bottom, int color, boolean fill,
+			boolean screenCoords);
+	public native void drawCircle(int x, int y, int radius, int color, boolean fill,
+			boolean screenCoords);
 	public native void drawLine(int x1, int y1, int x2, int y2, int color, boolean screenCoords);
-	public void drawLine(Point a, Point b, int color, boolean screenCoords){
+	public void drawLine(Point a, Point b, int color, boolean screenCoords) {
 		drawLine(a.x, a.y, b.x, b.y, color, screenCoords);
 	}
 	public native void drawDot(int x, int y, int color, boolean screenCoords);
 	public native void drawText(int x, int y, String msg, boolean screenCoords);
-	public void drawText(Point a, String msg, boolean screenCoords){drawText(a.x,a.y,msg,screenCoords);}
+	public void drawText(Point a, String msg, boolean screenCoords) {
+		drawText(a.x, a.y, msg, screenCoords);
+	}
 	
 	// Extended Commands
 	public native boolean isVisible(int tileX, int tileY);
@@ -202,7 +218,11 @@ public class JNIBWAPI {
 	public native void printText(String message);
 	public native void sendText(String message);
 	public native void setCommandOptimizationLevel(int level);
-	private native boolean isReplay();
+	public native boolean isReplay();
+	private native boolean isVisibleToPlayer(int unitID, int playerID);
+	public boolean isVisibleToPlayer(Unit u, Player p) {
+		return isVisibleToPlayer(u.getID(), p.getID());
+	}
 	public native int getLastError();
 	public native int getRemainingLatencyFrames();
 
@@ -219,8 +239,8 @@ public class JNIBWAPI {
 	private HashMap<Integer, OrderType> orderTypes = new HashMap<Integer, OrderType>();
 	
 	// type data accessors
-	public UnitType getUnitType(int unitID) { return unitTypes.get(unitID); }
-	public TechType getTechType(int techID) { return techTypes.get(techID); }
+	public UnitType getUnitType(int typeID) { return unitTypes.get(typeID); }
+	public TechType getTechType(int typeID) { return techTypes.get(typeID); }
 	public UpgradeType getUpgradeType(int upgradeID) { return upgradeTypes.get(upgradeID); }
 	public WeaponType getWeaponType(int weaponID) { return weaponTypes.get(weaponID); }
 	public UnitSizeType getUnitSizeType(int sizeID) { return unitSizeTypes.get(sizeID); }
@@ -258,12 +278,16 @@ public class JNIBWAPI {
 		return players.get(playerID);
 	}
 	
-	public ArrayList<Player> getAllies() {
-		return allies;
+	public Collection<Player> getPlayers() {
+		return Collections.unmodifiableCollection(players.values());
 	}
 	
-	public ArrayList<Player> getEnemies() {
-		return enemies;
+	public List<Player> getAllies() {
+		return Collections.unmodifiableList(allies);
+	}
+	
+	public List<Player> getEnemies() {
+		return Collections.unmodifiableList(enemies);
 	}
 	
 	public Unit getUnit(int unitID) {
@@ -271,29 +295,48 @@ public class JNIBWAPI {
 	}
 	
 	public Collection<Unit> getAllUnits() {
-		return units.values();
+		return Collections.unmodifiableCollection(units.values());
 	}
 	
-	public ArrayList<Unit> getMyUnits() {
-		return playerUnits;
+	public List<Unit> getMyUnits() {
+		return Collections.unmodifiableList(playerUnits);
 	}
 	
-	public ArrayList<Unit> getAlliedUnits() {
-		return alliedUnits;
+	public List<Unit> getAlliedUnits() {
+		return Collections.unmodifiableList(alliedUnits);
 	}
 	
-	public ArrayList<Unit> getEnemyUnits() {
-		return enemyUnits;
+	public List<Unit> getEnemyUnits() {
+		return Collections.unmodifiableList(enemyUnits);
 	}
 	
-	public ArrayList<Unit> getNeutralUnits() {
-		return neutralUnits;
+	public List<Unit> getNeutralUnits() {
+		return Collections.unmodifiableList(neutralUnits);
+	}
+	
+	public List<Unit> getUnits(Player p) {
+		List<Unit> pUnits = new ArrayList<Unit>();
+		for (Unit u : units.values()) {
+			if (u.getPlayerID() == p.getID()) {
+				pUnits.add(u);
+			}
+		}
+		return pUnits;
+	}
+	
+	public List<Unit> getUnitsOnTile(int tx, int ty) {
+		// Often will have 0 or few units on tile
+		List<Unit> units = new ArrayList<Unit>(0);
+		for (int id : getUnitIdsOnTile(tx, ty)) {
+			units.add(getUnit(id));
+		}
+		return units;
 	}
 	
 	/**
 	 * Returns the map.
 	 * 
-	 * Note: return null if loadMapData has not been called.
+	 * Note: returns null if loadMapData has not been called.
 	 */
 	public Map getMap() {
 		return map;
@@ -380,7 +423,6 @@ public class JNIBWAPI {
 		for (int index = 0; index < orderTypeData.length; index += OrderType.numAttributes) {
 			OrderType type = new OrderType(orderTypeData, index);
 			type.setName(getOrderTypeName(type.getID()));
-			// System.out.println("ID: "+ type.getID()+" Name: "+ type.getName());
 			orderTypes.put(type.getID(), type);
 		}
 	}
@@ -391,7 +433,8 @@ public class JNIBWAPI {
 	 * TODO: figure out how to use BWTA's internal map storage
 	 */
 	public void loadMapData(boolean enableBWTA) {
-		map = new Map(getMapWidth(), getMapHeight(), getMapName(), getMapHash(), getHeightData(),
+		String mapName = new String(getMapName());
+		map = new Map(getMapWidth(), getMapHeight(), mapName, getMapHash(), getHeightData(),
 				getBuildableData(), getWalkableData());
 		if (!enableBWTA) {
 			return;
@@ -420,52 +463,12 @@ public class JNIBWAPI {
 			try {
 				BufferedWriter writer = new BufferedWriter(new FileWriter(bwtaFile));
 				
-				// regions
-				boolean first = true;
-				for (int val : regionData) {
-					if (first) {
-						first = false;
-						writer.write("" + val);
-					}
-					else {
-						writer.write("," + val);
-					}
-				}
-				writer.write("\n");
-				
-				// chokes
-				first = true;
-				for (int val : chokePointData) {
-					if (first) {
-						first = false;
-						writer.write("" + val);
-					}
-					else {
-						writer.write("," + val);
-					}
-				}
-				writer.write("\n");
-				
-				// baseLocations
-				first = true;
-				for (int val : baseLocationData) {
-					if (first) {
-						first = false;
-						writer.write("" + val);
-					}
-					else {
-						writer.write("," + val);
-					}
-				}
-				writer.write("\n");
-				
-				// polygons
+				writeMapData(writer, regionData);
+				writeMapData(writer, chokePointData);
+				writeMapData(writer, baseLocationData);
 				for (int id : polygons.keySet()) {
-					writer.write("" + id);
-					for (int val : polygons.get(id)) {
-						writer.write("," + val);
-					}
-					writer.write("\n");
+					writer.write("" + id + ",");
+					writeMapData(writer, polygons.get(id));
 				}
 				
 				writer.close();
@@ -478,45 +481,15 @@ public class JNIBWAPI {
 			try {
 				BufferedReader reader = new BufferedReader(new FileReader(bwtaFile));
 				
-				// regions
-				String[] regions = reader.readLine().split(",");
-				regionData = new int[regions.length];
-				for (int i = 0; i < regions.length; i++) {
-					regionData[i] = Integer.parseInt(regions[i]);
-				}
-				
-				// choke points
-				String[] chokePoints = reader.readLine().split(",");
-				if (chokePoints.length > 0 && !chokePoints[0].equals("")) {
-					chokePointData = new int[chokePoints.length];
-					for (int i = 0; i < chokePoints.length; i++) {
-						chokePointData[i] = Integer.parseInt(chokePoints[i]);
-					}
-				} else {
-					chokePointData = new int[0];
-				}
-				
-				// base locations
-				String[] baseLocations = reader.readLine().split(",");
-				if (baseLocations.length > 0 && !baseLocations[0].equals("")) {
-					baseLocationData = new int[baseLocations.length];
-					for (int i = 0; i < baseLocations.length; i++) {
-						baseLocationData[i] = Integer.parseInt(baseLocations[i]);
-					}
-				}
-				
+				regionData = readMapData(reader);
+				chokePointData = readMapData(reader);
+				baseLocationData = readMapData(reader);
 				// polygons (first integer is ID)
-				String line = reader.readLine();
-				while (line != null) {
-					String[] coordinates = line.split(",");
-					int[] coordinateData = new int[coordinates.length - 1];
+				int[] polygonData;
+				while ((polygonData = readMapData(reader)) != null) {
+					int[] coordinateData = Arrays.copyOfRange(polygonData, 1, polygonData.length);
 					
-					for (int i = 1; i < coordinates.length; i++) {
-						coordinateData[i - 1] = Integer.parseInt(coordinates[i]);
-					}
-					
-					polygons.put(Integer.parseInt(coordinates[0]), coordinateData);
-					line = reader.readLine();
+					polygons.put(polygonData[0], coordinateData);
 				}
 				
 				reader.close();
@@ -564,9 +537,44 @@ public class JNIBWAPI {
 		}
 	}
 	
+	/** Convenience method to write out each part of BWTA map data to a stream */
+	private static void writeMapData(BufferedWriter writer, int[] data) throws IOException {
+		boolean first = true;
+		for (int val : data) {
+			if (first) {
+				first = false;
+				writer.write("" + val);
+			}
+			else {
+				writer.write("," + val);
+			}
+		}
+		writer.write("\n");
+	}
+	
+	/**
+	 * Convenience method to read each part of BWTA map data from a stream
+	 * 
+	 * @return null when end of stream is reached, otherwise an int array (possibly empty)
+	 */
+	private static int[] readMapData(BufferedReader reader) throws IOException {
+		int[] data = new int[0];
+		String line = reader.readLine();
+		if (line == null)
+			return null;
+		String[] stringData = line.split(",");
+		if (stringData.length > 0 && !stringData[0].equals("")) {
+			data = new int[stringData.length];
+			for (int i = 0; i < stringData.length; i++) {
+				data[i] = Integer.parseInt(stringData[i]);
+			}
+		}
+		return data;
+	}
+	
 	/**
 	 * Instantiates a BWAPI instance, but does not connect to the bridge. To connect, the start
-	 * method must be invokeed.
+	 * method must be invoked.
 	 * 
 	 * @param listener - listener for BWAPI callback events.
 	 */
@@ -618,8 +626,8 @@ public class JNIBWAPI {
 	 */
 	public void gameStarted() {
 		try {
-			
 			// get the players
+			self = null;
 			allies.clear();
 			allyIDs.clear();
 			enemies.clear();
@@ -653,7 +661,7 @@ public class JNIBWAPI {
 			alliedUnits.clear();
 			enemyUnits.clear();
 			neutralUnits.clear();
-			int[] unitData = getUnits();
+			int[] unitData = getAllUnitsData();
 			
 			for (int index = 0; index < unitData.length; index += Unit.numAttributes) {
 				int id = unitData[index];
@@ -661,20 +669,8 @@ public class JNIBWAPI {
 				unit.update(unitData, index);
 				
 				units.put(id, unit);
-				if (self != null)
-				{
-					if (unit.getPlayerID() == self.getID()) {
-						playerUnits.add(unit);
-					}
-					else if (allyIDs.contains(unit.getPlayerID())) {
-						alliedUnits.add(unit);
-					}
-					else if (enemyIDs.contains(unit.getPlayerID())) {
-						enemyUnits.add(unit);
-					}
-					else {
-						neutralUnits.add(unit);
-					}
+				if (self != null && unit.getPlayerID() == self.getID()) {
+					playerUnits.add(unit);
 				}
 				else if (allyIDs.contains(unit.getPlayerID())) {
 					alliedUnits.add(unit);
@@ -701,23 +697,19 @@ public class JNIBWAPI {
 	private void gameUpdate() {
 		try {
 			// update game state
-			gameFrame = getGameFrame();
-			if (!isReplay())
-			{
+			gameFrame = getFrame();
+			if (!isReplay()) {
 				self.update(getPlayerUpdate(self.getID()));
 				self.updateResearch(getResearchStatus(self.getID()), getUpgradeStatus(self.getID()));
-			}
-			else
-			{
-				for (Integer playerID : players.keySet())
-				{
+			} else {
+				for (Integer playerID : players.keySet()) {
 					players.get(playerID).update(getPlayerUpdate(playerID));
 					players.get(playerID).updateResearch(getResearchStatus(playerID),
 							getUpgradeStatus(playerID));
 				}
 			}
 			// update units
-			int[] unitData = getUnits();
+			int[] unitData = getAllUnitsData();
 			HashSet<Integer> deadUnits = new HashSet<Integer>(units.keySet());
 			ArrayList<Unit> playerList = new ArrayList<Unit>();
 			ArrayList<Unit> alliedList = new ArrayList<Unit>();

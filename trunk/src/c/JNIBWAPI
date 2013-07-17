@@ -3,6 +3,9 @@ public class jnibwapi.JNIBWAPI {
   static {};
     Signature: ()V
 
+  public native int getReplayFrameTotal();
+    Signature: ()I
+
   public native boolean attack(int, int, int);
     Signature: (III)Z
 
@@ -150,6 +153,12 @@ public class jnibwapi.JNIBWAPI {
   public native void setGameSpeed(int);
     Signature: (I)V
 
+  public native void setFrameSkip(int);
+    Signature: (I)V
+
+  public native void leaveGame();
+    Signature: ()V
+
   public native void drawBox(int, int, int, int, int, boolean, boolean);
     Signature: (IIIIIZZ)V
 
@@ -246,6 +255,12 @@ public class jnibwapi.JNIBWAPI {
   public native void setCommandOptimizationLevel(int);
     Signature: (I)V
 
+  public native boolean isReplay();
+    Signature: ()Z
+
+  public boolean isVisibleToPlayer(jnibwapi.model.Unit, jnibwapi.model.Player);
+    Signature: (Ljnibwapi/model/Unit;Ljnibwapi/model/Player;)Z
+
   public native int getLastError();
     Signature: ()I
 
@@ -324,11 +339,14 @@ public class jnibwapi.JNIBWAPI {
   public jnibwapi.model.Player getPlayer(int);
     Signature: (I)Ljnibwapi/model/Player;
 
-  public java.util.ArrayList<jnibwapi.model.Player> getAllies();
-    Signature: ()Ljava/util/ArrayList;
+  public java.util.Collection<jnibwapi.model.Player> getPlayers();
+    Signature: ()Ljava/util/Collection;
 
-  public java.util.ArrayList<jnibwapi.model.Player> getEnemies();
-    Signature: ()Ljava/util/ArrayList;
+  public java.util.List<jnibwapi.model.Player> getAllies();
+    Signature: ()Ljava/util/List;
+
+  public java.util.List<jnibwapi.model.Player> getEnemies();
+    Signature: ()Ljava/util/List;
 
   public jnibwapi.model.Unit getUnit(int);
     Signature: (I)Ljnibwapi/model/Unit;
@@ -336,17 +354,23 @@ public class jnibwapi.JNIBWAPI {
   public java.util.Collection<jnibwapi.model.Unit> getAllUnits();
     Signature: ()Ljava/util/Collection;
 
-  public java.util.ArrayList<jnibwapi.model.Unit> getMyUnits();
-    Signature: ()Ljava/util/ArrayList;
+  public java.util.List<jnibwapi.model.Unit> getMyUnits();
+    Signature: ()Ljava/util/List;
 
-  public java.util.ArrayList<jnibwapi.model.Unit> getAlliedUnits();
-    Signature: ()Ljava/util/ArrayList;
+  public java.util.List<jnibwapi.model.Unit> getAlliedUnits();
+    Signature: ()Ljava/util/List;
 
-  public java.util.ArrayList<jnibwapi.model.Unit> getEnemyUnits();
-    Signature: ()Ljava/util/ArrayList;
+  public java.util.List<jnibwapi.model.Unit> getEnemyUnits();
+    Signature: ()Ljava/util/List;
 
-  public java.util.ArrayList<jnibwapi.model.Unit> getNeutralUnits();
-    Signature: ()Ljava/util/ArrayList;
+  public java.util.List<jnibwapi.model.Unit> getNeutralUnits();
+    Signature: ()Ljava/util/List;
+
+  public java.util.List<jnibwapi.model.Unit> getUnits(jnibwapi.model.Player);
+    Signature: (Ljnibwapi/model/Player;)Ljava/util/List;
+
+  public java.util.List<jnibwapi.model.Unit> getUnitsOnTile(int, int);
+    Signature: (II)Ljava/util/List;
 
   public jnibwapi.model.Map getMap();
     Signature: ()Ljnibwapi/model/Map;

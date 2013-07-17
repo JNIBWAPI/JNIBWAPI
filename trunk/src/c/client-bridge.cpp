@@ -78,7 +78,7 @@ JNIEXPORT void JNICALL Java_jnibwapi_JNIBWAPI_startClient(JNIEnv* env, jobject j
 	javaPrint("Connecting...");
 	reconnect();
 	loadTypeData();
-	jEnv->CallObjectMethod(classref, connectedCallback);
+	env->CallObjectMethod(classref, connectedCallback);
 
 	// hold on to this thread forever. Notify java through callbacks.
 	while (true) {
@@ -93,76 +93,76 @@ JNIEXPORT void JNICALL Java_jnibwapi_JNIBWAPI_startClient(JNIEnv* env, jobject j
 			}
 		}
 		javaPrint("Starting match!");
-		jEnv->CallObjectMethod(classref, gameStartCallback);
+		env->CallObjectMethod(classref, gameStartCallback);
 
 		// in game
 		while (Broodwar->isInGame()) {
-			jEnv->CallObjectMethod(classref, gameUpdateCallback);
+			env->CallObjectMethod(classref, gameUpdateCallback);
 
 			// process events
 			if (Broodwar->getFrameCount() > 1) {
 				for (std::list<Event>::iterator e = Broodwar->getEvents().begin(); e != Broodwar->getEvents().end(); ++e) {
 					switch (e->getType()) {
 					case EventType::MatchEnd:
-						jEnv->CallObjectMethod(classref, eventCallback, 0, e->isWinner() ? 1 : 0, 0, JNI_NULL);
+						env->CallObjectMethod(classref, eventCallback, 0, e->isWinner() ? 1 : 0, 0, JNI_NULL);
 						break;
 					case EventType::SendText: {
 						jstring string = env->NewStringUTF(e->getText().c_str());
-						jEnv->CallObjectMethod(classref, eventCallback, 1, 0, 0, string);
+						env->CallObjectMethod(classref, eventCallback, 1, 0, 0, string);
 						env->DeleteLocalRef(string);
-											  }
-											  break;
+						}
+						break;
 					case EventType::ReceiveText: {
 						jstring string = env->NewStringUTF(e->getText().c_str());
-						jEnv->CallObjectMethod(classref, eventCallback, 2, 0, 0, string);
+						env->CallObjectMethod(classref, eventCallback, 2, 0, 0, string);
 						env->DeleteLocalRef(string);
-												 }
-												 break;
+						}
+						break;
 					case EventType::PlayerLeft:
-						jEnv->CallObjectMethod(classref, eventCallback, 3, e->getPlayer()->getID(), 0, JNI_NULL);
+						env->CallObjectMethod(classref, eventCallback, 3, e->getPlayer()->getID(), 0, JNI_NULL);
 						break;
 					case EventType::NukeDetect:
 						if (e->getPosition() != Positions::Unknown) {
-							jEnv->CallObjectMethod(classref, eventCallback, 4, e->getPosition().x(), e->getPosition().y(), JNI_NULL);
+							env->CallObjectMethod(classref, eventCallback, 4, e->getPosition().x(), e->getPosition().y(), JNI_NULL);
 						} else {
-							jEnv->CallObjectMethod(classref, eventCallback, 5, 0, 0, JNI_NULL);
+							env->CallObjectMethod(classref, eventCallback, 5, 0, 0, JNI_NULL);
 						}
 						break;
 					case EventType::UnitDiscover:
-						jEnv->CallObjectMethod(classref, eventCallback, 6, e->getUnit()->getID(), 0, JNI_NULL);
+						env->CallObjectMethod(classref, eventCallback, 6, e->getUnit()->getID(), 0, JNI_NULL);
 						break;
 					case EventType::UnitEvade:
-						jEnv->CallObjectMethod(classref, eventCallback, 7, e->getUnit()->getID(), 0, JNI_NULL);
+						env->CallObjectMethod(classref, eventCallback, 7, e->getUnit()->getID(), 0, JNI_NULL);
 						break;
 					case EventType::UnitShow:
-						jEnv->CallObjectMethod(classref, eventCallback, 8, e->getUnit()->getID(), 0, JNI_NULL);
+						env->CallObjectMethod(classref, eventCallback, 8, e->getUnit()->getID(), 0, JNI_NULL);
 						break;
 					case EventType::UnitHide:
-						jEnv->CallObjectMethod(classref, eventCallback, 9, e->getUnit()->getID(), 0, JNI_NULL);
+						env->CallObjectMethod(classref, eventCallback, 9, e->getUnit()->getID(), 0, JNI_NULL);
 						break;
 					case EventType::UnitCreate:
-						jEnv->CallObjectMethod(classref, eventCallback, 10, e->getUnit()->getID(), 0, JNI_NULL);
+						env->CallObjectMethod(classref, eventCallback, 10, e->getUnit()->getID(), 0, JNI_NULL);
 						break;
 					case EventType::UnitDestroy:
-						jEnv->CallObjectMethod(classref, eventCallback, 11, e->getUnit()->getID(), 0, JNI_NULL);
+						env->CallObjectMethod(classref, eventCallback, 11, e->getUnit()->getID(), 0, JNI_NULL);
 						break;
 					case EventType::UnitMorph:
-						jEnv->CallObjectMethod(classref, eventCallback, 12, e->getUnit()->getID(), 0, JNI_NULL);
+						env->CallObjectMethod(classref, eventCallback, 12, e->getUnit()->getID(), 0, JNI_NULL);
 						break;
 					case EventType::UnitRenegade:
-						jEnv->CallObjectMethod(classref, eventCallback, 13, e->getUnit()->getID(), 0, JNI_NULL);
+						env->CallObjectMethod(classref, eventCallback, 13, e->getUnit()->getID(), 0, JNI_NULL);
 						break;
 					case EventType::SaveGame: {
 						jstring string = env->NewStringUTF(e->getText().c_str());
-						jEnv->CallObjectMethod(classref, eventCallback, 14, 0, 0, string);
+						env->CallObjectMethod(classref, eventCallback, 14, 0, 0, string);
 						env->DeleteLocalRef(string);
-											  }
-											  break;
+						}
+						break;
 					case EventType::UnitComplete:
-						jEnv->CallObjectMethod(classref, eventCallback, 15, e->getUnit()->getID(), 0, JNI_NULL);
+						env->CallObjectMethod(classref, eventCallback, 15, e->getUnit()->getID(), 0, JNI_NULL);
 						break;
 					case EventType::PlayerDropped:
-						jEnv->CallObjectMethod(classref, eventCallback, 16, e->getPlayer()->getID(), 0, JNI_NULL);
+						env->CallObjectMethod(classref, eventCallback, 16, e->getPlayer()->getID(), 0, JNI_NULL);
 						break;
 					}
 				}
@@ -171,7 +171,7 @@ JNIEXPORT void JNICALL Java_jnibwapi_JNIBWAPI_startClient(JNIEnv* env, jobject j
 				for (int keyCode = 0; keyCode <= 0xff; ++keyCode) {	
 					if (Broodwar->getKeyState(keyCode)) {	
 						if (!keyState[keyCode]) {
-							jEnv->CallObjectMethod(classref, keyPressCallback, keyCode);
+							env->CallObjectMethod(classref, keyPressCallback, keyCode);
 						}
 						keyState[keyCode] = true;
 					} else {
@@ -195,7 +195,7 @@ JNIEXPORT void JNICALL Java_jnibwapi_JNIBWAPI_startClient(JNIEnv* env, jobject j
 
 		// game completed
 		javaPrint("Game ended");
-		jEnv->CallObjectMethod(classref, gameEndCallback);
+		env->CallObjectMethod(classref, gameEndCallback);
 	}
 }
 
@@ -299,13 +299,28 @@ JNIEXPORT void JNICALL Java_jnibwapi_JNIBWAPI_setGameSpeed(JNIEnv* env, jobject 
 	Broodwar->setLocalSpeed(speed);
 }
 
+JNIEXPORT void JNICALL Java_jnibwapi_JNIBWAPI_setFrameSkip(JNIEnv* env, jobject jObj, jint skip)
+{
+	Broodwar->setFrameSkip(skip);
+}
+
+JNIEXPORT void JNICALL Java_jnibwapi_JNIBWAPI_leaveGame(JNIEnv* env, jobject jObj)
+{
+	Broodwar->leaveGame();
+}
+
 /*****************************************************************************************************************/
 // Game state queries
 /*****************************************************************************************************************/
 
-JNIEXPORT jint JNICALL Java_jnibwapi_JNIBWAPI_getGameFrame(JNIEnv* env, jobject jObj) 
+JNIEXPORT jint JNICALL Java_jnibwapi_JNIBWAPI_getFrame(JNIEnv* env, jobject jObj) 
 {
 	return Broodwar->getFrameCount();
+}
+
+JNIEXPORT jint JNICALL Java_jnibwapi_JNIBWAPI_getReplayFrameTotal(JNIEnv* env, jobject jObj) 
+{
+	return Broodwar->getReplayFrameCount();
 }
 
 JNIEXPORT jintArray JNICALL Java_jnibwapi_JNIBWAPI_getPlayerInfo(JNIEnv* env, jobject jObj)
@@ -360,7 +375,16 @@ JNIEXPORT jintArray JNICALL Java_jnibwapi_JNIBWAPI_getPlayerUpdate(JNIEnv* env, 
 	jintArray result =env->NewIntArray(index);
 	env->SetIntArrayRegion(result, 0, index, intBuf);
 	return result;
-} 
+}
+
+JNIEXPORT jbyteArray JNICALL Java_jnibwapi_JNIBWAPI_getPlayerName(JNIEnv* env, jobject jObj, jint playerID)
+{
+	// NewStringUTF causes issues with unusual characters like Korean symbols
+	std::string str = Broodwar->getPlayer(playerID)->getName();
+	jbyteArray jbArray = env->NewByteArray(str.length());
+	env->SetByteArrayRegion(jbArray, 0, str.length(), (jbyte*)str.c_str());
+	return jbArray;
+}
 
 JNIEXPORT jintArray JNICALL Java_jnibwapi_JNIBWAPI_getResearchStatus(JNIEnv* env, jobject jObj, jint playerID)
 {
@@ -479,7 +503,7 @@ JNIEXPORT jintArray JNICALL Java_jnibwapi_JNIBWAPI_getUnitTypes(JNIEnv* env, job
 
 JNIEXPORT jstring JNICALL Java_jnibwapi_JNIBWAPI_getUnitTypeName(JNIEnv* env, jobject jObj, jint typeID) 
 {
-	return jEnv->NewStringUTF(unitTypeMap[typeID].getName().c_str());
+	return env->NewStringUTF(unitTypeMap[typeID].getName().c_str());
 }
 
 JNIEXPORT jintArray JNICALL Java_jnibwapi_JNIBWAPI_getTechTypes(JNIEnv* env, jobject jObj)
@@ -509,7 +533,7 @@ JNIEXPORT jintArray JNICALL Java_jnibwapi_JNIBWAPI_getTechTypes(JNIEnv* env, job
 
 JNIEXPORT jstring JNICALL Java_jnibwapi_JNIBWAPI_getTechTypeName(JNIEnv* env, jobject jObj, jint techID)
 {
-	return jEnv->NewStringUTF(techTypeMap[techID].getName().c_str());
+	return env->NewStringUTF(techTypeMap[techID].getName().c_str());
 }
 
 JNIEXPORT jintArray JNICALL Java_jnibwapi_JNIBWAPI_getUpgradeTypes(JNIEnv* env, jobject jObj)
@@ -537,7 +561,7 @@ JNIEXPORT jintArray JNICALL Java_jnibwapi_JNIBWAPI_getUpgradeTypes(JNIEnv* env, 
 
 JNIEXPORT jstring JNICALL Java_jnibwapi_JNIBWAPI_getUpgradeTypeName(JNIEnv* env, jobject jObj, jint upgradeID)
 {
-	return jEnv->NewStringUTF(upgradeTypeMap[upgradeID].getName().c_str());
+	return env->NewStringUTF(upgradeTypeMap[upgradeID].getName().c_str());
 }
 
 JNIEXPORT jintArray JNICALL Java_jnibwapi_JNIBWAPI_getWeaponTypes(JNIEnv* env, jobject jObj)
@@ -579,7 +603,7 @@ JNIEXPORT jintArray JNICALL Java_jnibwapi_JNIBWAPI_getWeaponTypes(JNIEnv* env, j
 
 JNIEXPORT jstring JNICALL Java_jnibwapi_JNIBWAPI_getWeaponTypeName(JNIEnv* env, jobject jObj, jint weaponID)
 {
-	return jEnv->NewStringUTF(weaponTypeMap[weaponID].getName().c_str());
+	return env->NewStringUTF(weaponTypeMap[weaponID].getName().c_str());
 }
 
 JNIEXPORT jintArray JNICALL Java_jnibwapi_JNIBWAPI_getUnitSizeTypes(JNIEnv* env, jobject jObj) 
@@ -598,7 +622,7 @@ JNIEXPORT jintArray JNICALL Java_jnibwapi_JNIBWAPI_getUnitSizeTypes(JNIEnv* env,
 
 JNIEXPORT jstring JNICALL Java_jnibwapi_JNIBWAPI_getUnitSizeTypeName(JNIEnv* env, jobject jObj, jint sizeID)
 {
-	return jEnv->NewStringUTF(unitSizeTypeMap[sizeID].getName().c_str());
+	return env->NewStringUTF(unitSizeTypeMap[sizeID].getName().c_str());
 }
 
 JNIEXPORT jintArray JNICALL Java_jnibwapi_JNIBWAPI_getBulletTypes(JNIEnv* env, jobject jObj)
@@ -617,7 +641,7 @@ JNIEXPORT jintArray JNICALL Java_jnibwapi_JNIBWAPI_getBulletTypes(JNIEnv* env, j
 
 JNIEXPORT jstring JNICALL Java_jnibwapi_JNIBWAPI_getBulletTypeName(JNIEnv* env, jobject jObj, jint bulletID)
 {
-	return jEnv->NewStringUTF(bulletTypeMap[bulletID].getName().c_str());
+	return env->NewStringUTF(bulletTypeMap[bulletID].getName().c_str());
 }
 
 JNIEXPORT jintArray JNICALL Java_jnibwapi_JNIBWAPI_getDamageTypes(JNIEnv* env, jobject jObj)
@@ -636,7 +660,7 @@ JNIEXPORT jintArray JNICALL Java_jnibwapi_JNIBWAPI_getDamageTypes(JNIEnv* env, j
 
 JNIEXPORT jstring JNICALL Java_jnibwapi_JNIBWAPI_getDamageTypeName(JNIEnv* env, jobject jObj, jint damageID)
 {
-	return jEnv->NewStringUTF(damageTypeMap[damageID].getName().c_str());
+	return env->NewStringUTF(damageTypeMap[damageID].getName().c_str());
 }
 
 JNIEXPORT jintArray JNICALL Java_jnibwapi_JNIBWAPI_getExplosionTypes(JNIEnv* env, jobject jObj)
@@ -655,12 +679,12 @@ JNIEXPORT jintArray JNICALL Java_jnibwapi_JNIBWAPI_getExplosionTypes(JNIEnv* env
 
 JNIEXPORT jstring JNICALL Java_jnibwapi_JNIBWAPI_getExplosionTypeName(JNIEnv* env, jobject jObj, jint explosionID)
 {
-	return jEnv->NewStringUTF(explosionTypeMap[explosionID].getName().c_str());
+	return env->NewStringUTF(explosionTypeMap[explosionID].getName().c_str());
 }
 
 JNIEXPORT jstring JNICALL Java_jnibwapi_JNIBWAPI_getUnitCommandTypeName(JNIEnv* env, jobject jObj, jint unitCommandID)
 {
-	return jEnv->NewStringUTF(unitCommandTypeMap[unitCommandID].getName().c_str());
+	return env->NewStringUTF(unitCommandTypeMap[unitCommandID].getName().c_str());
 }
 
 JNIEXPORT jintArray JNICALL Java_jnibwapi_JNIBWAPI_getUnitCommandTypes(JNIEnv* env, jobject jObj)
@@ -679,7 +703,7 @@ JNIEXPORT jintArray JNICALL Java_jnibwapi_JNIBWAPI_getUnitCommandTypes(JNIEnv* e
 
 JNIEXPORT jstring JNICALL Java_jnibwapi_JNIBWAPI_getOrderTypeName(JNIEnv* env, jobject jObj, jint unitCommandID)
 {
-	return jEnv->NewStringUTF(orderTypeMap[unitCommandID].getName().c_str());
+	return env->NewStringUTF(orderTypeMap[unitCommandID].getName().c_str());
 }
 
 JNIEXPORT jintArray JNICALL Java_jnibwapi_JNIBWAPI_getOrderTypes(JNIEnv* env, jobject jObj)
@@ -701,7 +725,7 @@ JNIEXPORT jintArray JNICALL Java_jnibwapi_JNIBWAPI_getOrderTypes(JNIEnv* env, jo
 *
 * Each unit takes up a fixed number of integer values. Currently: 117
 */
-JNIEXPORT jintArray JNICALL Java_jnibwapi_JNIBWAPI_getUnits(JNIEnv* env, jobject jObj) 
+JNIEXPORT jintArray JNICALL Java_jnibwapi_JNIBWAPI_getAllUnitsData(JNIEnv* env, jobject jObj) 
 {
 	int index = 0;
 
@@ -837,6 +861,17 @@ JNIEXPORT jintArray JNICALL Java_jnibwapi_JNIBWAPI_getUnits(JNIEnv* env, jobject
 	return result;
 }
 
+JNIEXPORT jboolean JNICALL Java_jnibwapi_JNIBWAPI_isVisibleToPlayer(JNIEnv* env, jobject jObj, jint unitID, jint playerID)
+{
+	Unit* u = Broodwar->getUnit(unitID);
+	Player* p = Broodwar->getPlayer(playerID);
+	if (u != NULL && p != NULL)
+	{
+		return u->isVisible(p);
+	}
+	return false;
+}
+
 /*****************************************************************************************************************/
 // Map queries
 /*****************************************************************************************************************/
@@ -851,14 +886,23 @@ JNIEXPORT jint JNICALL Java_jnibwapi_JNIBWAPI_getMapHeight(JNIEnv* env, jobject 
 	return Broodwar->mapHeight();
 }
 
-JNIEXPORT jstring JNICALL Java_jnibwapi_JNIBWAPI_getMapName(JNIEnv* env, jobject jObj)
+JNIEXPORT jstring JNICALL Java_jnibwapi_JNIBWAPI_getMapFileName(JNIEnv* env, jobject jObj)
 {
-	return jEnv->NewStringUTF(Broodwar->mapFileName().c_str());
+	return env->NewStringUTF(Broodwar->mapFileName().c_str());
+}
+
+JNIEXPORT jbyteArray JNICALL Java_jnibwapi_JNIBWAPI_getMapName(JNIEnv* env, jobject jObj)
+{
+	// NewStringUTF causes issues with unusual characters like Korean symbols
+	std::string str = Broodwar->mapName();
+	jbyteArray jbArray = env->NewByteArray(str.length());
+	env->SetByteArrayRegion(jbArray, 0, str.length(), (jbyte*)str.c_str());
+	return jbArray;
 }
 
 JNIEXPORT jstring JNICALL Java_jnibwapi_JNIBWAPI_getMapHash(JNIEnv* env, jobject jObj)
 {
-	return jEnv->NewStringUTF(Broodwar->mapHash().c_str());
+	return env->NewStringUTF(Broodwar->mapHash().c_str());
 }
 
 JNIEXPORT jintArray JNICALL Java_jnibwapi_JNIBWAPI_getHeightData(JNIEnv* env, jobject jObj)
@@ -874,6 +918,25 @@ JNIEXPORT jintArray JNICALL Java_jnibwapi_JNIBWAPI_getHeightData(JNIEnv* env, jo
 	}
 
 	jintArray result = env->NewIntArray(index);
+	env->SetIntArrayRegion(result, 0, index, intBuf);
+	return result;
+}
+
+// Returns the regionId for each map tile
+JNIEXPORT jintArray JNICALL Java_jnibwapi_JNIBWAPI_getRegionMap(JNIEnv* env, jobject jObj)
+{
+	int index = 0;
+	int width = Broodwar->mapWidth();
+	int height = Broodwar->mapHeight();
+
+	for (int ty=0; ty<height; ty++) {
+		for (int tx=0; tx<width; tx++) {
+			BWTA::Region* region = BWTA::getRegion(tx, ty);
+			intBuf[index++] = regionMap[region];
+		}
+	}
+
+	jintArray result =env->NewIntArray(index);
 	env->SetIntArrayRegion(result, 0, index, intBuf);
 	return result;
 }
@@ -999,6 +1062,20 @@ JNIEXPORT jintArray JNICALL Java_jnibwapi_JNIBWAPI_getBaseLocations(JNIEnv* env,
 		intBuf[index++] = (*i)->isIsland() ? 1 : 0;
 		intBuf[index++] = (*i)->isMineralOnly() ? 1 : 0;
 		intBuf[index++] = (*i)->isStartLocation() ? 1 : 0;
+	}
+
+	jintArray result = env->NewIntArray(index);
+	env->SetIntArrayRegion(result, 0, index, intBuf);
+	return result;
+}
+
+JNIEXPORT jintArray JNICALL Java_jnibwapi_JNIBWAPI_getUnitIdsOnTile(JNIEnv * env, jobject jObj, jint tx, jint ty)
+{
+	std::set<Unit*> unitsOnTile = Broodwar->getUnitsOnTile(tx, ty);
+	int index = 0;
+	for (std::set<Unit*>::iterator i = unitsOnTile.begin(); i != unitsOnTile.end(); ++i)
+	{
+		intBuf[index++] = (*i)->getID();
 	}
 
 	jintArray result = env->NewIntArray(index);
@@ -1606,6 +1683,7 @@ JNIEXPORT jboolean JNICALL Java_jnibwapi_JNIBWAPI_isExplored(JNIEnv* env, jobjec
 {
 	return Broodwar->isExplored(tileX, tileY);
 }
+
 JNIEXPORT jboolean JNICALL Java_jnibwapi_JNIBWAPI_isBuildable(JNIEnv *, jobject, jint tx, jint ty, jboolean includeBuildings ){
 	bool checkBuildings = false;
 	if(includeBuildings)
@@ -1811,8 +1889,7 @@ JNIEXPORT jint JNICALL Java_jnibwapi_JNIBWAPI_getLastError(JNIEnv *, jobject){
 	return Broodwar->getLastError().getID();
 }
 
-JNIEXPORT jint JNICALL Java_jnibwapi_JNIBWAPI_getRemainingLatencyFrames
-	(JNIEnv *, jobject){
+JNIEXPORT jint JNICALL Java_jnibwapi_JNIBWAPI_getRemainingLatencyFrames(JNIEnv *, jobject){
 
 		return Broodwar->getRemainingLatencyFrames();
 }
