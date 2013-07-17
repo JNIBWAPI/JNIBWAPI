@@ -1,6 +1,10 @@
 package jnibwapi.model;
 
-import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.HashSet;
+import java.util.LinkedList;
+import java.util.Set;
 
 /**
  * Represents a region in a StarCraft map.
@@ -15,21 +19,14 @@ public class Region {
 	private int centerX;
 	private int centerY;
 	private int[] coordinates;
-	private ArrayList<Region> connectedRegions = new ArrayList<Region>();
-	private ArrayList<ChokePoint> chokePoints = new ArrayList<ChokePoint>();
+	private Set<Region> connectedRegions = new HashSet<>();
+	private Set<ChokePoint> chokePoints = new HashSet<>();
+	private Set<Region> allConnectedRegions = null;
 	
 	public Region(int[] data, int index) {
 		ID = data[index++];
 		centerX = data[index++];
 		centerY = data[index++];
-	}
-	
-	public int[] getCoordinates() {
-		return coordinates;
-	}
-	
-	public void setCoordinates(int[] coordinates) {
-		this.coordinates = coordinates;
 	}
 	
 	public int getID() {
@@ -44,11 +41,45 @@ public class Region {
 		return centerY;
 	}
 	
-	public ArrayList<Region> getConnectedRegions() {
-		return connectedRegions;
+	protected void setCoordinates(int[] coordinates) {
+		this.coordinates = coordinates;
 	}
 	
-	public ArrayList<ChokePoint> getChokePoints() {
-		return chokePoints;
+	public int[] getCoordinates() {
+		return Arrays.copyOf(coordinates, coordinates.length);
 	}
+	
+	protected void addChokePoint(ChokePoint chokePoint) {
+		chokePoints.add(chokePoint);
+	}
+	
+	public Set<ChokePoint> getChokePoints() {
+		return Collections.unmodifiableSet(chokePoints);
+	}
+	
+	protected void addConnectedRegion(Region other) {
+		connectedRegions.add(other);
+	}
+	
+	public Set<Region> getConnectedRegions() {
+		return Collections.unmodifiableSet(connectedRegions);
+	}
+	
+	/** Get all transitively connected regions for a given region */
+	public Set<Region> getAllConnectedRegions() {
+		// Evaluate on first call
+		if (allConnectedRegions == null) {
+			allConnectedRegions = new HashSet<Region>();
+			LinkedList<Region> unexplored = new LinkedList<Region>();
+			unexplored.add(this);
+			while (!unexplored.isEmpty()) {
+				Region current = unexplored.remove();
+				if (allConnectedRegions.add(current)) {
+					unexplored.addAll(current.getConnectedRegions());
+				}
+			}
+		}
+		return Collections.unmodifiableSet(allConnectedRegions);
+	}
+	
 }
