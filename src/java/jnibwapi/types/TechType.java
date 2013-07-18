@@ -68,8 +68,11 @@ public class TechType {
 		Undefined43,
 		None,
 		Unknown,
-		Nuclear_Strike,
-	};
+		Nuclear_Strike;
+		public int getID() {
+			return ordinal();
+		}
+	}
 	
 	public TechType(int[] data, int index) {
 		ID = data[index++];

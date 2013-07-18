@@ -1,7 +1,7 @@
 package jnibwapi.types;
 
 /**
- * Represents a StarCraft explosion type.
+ * Represents a StarCraft unit command type.
  * 
  * For a description of fields see: http://code.google.com/p/bwapi/wiki/UnitCommandType
  */
@@ -99,11 +99,16 @@ public class UnitCommandType {
 		Use_Tech_Position,
 		// Use_Tech_Unit - corresponds to Unit::useTech
 		Use_Tech_Unit,
+		// Place a flag from a beacon
+		Place_COP,
 		// None
 		None,
 		// Unknown
-		Unknown,
-	};
+		Unknown;
+		public int getID() {
+			return ordinal();
+		}
+	}
 	
 	public UnitCommandType(int[] data, int index) {
 		ID = data[index++];

@@ -38,8 +38,11 @@ public class ExplosionType {
 		Maelstrom,
 		Undefined23,
 		Air_Splash,
-		Unknown,
-	};
+		Unknown;
+		public int getID() {
+			return ordinal();
+		}
+	}
 	
 	public ExplosionType(int[] data, int index) {
 		ID = data[index++];

@@ -38,45 +38,45 @@ public class UpgradeType {
 		Protoss_Ground_Weapons,
 		Protoss_Air_Weapons,
 		Protoss_Plasma_Shields,
-		U_238_Shells,
-		Ion_Thrusters,
+		U_238_Shells, // Marine Range
+		Ion_Thrusters, // Vulture Speed
 		Undefined18,
-		Titan_Reactor,
-		Ocular_Implants,
-		Moebius_Reactor,
-		Apollo_Reactor,
-		Colossus_Reactor,
-		Ventral_Sacs,
-		Antennae,
-		Pneumatized_Carapace,
-		Metabolic_Boost,
-		Adrenal_Glands,
-		Muscular_Augments,
-		Grooved_Spines,
-		Gamete_Meiosis,
-		Metasynaptic_Node,
-		Singularity_Charge,
-		Leg_Enhancements,
+		Titan_Reactor, // Science Vessel Energy
+		Ocular_Implants, // Ghost Sight
+		Moebius_Reactor, // Ghost Energy
+		Apollo_Reactor, // Wraith Energy
+		Colossus_Reactor, // Battle Cruiser Energy
+		Ventral_Sacs, // Overlord Transport
+		Antennae, // Overlord Sight
+		Pneumatized_Carapace, // Overlord Speed
+		Metabolic_Boost, // Zergling Speed
+		Adrenal_Glands, // Zergling Attack
+		Muscular_Augments, // Hydralisk Speed
+		Grooved_Spines, // Hydralisk Range
+		Gamete_Meiosis, // Queen Energy
+		Metasynaptic_Node, // Defiler Energy
+		Singularity_Charge, // Dragoon Range
+		Leg_Enhancements, // Zealot Speed
 		Scarab_Damage,
 		Reaver_Capacity,
-		Gravitic_Drive,
-		Sensor_Array,
-		Gravitic_Boosters,
-		Khaydarin_Amulet,
-		Apial_Sensors,
-		Gravitic_Thrusters,
+		Gravitic_Drive, // Shuttle Speed
+		Sensor_Array, // Observer Sight
+		Gravitic_Boosters, // Observer Speed
+		Khaydarin_Amulet, // Templar Energy
+		Apial_Sensors, // Scout Sight
+		Gravitic_Thrusters, // Scout Speed
 		Carrier_Capacity,
-		Khaydarin_Core,
+		Khaydarin_Core, // Arbiter Energy
 		Undefined45,
 		Undefined46,
-		Argus_Jewel,
+		Argus_Jewel, // Corsair Energy
 		Undefined48,
-		Argus_Talisman,
+		Argus_Talisman, // Dark Archon Energy
 		Undefined50,
-		Caduceus_Reactor,
-		Chitinous_Plating,
-		Anabolic_Synthesis,
-		Charon_Boosters,
+		Caduceus_Reactor, // Medic Energy
+		Chitinous_Plating, // Ultralisk Armor
+		Anabolic_Synthesis, // Ultralisk Speed
+		Charon_Boosters, // Goliath Range
 		Undefined55,
 		Undefined56,
 		Undefined57,
@@ -84,8 +84,11 @@ public class UpgradeType {
 		Undefined59,
 		Undefined60,
 		None,
-		Unknown,
-	};
+		Unknown;
+		public int getID() {
+			return ordinal();
+		}
+	}
 	
 	public UpgradeType(int[] data, int index) {
 		ID = data[index++];
