@@ -33,10 +33,10 @@ JNIEXPORT jint JNICALL Java_jnibwapi_JNIBWAPI_getReplayFrameTotal
 
 /*
  * Class:     jnibwapi_JNIBWAPI
- * Method:    getPlayerInfo
+ * Method:    getPlayersData
  * Signature: ()[I
  */
-JNIEXPORT jintArray JNICALL Java_jnibwapi_JNIBWAPI_getPlayerInfo
+JNIEXPORT jintArray JNICALL Java_jnibwapi_JNIBWAPI_getPlayersData
   (JNIEnv *, jobject);
 
 /*

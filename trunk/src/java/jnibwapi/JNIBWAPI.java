@@ -75,7 +75,7 @@ public class JNIBWAPI {
 	// query methods
 	private native int getFrame();
 	public native int getReplayFrameTotal();
-	private native int[] getPlayerInfo();
+	private native int[] getPlayersData();
 	private native int[] getPlayerUpdate(int playerID);
 	/** Returns string as a byte[] to properly handle ASCII-extended characters */
 	private native byte[] getPlayerName(int playerID);
@@ -140,7 +140,7 @@ public class JNIBWAPI {
 	public native boolean holdPosition(int unitID);
 	public native boolean stop(int unitID);
 	public native boolean follow(int unitID, int targetID);
-	public native boolean gather(int unitID, int trargetID);
+	public native boolean gather(int unitID, int targetID);
 	public native boolean returnCargo(int unitID);
 	public native boolean repair(int unitID, int targetID);
 	public native boolean burrow(int unitID);
@@ -615,9 +615,11 @@ public class JNIBWAPI {
 			enemyIDs.clear();
 			players.clear();
 			
-			int[] playerData = getPlayerInfo();
+			int[] playerData = getPlayersData();
 			for (int index = 0; index < playerData.length; index += Player.numAttributes) {
-				Player player = new Player(playerData, index);
+				String name = new String(getPlayerName(playerData[index]));
+				Player player = new Player(playerData, index, name);
+				
 				players.put(player.getID(), player);
 				
 				if (player.isSelf()) {

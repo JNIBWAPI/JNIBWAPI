@@ -329,33 +329,30 @@ JNIEXPORT jint JNICALL Java_jnibwapi_JNIBWAPI_getReplayFrameTotal(JNIEnv* env, j
 	return Broodwar->getReplayFrameCount();
 }
 
-JNIEXPORT jintArray JNICALL Java_jnibwapi_JNIBWAPI_getPlayerInfo(JNIEnv* env, jobject jObj)
+JNIEXPORT jintArray JNICALL Java_jnibwapi_JNIBWAPI_getPlayersData(JNIEnv* env, jobject jObj)
 {
 	int index = 0;
 
 	std::set<Player*> players = Broodwar->getPlayers();
-	if (Broodwar->isReplay()) {
-		for (std::set<Player*>::iterator i = players.begin(); i != players.end(); ++i) {
-			intBuf[index++] = (*i)->getID();
-			intBuf[index++] = (*i)->getRace().getID();
-			intBuf[index++] = (*i)->getType().getID();
-			intBuf[index++] = 0;// there is no self in replay((*i)->getID() == Broodwar->self()->getID()) ? 1 : 0;	// is self?
-			intBuf[index++] = 0;// as there is no self in replays, there is also no allies(*i)->isAlly(Broodwar->self()) ? 1 : 0;
-			intBuf[index++] = 0;// as there is no self in replays, there is also no enemies(*i)->isEnemy(Broodwar->self()) ? 1 : 0;
-			intBuf[index++] = (*i)->isNeutral();
-			intBuf[index++] = (*i)->getColor().getID();
+	
+	for (std::set<Player*>::iterator i = players.begin(); i != players.end(); ++i) {
+		intBuf[index++] = (*i)->getID();
+		intBuf[index++] = (*i)->getRace().getID();
+		intBuf[index++] = (*i)->getType().getID();
+		intBuf[index++] = (*i)->getStartLocation().x();
+		intBuf[index++] = (*i)->getStartLocation().y();
+		if (Broodwar->isReplay()) {
+			intBuf[index++] = 0; // there is no self in replays
+			intBuf[index++] = 0; // as there is no self in replays, there are also no allies
+			intBuf[index++] = 0; // as there is no self in replays, there are also no enemies
+		} else {
+			intBuf[index++] = ((*i)->getID() == Broodwar->self()->getID()) ? 1 : 0;	// is self
+			intBuf[index++] = (*i)->isAlly(Broodwar->self()) ? 1 : 0; // is ally
+			intBuf[index++] = (*i)->isEnemy(Broodwar->self()) ? 1 : 0; // is enemy
 		}
-	} else {
-		for (std::set<Player*>::iterator i = players.begin(); i != players.end(); ++i) {
-			intBuf[index++] = (*i)->getID();
-			intBuf[index++] = (*i)->getRace().getID();
-			intBuf[index++] = (*i)->getType().getID();
-			intBuf[index++] = ((*i)->getID() == Broodwar->self()->getID()) ? 1 : 0;	// is self?
-			intBuf[index++] = (*i)->isAlly(Broodwar->self()) ? 1 : 0;
-			intBuf[index++] = (*i)->isEnemy(Broodwar->self()) ? 1 : 0;
-			intBuf[index++] = (*i)->isNeutral();
-			intBuf[index++] = (*i)->getColor().getID();
-		}
+		intBuf[index++] = (*i)->isNeutral() ? 1 : 0;
+		intBuf[index++] = (*i)->isObserver() ? 1 : 0; // Always true? BWAPI bug?
+		intBuf[index++] = (*i)->getColor().getID();
 	}
 
 	jintArray result = env->NewIntArray(index);
