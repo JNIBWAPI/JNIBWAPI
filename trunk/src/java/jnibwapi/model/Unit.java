@@ -7,11 +7,12 @@ package jnibwapi.model;
  */
 public class Unit {
 	
-	public static final int numAttributes = 117;
+	public static final int numAttributes = 118;
 	public static final double TO_DEGREES = 180.0 / Math.PI;
 	public static final double fixedScale = 100.0;
 	
 	private int ID;
+	private int replayID;
 	private int playerID;
 	private int typeID;
 	private int x;
@@ -52,7 +53,7 @@ public class Unit {
 	private int orderTimer;
 	private int plagueTimer;
 	private int removeTimer;
-	private int statisTimer;
+	private int stasisTimer;
 	private int stimTimer;
 	private int buildTypeID;
 	private int trainingQueueSize;
@@ -62,7 +63,7 @@ public class Unit {
 	private int remainingTrainTime;
 	private int remainingResearchTime;
 	private int remainingUpgradeTime;
-	private int constructingTypeID;
+	private int buildUnitID;
 	private int targetUnitID;
 	private int targetX;
 	private int targetY;
@@ -140,6 +141,7 @@ public class Unit {
 	
 	public void update(int[] data, int index) {
 		index++; // ID = data[index++];
+		replayID = data[index++];
 		playerID = data[index++];
 		typeID = data[index++];
 		x = data[index++];
@@ -180,7 +182,7 @@ public class Unit {
 		orderTimer = data[index++];
 		plagueTimer = data[index++];
 		removeTimer = data[index++];
-		statisTimer = data[index++];
+		stasisTimer = data[index++];
 		stimTimer = data[index++];
 		buildTypeID = data[index++];
 		trainingQueueSize = data[index++];
@@ -190,7 +192,7 @@ public class Unit {
 		remainingTrainTime = data[index++];
 		remainingResearchTime = data[index++];
 		remainingUpgradeTime = data[index++];
-		constructingTypeID = data[index++];
+		buildUnitID = data[index++];
 		targetUnitID = data[index++];
 		targetX = data[index++];
 		targetY = data[index++];
@@ -262,6 +264,10 @@ public class Unit {
 		return ID;
 	}
 	
+	public int getReplayID() {
+		return replayID;
+	}
+	
 	public int getPlayerID() {
 		return playerID;
 	}
@@ -302,7 +308,7 @@ public class Unit {
 		return hitPoints;
 	}
 	
-	public int getShield() {
+	public int getShields() {
 		return shield;
 	}
 	
@@ -422,8 +428,8 @@ public class Unit {
 		return removeTimer;
 	}
 	
-	public int getStatisTimer() {
-		return statisTimer;
+	public int getStasisTimer() {
+		return stasisTimer;
 	}
 	
 	public int getStimTimer() {
@@ -462,8 +468,8 @@ public class Unit {
 		return remainingUpgradeTime;
 	}
 	
-	public int getConstructingTypeID() {
-		return constructingTypeID;
+	public int getBuildUnitID() {
+		return buildUnitID;
 	}
 	
 	public int getTargetUnitID() {

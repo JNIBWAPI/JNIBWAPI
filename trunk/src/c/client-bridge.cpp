@@ -751,7 +751,7 @@ JNIEXPORT jintArray JNICALL Java_jnibwapi_JNIBWAPI_getOrderTypes(JNIEnv* env, jo
 /**
 * Returns the list of active units in the game. 
 *
-* Each unit takes up a fixed number of integer values. Currently: 117
+* Each unit takes up a fixed number of integer values. Currently: 118
 */
 JNIEXPORT jintArray JNICALL Java_jnibwapi_JNIBWAPI_getAllUnitsData(JNIEnv* env, jobject jObj) 
 {
@@ -760,6 +760,7 @@ JNIEXPORT jintArray JNICALL Java_jnibwapi_JNIBWAPI_getAllUnitsData(JNIEnv* env, 
 	std::set<Unit*> units = Broodwar->getAllUnits();
 	for (std::set<Unit*>::iterator i = units.begin(); i != units.end(); ++i) {
 		intBuf[index++] = (*i)->getID();
+		intBuf[index++] = (*i)->getReplayID();
 		intBuf[index++] = (*i)->getPlayer()->getID();
 		intBuf[index++] = (*i)->getType().getID();
 		intBuf[index++] = (*i)->getPosition().x();
