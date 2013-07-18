@@ -167,8 +167,11 @@ public class WeaponType {
 		Undefined128,
 		Undefined129,
 		None,
-		Unknown,
-	};
+		Unknown;
+		public int getID() {
+			return ordinal();
+		}
+	}
 	
 	public WeaponType(int[] data, int index) {
 		ID = data[index++];

@@ -19,8 +19,11 @@ public class DamageType {
 		Normal,
 		Ignore_Armor,
 		None,
-		Unknown,
-	};
+		Unknown;
+		public int getID() {
+			return ordinal();
+		}
+	}
 	
 	public DamageType(int[] data, int index) {
 		ID = data[index++];

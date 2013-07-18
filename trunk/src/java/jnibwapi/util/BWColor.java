@@ -1,7 +1,6 @@
 package jnibwapi.util;
 
-public class BWColor
-{
+public class BWColor {
 	public static final int RED = 111;
 	public static final int BLUE = 165;
 	public static final int TEAL = 159;

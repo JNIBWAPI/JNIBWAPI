@@ -12,14 +12,17 @@ public class UnitSizeType {
 	private String name;
 	private int ID;
 	
-	public enum UnitSizes {
+	public enum UnitSizeTypes {
 		Independent,
 		Small,
 		Medium,
 		Large,
 		None,
-		Unknown,
-	};
+		Unknown;
+		public int getID() {
+			return ordinal();
+		}
+	}
 	
 	public UnitSizeType(int[] data, int index) {
 		ID = data[index++];
