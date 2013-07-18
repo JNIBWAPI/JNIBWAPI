@@ -1,5 +1,7 @@
 package jnibwapi.model;
 
+import java.awt.Point;
+
 /**
  * Represents a StarCraft player.
  * 
@@ -7,16 +9,20 @@ package jnibwapi.model;
  */
 public class Player {
 	
-	public static final int numAttributes = 8;
+	public static final int numAttributes = 11;
 	
-	private int ID;
-	private int raceID;
-	private int typeID;
-	private boolean self;
-	private boolean ally;
-	private boolean enemy;
-	private boolean neutral;
-	private int color;
+	private final int ID;
+	private final int raceID;
+	private final int typeID;
+	private final int startLocationX;
+	private final int startLocationY;
+	private final boolean self;
+	private final boolean ally;
+	private final boolean enemy;
+	private final boolean neutral;
+	private final boolean observer;
+	private final int color;
+	private final String name;
 	
 	private int minerals;
 	private int gas;
@@ -34,15 +40,19 @@ public class Player {
 	private boolean[] upgrading = null;
 	private int[] upgradeLevel = null;
 	
-	public Player(int[] data, int index) {
+	public Player(int[] data, int index, String name) {
 		ID = data[index++];
 		raceID = data[index++];
 		typeID = data[index++];
+		startLocationX = data[index++];
+		startLocationY = data[index++];
 		self = (data[index++] == 1);
 		ally = (data[index++] == 1);
 		enemy = (data[index++] == 1);
 		neutral = (data[index++] == 1);
+		observer = (data[index++] == 1);
 		color = data[index++];
+		this.name = name;
 	}
 	
 	public void update(int[] data) {
@@ -89,6 +99,17 @@ public class Player {
 		return typeID;
 	}
 	
+	/**
+	 * Returns the starting tile position of the Player, or null if unknown (eg. for enemy players
+	 * without complete map information).
+	 */
+	public Point getStartLocation() {
+		if (startLocationX == 1000) {
+			return null; // In the case of Invalid/None/Unknown TilePosition
+		}
+		return new Point(startLocationX, startLocationY);
+	}
+	
 	public boolean isSelf() {
 		return self;
 	}
@@ -105,8 +126,16 @@ public class Player {
 		return neutral;
 	}
 	
+	public boolean isObserver() {
+		return observer;
+	}
+	
 	public int getColor() {
 		return color;
+	}
+	
+	public String getName() {
+		return name;
 	}
 	
 	public int getMinerals() {
