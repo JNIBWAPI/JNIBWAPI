@@ -15,18 +15,19 @@ public class Region {
 	
 	public static final int numAttributes = 3;
 	
-	private int ID;
-	private int centerX;
-	private int centerY;
-	private int[] coordinates;
+	private final int ID;
+	private final int centerX;
+	private final int centerY;
+	private final int[] coordinates;
 	private Set<Region> connectedRegions = new HashSet<>();
 	private Set<ChokePoint> chokePoints = new HashSet<>();
 	private Set<Region> allConnectedRegions = null;
 	
-	public Region(int[] data, int index) {
+	public Region(int[] data, int index, int[] coordinates) {
 		ID = data[index++];
 		centerX = data[index++];
 		centerY = data[index++];
+		this.coordinates = coordinates;
 	}
 	
 	public int getID() {
@@ -39,10 +40,6 @@ public class Region {
 	
 	public int getCenterY() {
 		return centerY;
-	}
-	
-	protected void setCoordinates(int[] coordinates) {
-		this.coordinates = coordinates;
 	}
 	
 	public int[] getCoordinates() {

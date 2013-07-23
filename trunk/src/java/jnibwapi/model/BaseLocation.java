@@ -9,16 +9,16 @@ public class BaseLocation {
 	
 	public static final int numAttributes = 10;
 	
-	private int x;
-	private int y;
-	private int tx;
-	private int ty;
-	private int regionID;
-	private int minerals;
-	private int gas;
-	private boolean island;
-	private boolean mineralOnly;
-	private boolean startLocation;
+	private final int x;
+	private final int y;
+	private final int tx;
+	private final int ty;
+	private final int regionID;
+	private final int minerals;
+	private final int gas;
+	private final boolean island;
+	private final boolean mineralOnly;
+	private final boolean startLocation;
 	
 	public BaseLocation(int[] data, int index) {
 		x = data[index++];

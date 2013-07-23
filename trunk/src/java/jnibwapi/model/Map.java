@@ -76,10 +76,12 @@ public class Map {
 		
 		// regions
 		regions = new ArrayList<>();
-		for (int index = 0; index < regionData.length; index += Region.numAttributes) {
-			Region region = new Region(regionData, index);
-			region.setCoordinates(regionPolygons.get(region.getID()));
-			regions.add(region);
+		if (regionData != null) {
+			for (int index = 0; index < regionData.length; index += Region.numAttributes) {
+				int[] coordinates = regionPolygons.get(regionData[index]);
+				Region region = new Region(regionData, index, coordinates);
+				regions.add(region);
+			}
 		}
 		idToRegion = new HashMap<>();
 		for (Region region : regions) {
@@ -90,9 +92,7 @@ public class Map {
 		chokePoints = new ArrayList<>();
 		if (chokePointData != null) {
 			for (int index = 0; index < chokePointData.length; index += ChokePoint.numAttributes) {
-				ChokePoint chokePoint = new ChokePoint(chokePointData, index);
-				chokePoint.setFirstRegion(getRegion(chokePoint.getFirstRegionID()));
-				chokePoint.setSecondRegion(getRegion(chokePoint.getSecondRegionID()));
+				ChokePoint chokePoint = new ChokePoint(chokePointData, index, idToRegion);
 				chokePoints.add(chokePoint);
 			}
 		}
@@ -107,14 +107,11 @@ public class Map {
 		}
 		
 		// connect the region graph
-		for (Region region : getRegions()) {
-			for (ChokePoint chokePoint : getChokePoints()) {
-				if (chokePoint.getFirstRegion().equals(region)
-						|| chokePoint.getSecondRegion().equals(region)) {
-					region.addChokePoint(chokePoint);
-					region.addConnectedRegion(chokePoint.getOtherRegion(region));
-				}
-			}
+		for (ChokePoint chokePoint : chokePoints) {
+			chokePoint.getFirstRegion().addChokePoint(chokePoint);
+			chokePoint.getFirstRegion().addConnectedRegion(chokePoint.getSecondRegion());
+			chokePoint.getSecondRegion().addChokePoint(chokePoint);
+			chokePoint.getSecondRegion().addConnectedRegion(chokePoint.getFirstRegion());
 		}
 	}
 	

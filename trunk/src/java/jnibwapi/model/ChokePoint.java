@@ -1,5 +1,7 @@
 package jnibwapi.model;
 
+import java.util.Map;
+
 /**
  * Represents a choke point in a StarCraft map.
  * 
@@ -10,19 +12,19 @@ public class ChokePoint {
 	public static final int numAttributes = 9;
 	public static final double fixedScale = 100.0;
 	
-	private int centerX;
-	private int centerY;
-	private double radius;
-	private int firstRegionID;
-	private int secondRegionID;
-	private int firstSideX;
-	private int firstSideY;
-	private int secondSideX;
-	private int secondSideY;
-	private Region firstRegion;
-	private Region secondRegion;
+	private final int centerX;
+	private final int centerY;
+	private final double radius;
+	private final int firstRegionID;
+	private final int secondRegionID;
+	private final int firstSideX;
+	private final int firstSideY;
+	private final int secondSideX;
+	private final int secondSideY;
+	private final Region firstRegion;
+	private final Region secondRegion;
 	
-	public ChokePoint(int[] data, int index) {
+	public ChokePoint(int[] data, int index, Map<Integer, Region> idToRegion) {
 		centerX = data[index++];
 		centerY = data[index++];
 		radius = data[index++] / fixedScale;
@@ -32,6 +34,8 @@ public class ChokePoint {
 		firstSideY = data[index++];
 		secondSideX = data[index++];
 		secondSideY = data[index++];
+		firstRegion = idToRegion.get(firstRegionID);
+		secondRegion = idToRegion.get(secondRegionID);
 	}
 	
 	public Region getOtherRegion(Region region) {
@@ -42,16 +46,8 @@ public class ChokePoint {
 		return firstRegion;
 	}
 	
-	public void setFirstRegion(Region firstRegion) {
-		this.firstRegion = firstRegion;
-	}
-	
 	public Region getSecondRegion() {
 		return secondRegion;
-	}
-	
-	public void setSecondRegion(Region secondRegion) {
-		this.secondRegion = secondRegion;
 	}
 	
 	public int getCenterX() {
