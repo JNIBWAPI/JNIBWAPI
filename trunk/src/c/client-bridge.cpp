@@ -430,6 +430,7 @@ JNIEXPORT jintArray JNICALL Java_jnibwapi_JNIBWAPI_getUnitTypes(JNIEnv* env, job
 		intBuf[index++] = i->getID();
 		intBuf[index++] = i->getRace().getID();
 		intBuf[index++] = i->whatBuilds().first.getID();
+		intBuf[index++] = i->requiredTech().getID();
 		intBuf[index++] = i->armorUpgrade().getID();
 		intBuf[index++] = i->maxHitPoints();
 		intBuf[index++] = i->maxShields();
@@ -484,8 +485,6 @@ JNIEXPORT jintArray JNICALL Java_jnibwapi_JNIBWAPI_getUnitTypes(JNIEnv* env, job
 		intBuf[index++] = i->isFlyingBuilding() ? 1 : 0;
 		intBuf[index++] = i->isSpell() ? 1 : 0;
 
-		// requiredUnits
-		// requiredTech
 		// cloakingTech
 		// abilities
 		// upgrades
@@ -504,9 +503,23 @@ JNIEXPORT jintArray JNICALL Java_jnibwapi_JNIBWAPI_getUnitTypes(JNIEnv* env, job
 	return result;
 }
 
-JNIEXPORT jstring JNICALL Java_jnibwapi_JNIBWAPI_getUnitTypeName(JNIEnv* env, jobject jObj, jint typeID) 
+JNIEXPORT jstring JNICALL Java_jnibwapi_JNIBWAPI_getUnitTypeName(JNIEnv* env, jobject jObj, jint unitTypeID) 
 {
-	return env->NewStringUTF(unitTypeMap[typeID].getName().c_str());
+	return env->NewStringUTF(unitTypeMap[unitTypeID].getName().c_str());
+}
+
+JNIEXPORT jintArray JNICALL Java_jnibwapi_JNIBWAPI_getRequiredUnits(JNIEnv* env, jobject jObj, jint unitTypeID) 
+{
+	int index = 0;
+	std::map<UnitType, int> requiredUnits = unitTypeMap[unitTypeID].requiredUnits();
+	for (std::map<UnitType, int>::iterator i = requiredUnits.begin(); i != requiredUnits.end(); ++i) {
+		intBuf[index++] = i->first.getID();
+		intBuf[index++] = i->second;
+	}
+
+	jintArray result = env->NewIntArray(index);
+	env->SetIntArrayRegion(result, 0, index, intBuf);
+	return result;
 }
 
 JNIEXPORT jintArray JNICALL Java_jnibwapi_JNIBWAPI_getRaceTypes(JNIEnv* env, jobject jObj) 

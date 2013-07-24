@@ -83,9 +83,10 @@ public class JNIBWAPI {
 	private native int[] getUpgradeStatus(int playerID);
 	private native int[] getAllUnitsData();
 	private native int[] getRaceTypes();
-	private native String getRaceTypeName(int typeID);
+	private native String getRaceTypeName(int unitTypeID);
 	private native int[] getUnitTypes();
-	private native String getUnitTypeName(int typeID);
+	private native String getUnitTypeName(int unitTypeID);
+	private native int[] getRequiredUnits(int unitTypeID);
 	private native int[] getTechTypes();
 	private native String getTechTypeName(int techID);
 	private native int[] getUpgradeTypes();
@@ -362,8 +363,9 @@ public class JNIBWAPI {
 		// unit types
 		int[] unitTypeData = getUnitTypes();
 		for (int index = 0; index < unitTypeData.length; index += UnitType.numAttributes) {
-			UnitType type = new UnitType(unitTypeData, index);
-			type.setName(getUnitTypeName(type.getID()));
+			String name = getUnitTypeName(unitTypeData[index]);
+			int[] requiredUnits = getRequiredUnits(unitTypeData[index]);
+			UnitType type = new UnitType(unitTypeData, index, name, requiredUnits);
 			unitTypes.put(type.getID(), type);
 		}
 		

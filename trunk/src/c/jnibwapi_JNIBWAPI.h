@@ -113,6 +113,14 @@ JNIEXPORT jstring JNICALL Java_jnibwapi_JNIBWAPI_getUnitTypeName
 
 /*
  * Class:     jnibwapi_JNIBWAPI
+ * Method:    getRequiredUnits
+ * Signature: (I)[I
+ */
+JNIEXPORT jintArray JNICALL Java_jnibwapi_JNIBWAPI_getRequiredUnits
+  (JNIEnv *, jobject, jint);
+
+/*
+ * Class:     jnibwapi_JNIBWAPI
  * Method:    getTechTypes
  * Signature: ()[I
  */

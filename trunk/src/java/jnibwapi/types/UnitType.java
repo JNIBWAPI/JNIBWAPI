@@ -1,5 +1,9 @@
 package jnibwapi.types;
 
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.Map;
+
 /**
  * Represents a StarCraft unit type.
  * 
@@ -7,13 +11,13 @@ package jnibwapi.types;
  */
 public class UnitType {
 	
-	public static final int numAttributes = 56;
+	public static final int numAttributes = 57;
 	public static final double fixedScale = 100.0;
 	
-	private String name;
 	private int ID;
 	private int raceID;
 	private int whatBuildID;
+	private int requiredTechID;
 	private int armorUpgradeID;
 	private int maxHitPoints;
 	private int maxShields;
@@ -67,6 +71,9 @@ public class UnitType {
 	private boolean addon;
 	private boolean flyingBuilding;
 	private boolean spell;
+	
+	private String name;
+	private Map<Integer, Integer> requiredUnits = new HashMap<>();
 	
 	public enum UnitTypes {
 		Terran_Marine,
@@ -308,10 +315,11 @@ public class UnitType {
 		}
 	}
 	
-	public UnitType(int[] data, int index) {
+	public UnitType(int[] data, int index, String name, int[] requiredUnits) {
 		ID = data[index++];
 		raceID = data[index++];
 		whatBuildID = data[index++];
+		requiredTechID = data[index++];
 		armorUpgradeID = data[index++];
 		maxHitPoints = data[index++];
 		maxShields = data[index++];
@@ -365,14 +373,11 @@ public class UnitType {
 		addon = data[index++] == 1;
 		flyingBuilding = data[index++] == 1;
 		spell = data[index++] == 1;
-	}
-	
-	public String getName() {
-		return name;
-	}
-	
-	public void setName(String name) {
+		
 		this.name = name;
+		for (int i = 0; i < requiredUnits.length; i += 2) {
+			this.requiredUnits.put(requiredUnits[i], requiredUnits[i+1]);
+		}
 	}
 	
 	public int getID() {
@@ -385,6 +390,10 @@ public class UnitType {
 	
 	public int getWhatBuildID() {
 		return whatBuildID;
+	}
+	
+	public int getRequiredTechID() {
+		return requiredTechID;
 	}
 	
 	public int getArmorUpgradeID() {
@@ -597,5 +606,14 @@ public class UnitType {
 	
 	public boolean isSpell() {
 		return spell;
+	}
+	
+	public String getName() {
+		return name;
+	}
+	
+	/** A map from UnitTypeID to quantity required (usually 1, but 2 for Archons) */
+	public Map<Integer, Integer> getRequiredUnits() {
+		return Collections.unmodifiableMap(requiredUnits);
 	}
 }
