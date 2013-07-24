@@ -178,7 +178,7 @@ public class Player {
 		return razingScore;
 	}
 	
-	public boolean hasResearched(int techID) {
+	public boolean isResearched(int techID) {
 		return (researched != null && techID < researched.length) ? researched[techID] : false;
 	}
 	
@@ -186,7 +186,7 @@ public class Player {
 		return (researching != null && techID < researching.length) ? researching[techID] : false;
 	}
 	
-	public int upgradeLevel(int upgradeID) {
+	public int getUpgradeLevel(int upgradeID) {
 		return (upgradeLevel != null && upgradeID < upgradeLevel.length) ?
 				upgradeLevel[upgradeID] : 0;
 	}
