@@ -181,10 +181,8 @@ public class JNIBWAPI {
 	public native void leaveGame();
 	
 	// draw commands
-	public native void drawBox(int left, int top, int right, int bottom, int color, boolean fill,
-			boolean screenCoords);
-	public native void drawCircle(int x, int y, int radius, int color, boolean fill,
-			boolean screenCoords);
+	public native void drawBox(int left, int top, int right, int bottom, int color, boolean fill, boolean screenCoords);
+	public native void drawCircle(int x, int y, int radius, int color, boolean fill, boolean screenCoords);
 	public native void drawLine(int x1, int y1, int x2, int y2, int color, boolean screenCoords);
 	public void drawLine(Point a, Point b, int color, boolean screenCoords) {
 		drawLine(a.x, a.y, b.x, b.y, color, screenCoords);
@@ -255,70 +253,36 @@ public class JNIBWAPI {
 	public UnitCommandType getUnitCommandType(int unitCommandID) { return unitCommandTypes.get(unitCommandID); }
 	public OrderType getOrderType(int orderID) { return orderTypes.get(orderID); }
 	
-	public Collection<UnitType> unitTypes() { return unitTypes.values(); }
-	public Collection<RaceType> raceTypes() { return raceTypes.values(); }
-	public Collection<TechType> techTypes() { return techTypes.values(); }
-	public Collection<UpgradeType> upgradeTypes() { return upgradeTypes.values(); }
-	public Collection<WeaponType> weaponTypes() { return weaponTypes.values(); }
-	public Collection<UnitSizeType> unitSizeTypes() { return unitSizeTypes.values(); }
-	public Collection<BulletType> bulletTypes() { return bulletTypes.values(); }
-	public Collection<DamageType> damageTypes() { return damageTypes.values(); }
-	public Collection<ExplosionType> explosionTypes() { return explosionTypes.values(); }
-	public Collection<UnitCommandType> unitCommandTypes() { return unitCommandTypes.values(); }
-	public Collection<OrderType> orderTypes() { return orderTypes.values(); }
+	public Collection<UnitType> unitTypes() { return Collections.unmodifiableCollection(unitTypes.values()); }
+	public Collection<RaceType> raceTypes() { return Collections.unmodifiableCollection(raceTypes.values()); }
+	public Collection<TechType> techTypes() { return Collections.unmodifiableCollection(techTypes.values()); }
+	public Collection<UpgradeType> upgradeTypes() { return Collections.unmodifiableCollection(upgradeTypes.values()); }
+	public Collection<WeaponType> weaponTypes() { return Collections.unmodifiableCollection(weaponTypes.values()); }
+	public Collection<UnitSizeType> unitSizeTypes() { return Collections.unmodifiableCollection(unitSizeTypes.values()); }
+	public Collection<BulletType> bulletTypes() { return Collections.unmodifiableCollection(bulletTypes.values()); }
+	public Collection<DamageType> damageTypes() { return Collections.unmodifiableCollection(damageTypes.values()); }
+	public Collection<ExplosionType> explosionTypes() { return Collections.unmodifiableCollection(explosionTypes.values()); }
+	public Collection<UnitCommandType> unitCommandTypes() { return Collections.unmodifiableCollection(unitCommandTypes.values()); }
+	public Collection<OrderType> orderTypes() { return Collections.unmodifiableCollection(orderTypes.values()); }
 	
 	// game state accessors
-	public int getFrameCount() {
-		return gameFrame;
-	}
-	
-	public Player getSelf() {
-		return self;
-	}
-	
-	public Player getNeutralPlayer() {
-		return neutralPlayer;
-	}
-	
+	public int getFrameCount() { return gameFrame; }
+	public Player getSelf() { return self; }
+	public Player getNeutralPlayer() { return neutralPlayer; }
 	public Player getPlayer(int playerID) {
 		return players.get(playerID);
 	}
-	
-	public Collection<Player> getPlayers() {
-		return Collections.unmodifiableCollection(players.values());
-	}
-	
-	public List<Player> getAllies() {
-		return Collections.unmodifiableList(allies);
-	}
-	
-	public List<Player> getEnemies() {
-		return Collections.unmodifiableList(enemies);
-	}
-	
+	public Collection<Player> getPlayers() { return Collections.unmodifiableCollection(players.values()); }
+	public List<Player> getAllies() { return Collections.unmodifiableList(allies); }
+	public List<Player> getEnemies() { return Collections.unmodifiableList(enemies); }
 	public Unit getUnit(int unitID) {
 		return units.get(unitID);
 	}
-	
-	public Collection<Unit> getAllUnits() {
-		return Collections.unmodifiableCollection(units.values());
-	}
-	
-	public List<Unit> getMyUnits() {
-		return Collections.unmodifiableList(playerUnits);
-	}
-	
-	public List<Unit> getAlliedUnits() {
-		return Collections.unmodifiableList(alliedUnits);
-	}
-	
-	public List<Unit> getEnemyUnits() {
-		return Collections.unmodifiableList(enemyUnits);
-	}
-	
-	public List<Unit> getNeutralUnits() {
-		return Collections.unmodifiableList(neutralUnits);
-	}
+	public Collection<Unit> getAllUnits() { return Collections.unmodifiableCollection(units.values()); }
+	public List<Unit> getMyUnits() { return Collections.unmodifiableList(playerUnits); }
+	public List<Unit> getAlliedUnits() { return Collections.unmodifiableList(alliedUnits); }
+	public List<Unit> getEnemyUnits() { return Collections.unmodifiableList(enemyUnits); }
+	public List<Unit> getNeutralUnits() { return Collections.unmodifiableList(neutralUnits); }
 	
 	public List<Unit> getUnits(Player p) {
 		List<Unit> pUnits = new ArrayList<Unit>();

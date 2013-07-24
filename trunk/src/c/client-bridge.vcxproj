@@ -203,7 +203,7 @@ del $(OutDir)\$(ProjectName)-$(PlatformShortName).exp</Command>
     <ClCompile Include="client-bridge.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="javabot_JNIBWAPI.h" />
+    <ClInclude Include="jnibwapi_JNIBWAPI.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
