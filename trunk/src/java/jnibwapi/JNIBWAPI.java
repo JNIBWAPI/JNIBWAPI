@@ -420,7 +420,11 @@ public class JNIBWAPI {
 		}
 		
 		// get region and choke point data
-		File bwtaFile = new File(map.getHash() + ".jbwta");
+		File bwtaFile = new File("mapData" + File.separator + map.getHash() + ".jbwta");
+		File mapDir = bwtaFile.getParentFile();
+		if (mapDir != null) {
+			mapDir.mkdirs();
+		}
 		boolean analyzed = bwtaFile.exists();
 		int[] regionMapData = null;
 		int[] regionData = null;
@@ -631,6 +635,7 @@ public class JNIBWAPI {
 					neutralUnits.add(unit);
 				}
 			}
+			gameFrame = getFrame();
 			
 			listener.gameStarted();
 		} catch (Error e) {
