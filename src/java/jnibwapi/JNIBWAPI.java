@@ -7,6 +7,9 @@ import java.io.File;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.nio.charset.Charset;
+import java.nio.charset.StandardCharsets;
+import java.nio.charset.UnsupportedCharsetException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
@@ -58,6 +61,7 @@ public class JNIBWAPI {
 	private BWAPIEventListener listener;
 	/** whether to use BWTA for map analysis */
 	private boolean enableBWTA;
+	private Charset charset;
 	
 	/**
 	 * Instantiates a BWAPI instance, but does not connect to the bridge. To connect, the start
@@ -69,6 +73,15 @@ public class JNIBWAPI {
 	public JNIBWAPI(BWAPIEventListener listener, boolean enableBWTA) {
 		this.listener = listener;
 		this.enableBWTA = enableBWTA;
+		try {
+			// Using the Korean character set for decoding byte[]s into Strings will allow Korean
+			// characters to be parsed correctly.
+			charset = Charset.forName("Cp949");
+		} catch (UnsupportedCharsetException e) {
+			System.out.println(
+					"Korean character set not available. Some characters may not be read properly");
+			charset = StandardCharsets.ISO_8859_1;
+		}
 	}
 	
 	/**
@@ -441,7 +454,7 @@ public class JNIBWAPI {
 	 * TODO: figure out how to use BWTA's internal map storage
 	 */
 	private void loadMapData() {
-		String mapName = new String(getMapName());
+		String mapName = new String(getMapName(), charset);
 		map = new Map(getMapWidth(), getMapHeight(), mapName, getMapFileName(), getMapHash(),
 				getHeightData(), getBuildableData(), getWalkableData());
 		if (!enableBWTA) {
@@ -591,7 +604,7 @@ public class JNIBWAPI {
 			
 			int[] playerData = getPlayersData();
 			for (int index = 0; index < playerData.length; index += Player.numAttributes) {
-				String name = new String(getPlayerName(playerData[index]));
+				String name = new String(getPlayerName(playerData[index]), charset);
 				Player player = new Player(playerData, index, name);
 				
 				players.put(player.getID(), player);
