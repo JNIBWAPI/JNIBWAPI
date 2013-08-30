@@ -41,7 +41,7 @@ public class ExampleAIClient implements BWAPIEventListener {
 	 * Instantiates the JNI-BWAPI interface and connects to BWAPI.
 	 */
 	public ExampleAIClient() {
-		bwapi = new JNIBWAPI(this);
+		bwapi = new JNIBWAPI(this, true);
 		bwapi.start();
 	}
 	
@@ -63,7 +63,6 @@ public class ExampleAIClient implements BWAPIEventListener {
 		bwapi.enableUserInput();
 		bwapi.enablePerfectInformation();
 		bwapi.setGameSpeed(0);
-		bwapi.loadMapData(true);
 		
 		// reset agent state
 		claimed.clear();

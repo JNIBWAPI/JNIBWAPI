@@ -44,12 +44,43 @@ public class JNIBWAPI {
 			System.loadLibrary("client-bridge-" + System.getProperty("os.arch"));
 			System.out.println("Loaded client bridge library.");
 		} catch (UnsatisfiedLinkError e) {
-			System.err.println("Native code library failed to load.\n" + e);
+			// Help beginners put the DLL in the correct place (although anywhere on the path will
+			// work)
+			File dll = new File("client-bridge-" + System.getProperty("os.arch") + ".dll");
+			if (!dll.exists()) {
+				System.err.println("Native code library not found: " + dll.getAbsolutePath());
+			}
+			System.err.println("Native code library failed to load." + e);
 		}
 	}
 	
 	/** callback listener for BWAPI events */
 	private BWAPIEventListener listener;
+	/** whether to use BWTA for map analysis */
+	private boolean enableBWTA;
+	
+	/**
+	 * Instantiates a BWAPI instance, but does not connect to the bridge. To connect, the start
+	 * method must be invoked.
+	 * 
+	 * @param listener - listener for BWAPI callback events.
+	 * @param enableBWTA - whether to use BWTA for map analysis
+	 */
+	public JNIBWAPI(BWAPIEventListener listener, boolean enableBWTA) {
+		this.listener = listener;
+		this.enableBWTA = enableBWTA;
+	}
+	
+	/**
+	 * Invokes the native library which will connect to the bridge and then invoke callback
+	 * functions.
+	 * 
+	 * Note: this method never returns, it should be invoked from a separate thread if concurrent
+	 * java processing is needed.
+	 */
+	public void start() {
+		startClient(this);
+	}
 	
 	// game state
 	private int gameFrame = 0;
@@ -305,8 +336,6 @@ public class JNIBWAPI {
 	
 	/**
 	 * Returns the map.
-	 * 
-	 * Note: returns null if loadMapData has not been called.
 	 */
 	public Map getMap() {
 		return map;
@@ -407,11 +436,11 @@ public class JNIBWAPI {
 	}
 	
 	/**
-	 * Loads map data and BWTA data.
+	 * Loads map data and (if enableBWTA is true) BWTA data.
 	 * 
 	 * TODO: figure out how to use BWTA's internal map storage
 	 */
-	public void loadMapData(boolean enableBWTA) {
+	private void loadMapData() {
 		String mapName = new String(getMapName());
 		map = new Map(getMapWidth(), getMapHeight(), mapName, getMapFileName(), getMapHash(),
 				getHeightData(), getBuildableData(), getWalkableData());
@@ -520,27 +549,6 @@ public class JNIBWAPI {
 	}
 	
 	/**
-	 * Instantiates a BWAPI instance, but does not connect to the bridge. To connect, the start
-	 * method must be invoked.
-	 * 
-	 * @param listener - listener for BWAPI callback events.
-	 */
-	public JNIBWAPI(BWAPIEventListener listener) {
-		this.listener = listener;
-	}
-	
-	/**
-	 * Invokes the native library which will connect to the bridge and then invoke callback
-	 * functions.
-	 * 
-	 * Note: this method never returns, it should be invoked from a separate thread if concurrent
-	 * java processing is needed.
-	 */
-	public void start() {
-		startClient(this);
-	}
-	
-	/**
 	 * C++ callback function.
 	 * 
 	 * Utility function for printing to the java console from C++.
@@ -632,6 +640,7 @@ public class JNIBWAPI {
 				}
 			}
 			gameFrame = getFrame();
+			loadMapData();
 			
 			listener.gameStarted();
 		} catch (Error e) {

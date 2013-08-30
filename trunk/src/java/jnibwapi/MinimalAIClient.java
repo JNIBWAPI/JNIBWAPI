@@ -14,7 +14,7 @@ public class MinimalAIClient implements BWAPIEventListener {
 	}
 	
 	public MinimalAIClient() {
-		bwapi = new JNIBWAPI(this);
+		bwapi = new JNIBWAPI(this, false);
 		bwapi.start();
 	}
 	
