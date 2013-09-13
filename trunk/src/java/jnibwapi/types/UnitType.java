@@ -167,8 +167,8 @@ public class UnitType {
 		Hero_Artanis,
 		Critter_Rhynadon,
 		Critter_Bengalaas,
-		Undefined91, // Cargo Ship (Unused)
-		Undefined92, // Mercenary Gunship (Unused)
+		Special_Cargo_Ship,
+		Special_Mercenary_Gunship,
 		Critter_Scantid,
 		Critter_Kakaru,
 		Critter_Ragnasaur,
@@ -177,7 +177,7 @@ public class UnitType {
 		Hero_Raszagal,
 		Hero_Samir_Duran,
 		Hero_Alexei_Stukov,
-		Undefined101, // Map Revealer
+		Special_Map_Revealer,
 		Hero_Gerard_DuGalle,
 		Zerg_Lurker,
 		Hero_Infested_Duran,
@@ -195,7 +195,7 @@ public class UnitType {
 		Terran_Science_Facility,
 		Terran_Covert_Ops,
 		Terran_Physics_Lab,
-		Undefined119,
+		Undefined119, // Starbase (Unused)
 		Terran_Machine_Shop,
 		Undefined121, // Repair Bay (Unused)
 		Terran_Engineering_Bay,
@@ -260,16 +260,16 @@ public class UnitType {
 		Undefined181, // Cantina (Unused)
 		Undefined182, // Mining Platform (Unused)
 		Undefined183, // Independent Command Center (Unused)
-		Undefined184, // Independent Starport (Unused)
+		Special_Independant_Starport,
 		Undefined185, // Independent Jump Gate (Unused)
 		Undefined186, // Ruins (Unused)
 		Undefined187, // Khaydarin Crystal Formation (Unused)
 		Resource_Vespene_Geyser,
 		Special_Warp_Gate,
 		Special_Psi_Disrupter,
-		Undefined191, // Zerg Marker
-		Undefined192, // Terran Marker
-		Undefined193, // Protoss Marker
+		Undefined191, // Zerg Marker (Unused)
+		Undefined192, // Terran Marker (Unused)
+		Undefined193, // Protoss Marker (Unused)
 		Special_Zerg_Beacon,
 		Special_Terran_Beacon,
 		Special_Protoss_Beacon,
@@ -279,36 +279,36 @@ public class UnitType {
 		Special_Power_Generator,
 		Special_Overmind_Cocoon,
 		Spell_Dark_Swarm,
-		Undefined203, // Floor Missile Trap
-		Undefined204, // Floor Hatch (Unused)
-		Undefined205, // Left Upper Level Door
-		Undefined206, // Right Upper Level Door
-		Undefined207, // Left Pit Door
-		Undefined208, // Right Pit Door
-		Undefined209, // Floor Gun Trap
-		Undefined210, // Left Wall Missile Trap
-		Undefined211, // Left Wall Flame Trap
-		Undefined212, // Right Wall Missile Trap
-		Undefined213, // Right Wall Flame Trap
-		Undefined214, // Start Location
+		Special_Floor_Missile_Trap,
+		Special_Floor_Hatch,
+		Special_Upper_Level_Door,
+		Special_Right_Upper_Level_Door,
+		Special_Pit_Door,
+		Special_Right_Pit_Door,
+		Special_Floor_Gun_Trap,
+		Special_Wall_Missile_Trap,
+		Special_Wall_Flame_Trap,
+		Special_Right_Wall_Missile_Trap,
+		Special_Right_Wall_Flame_Trap,
+		Special_Start_Location,
 		Powerup_Flag,
 		Powerup_Young_Chrysalis,
 		Powerup_Psi_Emitter,
 		Powerup_Data_Disk,
 		Powerup_Khaydarin_Crystal,
-		Undefined220, // Mineral Cluster Type 1
-		Undefined221, // Mineral Cluster Type 2
-		Undefined222, // Protoss Vespene Gas Orb Type 1
-		Undefined223, // Protoss Vespene Gas Orb Type 2
-		Undefined224, // Zerg Vespene Gas Sac Type 1
-		Undefined225, // Zerg Vespene Gas Sac Type 2
-		Undefined226, // Terran Vespene Gas Tank Type 1
-		Undefined227, // Terran Vespene Gas Tank Type 2
+		Powerup_Mineral_Cluster_Type_1,
+		Powerup_Mineral_Cluster_Type_2,
+		Powerup_Protoss_Gas_Orb_Type_1,
+		Powerup_Protoss_Gas_Orb_Type_2,
+		Powerup_Zerg_Gas_Sac_Type_1,
+		Powerup_Zerg_Gas_Sac_Type_2,
+		Powerup_Terran_Gas_Tank_Type_1,
+		Powerup_Terran_Gas_Tank_Type_2,
 		None,
-		Undefined229,
-		Undefined230,
-		Undefined231,
-		Undefined232,
+		Undefined229, // All Units (BWAPI4)
+		Undefined230, // Men (BWAPI4)
+		Undefined231, // Buildings (BWAPI4)
+		Undefined232, // Factories (BWAPI4)
 		Unknown;
 		public int getID() {
 			return ordinal();
