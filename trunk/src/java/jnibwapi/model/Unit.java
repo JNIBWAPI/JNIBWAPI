@@ -488,7 +488,7 @@ public class Unit {
 		return orderID;
 	}
 	
-	public int getOrderTargetID() {
+	public int getOrderTargetUnitID() {
 		return orderTargetID;
 	}
 	
@@ -508,11 +508,11 @@ public class Unit {
 		return rallyUnitID;
 	}
 	
-	public int getAddOnID() {
+	public int getAddOnUnitID() {
 		return addOnID;
 	}
 	
-	public int getTransportID() {
+	public int getTransportUnitID() {
 		return transportID;
 	}
 	
