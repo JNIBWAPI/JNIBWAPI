@@ -28,7 +28,7 @@ import jnibwapi.types.*;
  * JNI interface for the Brood War API.<br>
  * 
  * This focus of this interface is to provide the callback and game state query functionality in
- * BWAPI. Utility functions such as can buildHere have not yet been implemented.<br>
+ * BWAPI.<br>
  * 
  * Note: for thread safety and game state sanity, all native calls should be invoked from the
  * callback methods.<br>
@@ -53,7 +53,7 @@ public class JNIBWAPI {
 			if (!dll.exists()) {
 				System.err.println("Native code library not found: " + dll.getAbsolutePath());
 			}
-			System.err.println("Native code library failed to load." + e);
+			System.err.println("Native code library failed to load: " + e.toString());
 		}
 	}
 	
@@ -314,15 +314,11 @@ public class JNIBWAPI {
 	public int getFrameCount() { return gameFrame; }
 	public Player getSelf() { return self; }
 	public Player getNeutralPlayer() { return neutralPlayer; }
-	public Player getPlayer(int playerID) {
-		return players.get(playerID);
-	}
+	public Player getPlayer(int playerID) { return players.get(playerID); }
 	public Collection<Player> getPlayers() { return Collections.unmodifiableCollection(players.values()); }
 	public List<Player> getAllies() { return Collections.unmodifiableList(allies); }
 	public List<Player> getEnemies() { return Collections.unmodifiableList(enemies); }
-	public Unit getUnit(int unitID) {
-		return units.get(unitID);
-	}
+	public Unit getUnit(int unitID) { return units.get(unitID); }
 	public Collection<Unit> getAllUnits() { return Collections.unmodifiableCollection(units.values()); }
 	public List<Unit> getMyUnits() { return Collections.unmodifiableList(playerUnits); }
 	public List<Unit> getAlliedUnits() { return Collections.unmodifiableList(alliedUnits); }
@@ -358,7 +354,7 @@ public class JNIBWAPI {
 	/**
 	 * Loads type data from BWAPI.
 	 */
-	public void loadTypeData() {
+	private void loadTypeData() {
 		// race types
 		int[] raceTypeData = getRaceTypes();
 		for (int index = 0; index < raceTypeData.length; index += RaceType.numAttributes) {
@@ -568,41 +564,41 @@ public class JNIBWAPI {
 	}
 	
 	/**
-	 * C++ callback function.
+	 * C++ callback function.<br>
 	 * 
 	 * Utility function for printing to the java console from C++.
 	 */
-	public void javaPrint(String msg) {
+	private void javaPrint(String msg) {
 		try {
 			System.out.println("Bridge: " + msg);
-		} catch (Error e) {
-			e.printStackTrace();
+		} catch (Throwable t) {
+			t.printStackTrace();
 		}
 	}
 	
 	/**
-	 * C++ callback function.
+	 * C++ callback function.<br>
 	 * 
 	 * Notifies the client and event listener that a connection has been formed to the bridge.
 	 */
-	public void connected() {
+	private void connected() {
 		try {
 			loadTypeData();
 			listener.connected();
-		} catch (Error e) {
-			e.printStackTrace();
+		} catch (Throwable t) {
+			t.printStackTrace();
 		}
 	}
 	
 	/**
-	 * C++ callback function.
+	 * C++ callback function.<br>
 	 * 
 	 * Notifies the client that a game has started. Not passed on to the event listener.<br>
 	 * 
 	 * Note: this is always called before the matchStarted event, and is meant as a way of notifying
 	 * the AI client to clear up state.
 	 */
-	public void gameStarted() {
+	private void gameStarted() {
 		try {
 			// get the players
 			self = null;
@@ -665,13 +661,13 @@ public class JNIBWAPI {
 			gameFrame = getFrame();
 			loadMapData();
 			
-		} catch (Error e) {
-			e.printStackTrace();
+		} catch (Throwable t) {
+			t.printStackTrace();
 		}
 	}
 	
 	/**
-	 * C++ callback function.
+	 * C++ callback function.<br>
 	 * 
 	 * Notifies the client that game data has been updated. Not passed on to the event listener.<br>
 	 * 
@@ -749,15 +745,15 @@ public class JNIBWAPI {
 				units.get(unitID).setDestroyed();
 				units.remove(unitID);
 			}
-		} catch (Error e) {
-			e.printStackTrace();
+		} catch (Throwable t) {
+			t.printStackTrace();
 		}
 	}
 	
 	/**
-	 * C++ callback function.
+	 * C++ callback function.<br>
 	 * 
-	 * Notifies the event listener that the game has terminated.
+	 * Notifies the event listener that the game has terminated.<br>
 	 * 
 	 * Note: this is always called after the matchEnded event, and is meant as a way of notifying
 	 * the AI client to clear up state.
@@ -765,7 +761,7 @@ public class JNIBWAPI {
 	private void gameEnded() {}
 	
 	/**
-	 * C++ callback function.
+	 * C++ callback function.<br>
 	 * 
 	 * Sends BWAPI callback events to the event listener.
 	 */
@@ -837,21 +833,21 @@ public class JNIBWAPI {
 					// Unused?
 					break;
 			}
-		} catch (Error e) {
-			e.printStackTrace();
+		} catch (Throwable t) {
+			t.printStackTrace();
 		}
 	}
 	
 	/**
-	 * C++ callback function.
+	 * C++ callback function.<br>
 	 * 
 	 * Notifies the event listener that a key was pressed.
 	 */
 	public void keyPressed(int keyCode) {
 		try {
 			listener.keyPressed(keyCode);
-		} catch (Error e) {
-			e.printStackTrace();
+		} catch (Throwable t) {
+			t.printStackTrace();
 		}
 	}
 }
