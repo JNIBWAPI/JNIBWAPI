@@ -3,6 +3,12 @@ public class jnibwapi.JNIBWAPI {
   static {};
     Signature: ()V
 
+  public jnibwapi.JNIBWAPI(jnibwapi.BWAPIEventListener, boolean);
+    Signature: (Ljnibwapi/BWAPIEventListener;Z)V
+
+  public void start();
+    Signature: ()V
+
   public native int getReplayFrameTotal();
     Signature: ()I
 
@@ -384,15 +390,6 @@ public class jnibwapi.JNIBWAPI {
   public void loadTypeData();
     Signature: ()V
 
-  public void loadMapData(boolean);
-    Signature: (Z)V
-
-  public jnibwapi.JNIBWAPI(jnibwapi.BWAPIEventListener);
-    Signature: (Ljnibwapi/BWAPIEventListener;)V
-
-  public void start();
-    Signature: ()V
-
   public void javaPrint(java.lang.String);
     Signature: (Ljava/lang/String;)V
 
@@ -404,4 +401,7 @@ public class jnibwapi.JNIBWAPI {
 
   public void keyPressed(int);
     Signature: (I)V
+
+  static int[] $SWITCH_TABLE$jnibwapi$types$EventType();
+    Signature: ()[I
 }

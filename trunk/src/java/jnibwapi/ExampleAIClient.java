@@ -50,14 +50,14 @@ public class ExampleAIClient implements BWAPIEventListener {
 	 */
 	@Override
 	public void connected() {
-		bwapi.loadTypeData();
+		System.out.println("Connected");
 	}
 	
 	/**
 	 * Called at the beginning of a game.
 	 */
 	@Override
-	public void gameStarted() {
+	public void matchStart() {
 		System.out.println("Game Started");
 		
 		bwapi.enableUserInput();
@@ -75,7 +75,7 @@ public class ExampleAIClient implements BWAPIEventListener {
 	 * Called each game cycle.
 	 */
 	@Override
-	public void gameUpdate() {
+	public void matchFrame() {
 		
 		// spawn a drone
 		for (Unit unit : bwapi.getMyUnits()) {
@@ -163,23 +163,40 @@ public class ExampleAIClient implements BWAPIEventListener {
 		}
 	}
 
-	public void gameEnded() {}
+	@Override
 	public void keyPressed(int keyCode) {}
-	public void matchEnded(boolean winner) {}
+	@Override
+	public void matchEnd(boolean winner) {}
+	@Override
 	public void sendText(String text) {}
+	@Override
 	public void receiveText(String text) {}
+	@Override
 	public void nukeDetect(int x, int y) {}
+	@Override
 	public void nukeDetect() {}
+	@Override
 	public void playerLeft(int playerID) {}
+	@Override
 	public void unitCreate(int unitID) {}
+	@Override
 	public void unitDestroy(int unitID) {}
+	@Override
 	public void unitDiscover(int unitID) {}
+	@Override
 	public void unitEvade(int unitID) {}
+	@Override
 	public void unitHide(int unitID) {}
+	@Override
 	public void unitMorph(int unitID) {}
+	@Override
 	public void unitShow(int unitID) {}
+	@Override
 	public void unitRenegade(int unitID) {}
+	@Override
 	public void saveGame(String gameName) {}
+	@Override
 	public void unitComplete(int unitID) {}
+	@Override
 	public void playerDropped(int playerID) {}
 }

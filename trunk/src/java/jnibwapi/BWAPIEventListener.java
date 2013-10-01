@@ -7,23 +7,22 @@ package jnibwapi;
  */
 public interface BWAPIEventListener {
 	
-	/** connected to bridge */
+	/** connection to BWAPI established */
 	public void connected();
 	
 	/** game has just started, game settings can be turned on here */
-	public void gameStarted();
+	public void matchStart();
 	
 	/** perform AI logic here */
-	public void gameUpdate();
+	public void matchFrame();
 	
 	/** game has just terminated */
-	public void gameEnded();
+	public void matchEnd(boolean winner);
 	
 	/** keyPressed from within StarCraft */
 	public void keyPressed(int keyCode);
 	
 	// BWAPI callbacks
-	public void matchEnded(boolean winner);
 	public void sendText(String text);
 	public void receiveText(String text);
 	public void playerLeft(int playerID);

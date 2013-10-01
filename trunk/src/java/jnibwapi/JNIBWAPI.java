@@ -283,6 +283,7 @@ public class JNIBWAPI {
 	private HashMap<Integer, ExplosionType> explosionTypes = new HashMap<Integer, ExplosionType>();
 	private HashMap<Integer, UnitCommandType> unitCommandTypes = new HashMap<Integer, UnitCommandType>();
 	private HashMap<Integer, OrderType> orderTypes = new HashMap<Integer, OrderType>();
+	private HashMap<Integer, EventType> eventTypes = new HashMap<Integer, EventType>();
 	
 	// type data accessors
 	public UnitType getUnitType(int typeID) { return unitTypes.get(typeID); }
@@ -446,6 +447,11 @@ public class JNIBWAPI {
 			type.setName(getOrderTypeName(type.getID()));
 			orderTypes.put(type.getID(), type);
 		}
+		
+		// event types - no extra data to load
+		for (EventType type : EventType.values()) {
+			eventTypes.put(type.getID(), type);
+		}
 	}
 	
 	/**
@@ -577,10 +583,11 @@ public class JNIBWAPI {
 	/**
 	 * C++ callback function.
 	 * 
-	 * Notifies the event listener that a connection has been formed to the bridge.
+	 * Notifies the client and event listener that a connection has been formed to the bridge.
 	 */
 	public void connected() {
 		try {
+			loadTypeData();
 			listener.connected();
 		} catch (Error e) {
 			e.printStackTrace();
@@ -590,7 +597,10 @@ public class JNIBWAPI {
 	/**
 	 * C++ callback function.
 	 * 
-	 * Notifies the event listener that a game has started.
+	 * Notifies the client that a game has started. Not passed on to the event listener.<br>
+	 * 
+	 * Note: this is always called before the matchStarted event, and is meant as a way of notifying
+	 * the AI client to clear up state.
 	 */
 	public void gameStarted() {
 		try {
@@ -655,7 +665,6 @@ public class JNIBWAPI {
 			gameFrame = getFrame();
 			loadMapData();
 			
-			listener.gameStarted();
 		} catch (Error e) {
 			e.printStackTrace();
 		}
@@ -664,7 +673,10 @@ public class JNIBWAPI {
 	/**
 	 * C++ callback function.
 	 * 
-	 * Notifies the event listener that a game update occurred.
+	 * Notifies the client that game data has been updated. Not passed on to the event listener.<br>
+	 * 
+	 * Note: this is always called before the events each frame, and is meant as a way of notifying
+	 * the AI client to update state.
 	 */
 	private void gameUpdate() {
 		try {
@@ -737,8 +749,6 @@ public class JNIBWAPI {
 				units.get(unitID).setDestroyed();
 				units.remove(unitID);
 			}
-			
-			listener.gameUpdate();
 		} catch (Error e) {
 			e.printStackTrace();
 		}
@@ -749,77 +759,82 @@ public class JNIBWAPI {
 	 * 
 	 * Notifies the event listener that the game has terminated.
 	 * 
-	 * Note: this is always called after matchEnded(bool), and is meant as a way of notifying the AI
-	 * client to clear up state.
+	 * Note: this is always called after the matchEnded event, and is meant as a way of notifying
+	 * the AI client to clear up state.
 	 */
-	private void gameEnded() {
-		try {
-			listener.gameEnded();
-		} catch (Error e) {
-			e.printStackTrace();
-		}
-	}
+	private void gameEnded() {}
 	
 	/**
 	 * C++ callback function.
 	 * 
 	 * Sends BWAPI callback events to the event listener.
-	 * 
-	 * @param type - event type (should probably be an enum)
 	 */
-	private void eventOccurred(int type, int param1, int param2, String param3) {
+	private void eventOccurred(int eventTypeID, int param1, int param2, String param3) {
 		try {
-			switch (type) {
-				case 0:
-					listener.matchEnded(param1 == 1);
+			EventType event = eventTypes.get(eventTypeID);
+			switch (event) {
+				case MatchStart:
+					listener.matchStart();
 					break;
-				case 1:
+				case MatchEnd:
+					listener.matchEnd(param1 == 1);
+					break;
+				case MatchFrame:
+					listener.matchFrame();
+					break;
+				case MenuFrame:
+					// Unused?
+					break;
+				case SendText:
 					listener.sendText(param3);
 					break;
-				case 2:
+				case ReceiveText:
 					listener.receiveText(param3);
 					break;
-				case 3:
+				case PlayerLeft:
 					listener.playerLeft(param1);
 					break;
-				case 4:
-					listener.nukeDetect(param2, param2);
+				case NukeDetect:
+					if (param1 == -1)
+						listener.nukeDetect();
+					else
+						listener.nukeDetect(param1, param2);
 					break;
-				case 5:
-					listener.nukeDetect();
-					break;
-				case 6:
+				case UnitDiscover:
 					listener.unitDiscover(param1);
 					break;
-				case 7:
+				case UnitEvade:
 					listener.unitEvade(param1);
 					break;
-				case 8:
+				case UnitShow:
 					listener.unitShow(param1);
 					break;
-				case 9:
+				case UnitHide:
 					listener.unitHide(param1);
 					break;
-				case 10:
+				case UnitCreate:
 					listener.unitCreate(param1);
 					break;
-				case 11:
+				case UnitDestroy:
 					listener.unitDestroy(param1);
 					break;
-				case 12:
+				case UnitMorph:
 					listener.unitMorph(param1);
 					break;
-				case 13:
+				case UnitRenegade:
 					listener.unitRenegade(param1);
 					break;
-				case 14:
+				case SaveGame:
 					listener.saveGame(param3);
 					break;
-				case 15:
+				case UnitComplete:
 					listener.unitComplete(param1);
 					break;
-				case 16:
+				case PlayerDropped:
 					listener.playerDropped(param1);
+					break;
+				case None:
+					// Unused?
 					break;
 			}
 		} catch (Error e) {
