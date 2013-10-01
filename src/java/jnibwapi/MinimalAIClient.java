@@ -22,18 +22,17 @@ public class MinimalAIClient implements BWAPIEventListener {
 	public void connected() {}
 	
 	@Override
-	public void gameStarted() {}
+	public void matchStart() {}
 	
 	@Override
-	public void gameUpdate() {
+	public void matchFrame() {
 		for (Unit u : bwapi.getAllUnits()) {
 			bwapi.drawCircle(u.getX(), u.getY(), 5, BWColor.RED, true, false);
 		}
 	}
 	
-	public void gameEnded() {}
 	public void keyPressed(int keyCode) {}
-	public void matchEnded(boolean winner) {}
+	public void matchEnd(boolean winner) {}
 	public void sendText(String text) {}
 	public void receiveText(String text) {}
 	public void nukeDetect(int x, int y) {}

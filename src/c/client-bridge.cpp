@@ -98,93 +98,107 @@ JNIEXPORT void JNICALL Java_jnibwapi_JNIBWAPI_startClient(JNIEnv* env, jobject j
 
 		// in game
 		while (Broodwar->isInGame()) {
+			// update client data before event callbacks
 			env->CallObjectMethod(classref, gameUpdateCallback);
 
 			// process events
-			if (Broodwar->getFrameCount() > 1) {
-				for (std::list<Event>::iterator e = Broodwar->getEvents().begin(); e != Broodwar->getEvents().end(); ++e) {
-					switch (e->getType()) {
-					case EventType::MatchEnd:
-						env->CallObjectMethod(classref, eventCallback, 0, e->isWinner() ? 1 : 0, 0, JNI_NULL);
-						break;
-					case EventType::SendText: {
-						jstring string = env->NewStringUTF(e->getText().c_str());
-						env->CallObjectMethod(classref, eventCallback, 1, 0, 0, string);
-						env->DeleteLocalRef(string);
-						}
-						break;
-					case EventType::ReceiveText: {
-						jstring string = env->NewStringUTF(e->getText().c_str());
-						env->CallObjectMethod(classref, eventCallback, 2, 0, 0, string);
-						env->DeleteLocalRef(string);
-						}
-						break;
-					case EventType::PlayerLeft:
-						env->CallObjectMethod(classref, eventCallback, 3, e->getPlayer()->getID(), 0, JNI_NULL);
-						break;
-					case EventType::NukeDetect:
-						if (e->getPosition() != Positions::Unknown) {
-							env->CallObjectMethod(classref, eventCallback, 4, e->getPosition().x(), e->getPosition().y(), JNI_NULL);
-						} else {
-							env->CallObjectMethod(classref, eventCallback, 5, 0, 0, JNI_NULL);
-						}
-						break;
-					case EventType::UnitDiscover:
-						env->CallObjectMethod(classref, eventCallback, 6, e->getUnit()->getID(), 0, JNI_NULL);
-						break;
-					case EventType::UnitEvade:
-						env->CallObjectMethod(classref, eventCallback, 7, e->getUnit()->getID(), 0, JNI_NULL);
-						break;
-					case EventType::UnitShow:
-						env->CallObjectMethod(classref, eventCallback, 8, e->getUnit()->getID(), 0, JNI_NULL);
-						break;
-					case EventType::UnitHide:
-						env->CallObjectMethod(classref, eventCallback, 9, e->getUnit()->getID(), 0, JNI_NULL);
-						break;
-					case EventType::UnitCreate:
-						env->CallObjectMethod(classref, eventCallback, 10, e->getUnit()->getID(), 0, JNI_NULL);
-						break;
-					case EventType::UnitDestroy:
-						env->CallObjectMethod(classref, eventCallback, 11, e->getUnit()->getID(), 0, JNI_NULL);
-						break;
-					case EventType::UnitMorph:
-						env->CallObjectMethod(classref, eventCallback, 12, e->getUnit()->getID(), 0, JNI_NULL);
-						break;
-					case EventType::UnitRenegade:
-						env->CallObjectMethod(classref, eventCallback, 13, e->getUnit()->getID(), 0, JNI_NULL);
-						break;
-					case EventType::SaveGame: {
-						jstring string = env->NewStringUTF(e->getText().c_str());
-						env->CallObjectMethod(classref, eventCallback, 14, 0, 0, string);
-						env->DeleteLocalRef(string);
-						}
-						break;
-					case EventType::UnitComplete:
-						env->CallObjectMethod(classref, eventCallback, 15, e->getUnit()->getID(), 0, JNI_NULL);
-						break;
-					case EventType::PlayerDropped:
-						env->CallObjectMethod(classref, eventCallback, 16, e->getPlayer()->getID(), 0, JNI_NULL);
-						break;
+			// BWAPI will always issue a MatchStart event as the very first event of a match
+			// BWAPI will always issue a MatchFrame event as the very last event of a frame (second-last at MatchEnd)
+			// BWAPI will always issue a MatchEnd event as the very last event of a match
+			for (std::list<Event>::iterator e = Broodwar->getEvents().begin(); e != Broodwar->getEvents().end(); ++e) {
+				switch (e->getType()) {
+				case EventType::MatchStart:
+					env->CallObjectMethod(classref, eventCallback, e->getType(), 0, 0, JNI_NULL);
+					break;
+				case EventType::MatchEnd:
+					env->CallObjectMethod(classref, eventCallback, e->getType(), e->isWinner() ? 1 : 0, 0, JNI_NULL);
+					break;
+				case EventType::MatchFrame:
+					env->CallObjectMethod(classref, eventCallback, e->getType(), 0, 0, JNI_NULL);
+					break;
+				case EventType::MenuFrame:
+					env->CallObjectMethod(classref, eventCallback, e->getType(), 0, 0, JNI_NULL);
+					break;
+				case EventType::SendText: {
+					jstring string = env->NewStringUTF(e->getText().c_str());
+					env->CallObjectMethod(classref, eventCallback, e->getType(), 0, 0, string);
+					env->DeleteLocalRef(string);
 					}
-				}
-
-				// check for key presses
-				for (int keyCode = 0; keyCode <= 0xff; ++keyCode) {	
-					if (Broodwar->getKeyState(keyCode)) {	
-						if (!keyState[keyCode]) {
-							env->CallObjectMethod(classref, keyPressCallback, keyCode);
-						}
-						keyState[keyCode] = true;
+					break;
+				case EventType::ReceiveText: {
+					jstring string = env->NewStringUTF(e->getText().c_str());
+					env->CallObjectMethod(classref, eventCallback, e->getType(), 0, 0, string);
+					env->DeleteLocalRef(string);
+					}
+					break;
+				case EventType::PlayerLeft:
+					env->CallObjectMethod(classref, eventCallback, e->getType(), e->getPlayer()->getID(), 0, JNI_NULL);
+					break;
+				case EventType::NukeDetect:
+					if (e->getPosition() != Positions::Unknown) {
+						env->CallObjectMethod(classref, eventCallback, e->getType(), e->getPosition().x(), e->getPosition().y(), JNI_NULL);
 					} else {
-						keyState[keyCode] = false;
+						env->CallObjectMethod(classref, eventCallback, e->getType(), -1, -1, JNI_NULL);
 					}
+					break;
+				case EventType::UnitDiscover:
+					env->CallObjectMethod(classref, eventCallback, e->getType(), e->getUnit()->getID(), 0, JNI_NULL);
+					break;
+				case EventType::UnitEvade:
+					env->CallObjectMethod(classref, eventCallback, e->getType(), e->getUnit()->getID(), 0, JNI_NULL);
+					break;
+				case EventType::UnitShow:
+					env->CallObjectMethod(classref, eventCallback, e->getType(), e->getUnit()->getID(), 0, JNI_NULL);
+					break;
+				case EventType::UnitHide:
+					env->CallObjectMethod(classref, eventCallback, e->getType(), e->getUnit()->getID(), 0, JNI_NULL);
+					break;
+				case EventType::UnitCreate:
+					env->CallObjectMethod(classref, eventCallback, e->getType(), e->getUnit()->getID(), 0, JNI_NULL);
+					break;
+				case EventType::UnitDestroy:
+					env->CallObjectMethod(classref, eventCallback, e->getType(), e->getUnit()->getID(), 0, JNI_NULL);
+					break;
+				case EventType::UnitMorph:
+					env->CallObjectMethod(classref, eventCallback, e->getType(), e->getUnit()->getID(), 0, JNI_NULL);
+					break;
+				case EventType::UnitRenegade:
+					env->CallObjectMethod(classref, eventCallback, e->getType(), e->getUnit()->getID(), 0, JNI_NULL);
+					break;
+				case EventType::SaveGame: {
+					jstring string = env->NewStringUTF(e->getText().c_str());
+					env->CallObjectMethod(classref, eventCallback, e->getType(), 0, 0, string);
+					env->DeleteLocalRef(string);
+					}
+					break;
+				case EventType::UnitComplete:
+					env->CallObjectMethod(classref, eventCallback, e->getType(), e->getUnit()->getID(), 0, JNI_NULL);
+					break;
+				case EventType::PlayerDropped:
+					env->CallObjectMethod(classref, eventCallback, e->getType(), e->getPlayer()->getID(), 0, JNI_NULL);
+					break;
+				case EventType::None:
+					env->CallObjectMethod(classref, eventCallback, e->getType(), 0, 0, JNI_NULL);
+					break;
 				}
-
-				// draw commands
-				if (showHealth) drawHealth();
-				if (showTargets) drawTargets();
-				if (showIDs) drawIDs();
 			}
+
+			// check for key presses
+			for (int keyCode = 0; keyCode <= 0xff; ++keyCode) {	
+				if (Broodwar->getKeyState(keyCode)) {	
+					if (!keyState[keyCode]) {
+						env->CallObjectMethod(classref, keyPressCallback, keyCode);
+					}
+					keyState[keyCode] = true;
+				} else {
+					keyState[keyCode] = false;
+				}
+			}
+
+			// draw commands
+			if (showHealth) drawHealth();
+			if (showTargets) drawTargets();
+			if (showIDs) drawIDs();
 
 			// wait for the next frame
 			BWAPI::BWAPIClient.update();
@@ -195,7 +209,7 @@ JNIEXPORT void JNICALL Java_jnibwapi_JNIBWAPI_startClient(JNIEnv* env, jobject j
 		}
 
 		// game completed
-		javaPrint("Game ended");
+		javaPrint("Match ended");
 		env->CallObjectMethod(classref, gameEndCallback);
 	}
 }
