@@ -410,6 +410,7 @@ JNIEXPORT jintArray JNICALL Java_jnibwapi_JNIBWAPI_getResearchStatus(JNIEnv* env
 
 	std::set<TechType> techTypes = TechTypes::allTechTypes();
 	for (std::set<TechType>::iterator i = techTypes.begin(); i != techTypes.end(); ++i) {
+		intBuf[index++] = i->getID();
 		intBuf[index++] = p->hasResearched((*i)) ? 1 : 0;
 		intBuf[index++] = p->isResearching((*i)) ? 1 : 0;
 	}
@@ -425,7 +426,8 @@ JNIEXPORT jintArray JNICALL Java_jnibwapi_JNIBWAPI_getUpgradeStatus(JNIEnv* env,
 	Player* p = Broodwar->getPlayer(playerID);
 
 	std::set<UpgradeType> upTypes = UpgradeTypes::allUpgradeTypes();
-	for (std::set<UpgradeType>::iterator i = upTypes.begin();i != upTypes.end(); ++i) {
+	for (std::set<UpgradeType>::iterator i = upTypes.begin(); i != upTypes.end(); ++i) {
+		intBuf[index++] = i->getID();
 		intBuf[index++] = p->getUpgradeLevel((*i));
 		intBuf[index++] = p->isUpgrading((*i)) ? 1 : 0;
 	}

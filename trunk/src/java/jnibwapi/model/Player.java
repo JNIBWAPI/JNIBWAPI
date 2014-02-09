@@ -2,6 +2,9 @@ package jnibwapi.model;
 
 import java.awt.Point;
 
+import jnibwapi.types.TechType.TechTypes;
+import jnibwapi.types.UpgradeType.UpgradeTypes;
+
 /**
  * Represents a StarCraft player.
  * 
@@ -35,10 +38,10 @@ public class Player {
 	private int buildingScore;
 	private int razingScore;
 	
-	private boolean[] researching = null;
-	private boolean[] researched = null;
-	private boolean[] upgrading = null;
-	private int[] upgradeLevel = null;
+	private final boolean[] researching;
+	private final boolean[] researched;
+	private final boolean[] upgrading;
+	private final int[] upgradeLevel;
 	
 	public Player(int[] data, int index, String name) {
 		ID = data[index++];
@@ -53,6 +56,19 @@ public class Player {
 		observer = (data[index++] == 1);
 		color = data[index++];
 		this.name = name;
+		// Initialise technology records
+		int highestIDTechType = 0;
+		for (TechTypes tt : TechTypes.values()) {
+			highestIDTechType = Math.max(highestIDTechType, tt.getID());
+		}
+		researching = new boolean[highestIDTechType + 1];
+		researched = new boolean[highestIDTechType + 1];
+		int highestIDUpgradeType = 0;
+		for (UpgradeTypes ut : UpgradeTypes.values()) {
+			highestIDUpgradeType = Math.max(highestIDUpgradeType, ut.getID());
+		}
+		upgrading = new boolean[highestIDUpgradeType + 1];
+		upgradeLevel = new int[highestIDUpgradeType + 1];
 	}
 	
 	public void update(int[] data) {
@@ -69,21 +85,17 @@ public class Player {
 		razingScore = data[index++];
 	}
 	
-	public void updateResearch(int[] researchData, int[] upgradeData) {
-		researched = new boolean[researchData.length / 2];
-		researching = new boolean[researchData.length / 2];
-		
-		for (int i = 0; i < researchData.length; i += 2) {
-			researched[i / 2] = (researchData[i] == 1);
-			researching[i / 2] = (researchData[i + 1] == 1);
+	public void updateResearch(int[] techData, int[] upgradeData) {
+		for (int i = 0; i < techData.length; i += 3) {
+			int techTypeID = techData[i];
+			researched[techTypeID] = (techData[i + 1] == 1);
+			researching[techTypeID] = (techData[i + 2] == 1);
 		}
 		
-		upgradeLevel = new int[upgradeData.length / 2];
-		upgrading = new boolean[upgradeData.length / 2];
-		
-		for (int i = 0; i < upgradeData.length; i += 2) {
-			upgradeLevel[i / 2] = upgradeData[i];
-			upgrading[i / 2] = (upgradeData[i + 1] == 1);
+		for (int i = 0; i < upgradeData.length; i += 3) {
+			int upgradeTypeID = upgradeData[i];
+			upgradeLevel[upgradeTypeID] = upgradeData[i + 1];
+			upgrading[upgradeTypeID] = (upgradeData[i + 2] == 1);
 		}
 	}
 	
@@ -179,19 +191,19 @@ public class Player {
 	}
 	
 	public boolean isResearched(int techID) {
-		return (researched != null && techID < researched.length) ? researched[techID] : false;
+		return (techID > 0 && techID < researched.length) ? researched[techID] : false;
 	}
 	
 	public boolean isResearching(int techID) {
-		return (researching != null && techID < researching.length) ? researching[techID] : false;
+		return (techID > 0 && techID < researching.length) ? researching[techID] : false;
 	}
 	
 	public int getUpgradeLevel(int upgradeID) {
-		return (upgradeLevel != null && upgradeID < upgradeLevel.length) ?
+		return (upgradeID > 0 && upgradeID < upgradeLevel.length) ?
 				upgradeLevel[upgradeID] : 0;
 	}
 	
 	public boolean isUpgrading(int upgradeID) {
-		return (upgrading != null && upgradeID < upgrading.length) ? upgrading[upgradeID] : false;
+		return (upgradeID > 0 && upgradeID < upgrading.length) ? upgrading[upgradeID] : false;
 	}
 }
