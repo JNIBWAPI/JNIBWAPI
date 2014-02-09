@@ -3,7 +3,10 @@ package jnibwapi;
 import java.util.HashSet;
 
 import jnibwapi.model.Unit;
+import jnibwapi.types.TechType;
+import jnibwapi.types.TechType.TechTypes;
 import jnibwapi.types.UnitType.UnitTypes;
+import jnibwapi.types.UpgradeType.UpgradeTypes;
 
 /**
  * Example Java AI Client using JNI-BWAPI.
@@ -76,6 +79,36 @@ public class ExampleAIClient implements BWAPIEventListener {
 	 */
 	@Override
 	public void matchFrame() {
+		// print out some info about any upgrades or research happening
+		String msg = "=";
+		for (TechTypes t : TechTypes.values()) {
+			if (bwapi.getSelf().isResearching(t.getID())) {
+				msg += "Researching " + t.name() + "=";
+			}
+			// Exclude tech that is given at the start of the game
+			TechType tt = bwapi.getTechType(t.getID());
+			if (tt == null) {
+				continue;
+			} else {
+				int whatResearches = bwapi.getTechType(t.getID()).getWhatResearchesTypeID();
+				if (whatResearches == UnitTypes.None.getID()) {
+					continue;
+				}
+			}
+			if (bwapi.getSelf().isResearched(t.getID())) {
+				msg += "Researched " + t.name() + "=";
+			}
+		}
+		for (UpgradeTypes t : UpgradeTypes.values()) {
+			if (bwapi.getSelf().isUpgrading(t.getID())) {
+				msg += "Upgrading " + t.name() + "=";
+			}
+			if (bwapi.getSelf().getUpgradeLevel(t.getID()) > 0) {
+				int level = bwapi.getSelf().getUpgradeLevel(t.getID());
+				msg += "Upgraded " + t.name() + " to level " + level + "=";
+			}
+		}
+		bwapi.drawText(0, 20, msg, true);
 		
 		// spawn a drone
 		for (Unit unit : bwapi.getMyUnits()) {
@@ -139,6 +172,7 @@ public class ExampleAIClient implements BWAPIEventListener {
 				}
 			}
 		}
+		
 		// spawn zerglings
 		else if (bwapi.getSelf().getMinerals() >= 50) {
 			for (Unit unit : bwapi.getMyUnits()) {
@@ -152,7 +186,7 @@ public class ExampleAIClient implements BWAPIEventListener {
 			}
 		}
 		
-		// attack
+		// attack move toward an enemy
 		for (Unit unit : bwapi.getMyUnits()) {
 			if (unit.getTypeID() == UnitTypes.Zerg_Zergling.getID() && unit.isIdle()) {
 				for (Unit enemy : bwapi.getEnemyUnits()) {
@@ -162,7 +196,7 @@ public class ExampleAIClient implements BWAPIEventListener {
 			}
 		}
 	}
-
+	
 	@Override
 	public void keyPressed(int keyCode) {}
 	@Override
