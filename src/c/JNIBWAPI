@@ -1,5 +1,5 @@
 Compiled from "JNIBWAPI.java"
-public class jnibwapi.JNIBWAPI {
+public class jnibwapi.JNIBWAPI implements jnibwapi.IdLookup,jnibwapi.NativeUnitCommands {
   static {};
     Signature: ()V
 
@@ -165,38 +165,29 @@ public class jnibwapi.JNIBWAPI {
   public native void leaveGame();
     Signature: ()V
 
-  public native void drawBox(int, int, int, int, int, boolean, boolean);
-    Signature: (IIIIIZZ)V
+  public void drawBox(jnibwapi.model.Position, jnibwapi.model.Position, jnibwapi.util.BWColor, boolean, boolean);
+    Signature: (Ljnibwapi/model/Position;Ljnibwapi/model/Position;Ljnibwapi/util/BWColor;ZZ)V
 
-  public native void drawCircle(int, int, int, int, boolean, boolean);
-    Signature: (IIIIZZ)V
+  public void drawCircle(jnibwapi.model.Position, int, jnibwapi.util.BWColor, boolean, boolean);
+    Signature: (Ljnibwapi/model/Position;ILjnibwapi/util/BWColor;ZZ)V
 
-  public native void drawLine(int, int, int, int, int, boolean);
-    Signature: (IIIIIZ)V
+  public void drawLine(jnibwapi.model.Position, jnibwapi.model.Position, jnibwapi.util.BWColor, boolean);
+    Signature: (Ljnibwapi/model/Position;Ljnibwapi/model/Position;Ljnibwapi/util/BWColor;Z)V
 
-  public void drawLine(java.awt.Point, java.awt.Point, int, boolean);
-    Signature: (Ljava/awt/Point;Ljava/awt/Point;IZ)V
+  public void drawDot(jnibwapi.model.Position, jnibwapi.util.BWColor, boolean);
+    Signature: (Ljnibwapi/model/Position;Ljnibwapi/util/BWColor;Z)V
 
-  public native void drawDot(int, int, int, boolean);
-    Signature: (IIIZ)V
+  public void drawText(jnibwapi.model.Position, java.lang.String, boolean);
+    Signature: (Ljnibwapi/model/Position;Ljava/lang/String;Z)V
 
-  public native void drawText(int, int, java.lang.String, boolean);
-    Signature: (IILjava/lang/String;Z)V
+  public boolean isVisible(jnibwapi.model.Position);
+    Signature: (Ljnibwapi/model/Position;)Z
 
-  public void drawText(java.awt.Point, java.lang.String, boolean);
-    Signature: (Ljava/awt/Point;Ljava/lang/String;Z)V
+  public boolean isExplored(jnibwapi.model.Position);
+    Signature: (Ljnibwapi/model/Position;)Z
 
-  public native boolean isVisible(int, int);
-    Signature: (II)Z
-
-  public native boolean isExplored(int, int);
-    Signature: (II)Z
-
-  public native boolean isBuildable(int, int, boolean);
-    Signature: (IIZ)Z
-
-  public boolean isBuildable(int, int);
-    Signature: (II)Z
+  public boolean isBuildable(jnibwapi.model.Position, boolean);
+    Signature: (Ljnibwapi/model/Position;Z)Z
 
   public native boolean hasCreep(int, int);
     Signature: (II)Z
@@ -225,8 +216,14 @@ public class jnibwapi.JNIBWAPI {
   public native boolean hasPath(int, int, int);
     Signature: (III)Z
 
-  public native boolean hasLoadedUnit(int, int);
-    Signature: (II)Z
+  public native int[] getLoadedUnits(int);
+    Signature: (I)[I
+
+  public native int[] getInterceptors(int);
+    Signature: (I)[I
+
+  public native int[] getLarva(int);
+    Signature: (I)[I
 
   public native boolean canBuildHere(int, int, int, boolean);
     Signature: (IIIZ)Z
@@ -339,6 +336,12 @@ public class jnibwapi.JNIBWAPI {
   public java.util.Collection<jnibwapi.types.OrderType> orderTypes();
     Signature: ()Ljava/util/Collection;
 
+  public jnibwapi.model.Player getPlayer(int);
+    Signature: (I)Ljnibwapi/model/Player;
+
+  public jnibwapi.model.Unit getUnit(int);
+    Signature: (I)Ljnibwapi/model/Unit;
+
   public int getFrameCount();
     Signature: ()I
 
@@ -348,20 +351,14 @@ public class jnibwapi.JNIBWAPI {
   public jnibwapi.model.Player getNeutralPlayer();
     Signature: ()Ljnibwapi/model/Player;
 
-  public jnibwapi.model.Player getPlayer(int);
-    Signature: (I)Ljnibwapi/model/Player;
-
   public java.util.Collection<jnibwapi.model.Player> getPlayers();
     Signature: ()Ljava/util/Collection;
 
-  public java.util.List<jnibwapi.model.Player> getAllies();
-    Signature: ()Ljava/util/List;
+  public java.util.Set<jnibwapi.model.Player> getAllies();
+    Signature: ()Ljava/util/Set;
 
-  public java.util.List<jnibwapi.model.Player> getEnemies();
-    Signature: ()Ljava/util/List;
-
-  public jnibwapi.model.Unit getUnit(int);
-    Signature: (I)Ljnibwapi/model/Unit;
+  public java.util.Set<jnibwapi.model.Player> getEnemies();
+    Signature: ()Ljava/util/Set;
 
   public java.util.Collection<jnibwapi.model.Unit> getAllUnits();
     Signature: ()Ljava/util/Collection;
@@ -386,18 +383,6 @@ public class jnibwapi.JNIBWAPI {
 
   public jnibwapi.model.Map getMap();
     Signature: ()Ljnibwapi/model/Map;
-
-  public void loadTypeData();
-    Signature: ()V
-
-  public void javaPrint(java.lang.String);
-    Signature: (Ljava/lang/String;)V
-
-  public void connected();
-    Signature: ()V
-
-  public void gameStarted();
-    Signature: ()V
 
   public void keyPressed(int);
     Signature: (I)V

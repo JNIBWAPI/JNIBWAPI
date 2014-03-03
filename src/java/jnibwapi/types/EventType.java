@@ -1,5 +1,9 @@
 package jnibwapi.types;
 
+import java.util.Arrays;
+import java.util.Collection;
+import java.util.Collections;
+
 /**
  * Represents a StarCraft event type.
  * 
@@ -29,5 +33,13 @@ public enum EventType {
 	None;
 	public int getID() {
 		return ordinal();
+	}
+	
+	public static EventType getEventType(int id) {
+		return EventType.values()[id];
+	}
+	
+	public static Collection<EventType> getAllEventTypes() {
+		return Collections.unmodifiableCollection(Arrays.asList(EventType.values()));
 	}
 }

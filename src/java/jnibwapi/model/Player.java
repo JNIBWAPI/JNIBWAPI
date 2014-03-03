@@ -1,8 +1,11 @@
 package jnibwapi.model;
 
-import java.awt.Point;
-
+import jnibwapi.model.Position.Type;
+import jnibwapi.types.RaceType;
+import jnibwapi.types.RaceType.RaceTypes;
+import jnibwapi.types.TechType;
 import jnibwapi.types.TechType.TechTypes;
+import jnibwapi.types.UpgradeType;
 import jnibwapi.types.UpgradeType.UpgradeTypes;
 
 /**
@@ -58,13 +61,13 @@ public class Player {
 		this.name = name;
 		// Initialise technology records
 		int highestIDTechType = 0;
-		for (TechTypes tt : TechTypes.values()) {
-			highestIDTechType = Math.max(highestIDTechType, tt.getID());
+		for (TechType t : TechTypes.getAllTechTypes()) {
+			highestIDTechType = Math.max(highestIDTechType, t.getID());
 		}
 		researching = new boolean[highestIDTechType + 1];
 		researched = new boolean[highestIDTechType + 1];
 		int highestIDUpgradeType = 0;
-		for (UpgradeTypes ut : UpgradeTypes.values()) {
+		for (UpgradeType ut : UpgradeTypes.getAllUpgradeTypes()) {
 			highestIDUpgradeType = Math.max(highestIDUpgradeType, ut.getID());
 		}
 		upgrading = new boolean[highestIDUpgradeType + 1];
@@ -103,23 +106,26 @@ public class Player {
 		return ID;
 	}
 	
+	@Deprecated
 	public int getRaceID() {
 		return raceID;
 	}
 	
+	public RaceType getRace() {
+		return RaceTypes.getRaceType(raceID);
+	}
+	
+	// TODO Should return a PlayerType
 	public int getTypeID() {
 		return typeID;
 	}
 	
 	/**
-	 * Returns the starting tile position of the Player, or null if unknown (eg. for enemy players
-	 * without complete map information).
+	 * Returns the starting tile position of the Player. Note: the position may be equal to
+	 * Positions.Invalid / Positions.None / Positions.Unknown.
 	 */
-	public Point getStartLocation() {
-		if (startLocationX == 1000) {
-			return null; // In the case of Invalid/None/Unknown TilePosition
-		}
-		return new Point(startLocationX, startLocationY);
+	public Position getStartLocation() {
+		return new Position(startLocationX, startLocationY, Type.BUILD);
 	}
 	
 	public boolean isSelf() {
@@ -190,20 +196,60 @@ public class Player {
 		return razingScore;
 	}
 	
+	public boolean isResearched(TechType tech) {
+		return researched[tech.getID()];
+	}
+	
+	@Deprecated
 	public boolean isResearched(int techID) {
-		return (techID > 0 && techID < researched.length) ? researched[techID] : false;
+		return (techID >= 0 && techID < researched.length) ? researched[techID] : false;
 	}
 	
+	public boolean isResearching(TechType tech) {
+		return researching[tech.getID()];
+	}
+	
+	@Deprecated
 	public boolean isResearching(int techID) {
-		return (techID > 0 && techID < researching.length) ? researching[techID] : false;
+		return (techID >= 0 && techID < researching.length) ? researching[techID] : false;
 	}
 	
+
+	public int getUpgradeLevel(UpgradeType upgrade) {
+		return upgradeLevel[upgrade.getID()];
+	}
+	
+	@Deprecated
 	public int getUpgradeLevel(int upgradeID) {
-		return (upgradeID > 0 && upgradeID < upgradeLevel.length) ?
+		return (upgradeID >= 0 && upgradeID < upgradeLevel.length) ?
 				upgradeLevel[upgradeID] : 0;
 	}
 	
+	public boolean isUpgrading(UpgradeType upgrade) {
+		return upgrading[upgrade.getID()];
+	}
+	
+	@Deprecated
 	public boolean isUpgrading(int upgradeID) {
-		return (upgradeID > 0 && upgradeID < upgrading.length) ? upgrading[upgradeID] : false;
+		return (upgradeID >= 0 && upgradeID < upgrading.length) ? upgrading[upgradeID] : false;
+	}
+	
+	@Override
+	public int hashCode() {
+		return ID;
+	}
+	
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		Player other = (Player) obj;
+		if (ID != other.ID)
+			return false;
+		return true;
 	}
 }

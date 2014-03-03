@@ -2,10 +2,13 @@ package jnibwapi;
 
 import java.util.HashSet;
 
+import jnibwapi.model.Position;
 import jnibwapi.model.Unit;
 import jnibwapi.types.TechType;
 import jnibwapi.types.TechType.TechTypes;
+import jnibwapi.types.UnitType;
 import jnibwapi.types.UnitType.UnitTypes;
+import jnibwapi.types.UpgradeType;
 import jnibwapi.types.UpgradeType.UpgradeTypes;
 
 /**
@@ -22,16 +25,16 @@ public class ExampleAIClient implements BWAPIEventListener {
 	private JNIBWAPI bwapi;
 	
 	/** used for mineral splits */
-	private HashSet<Integer> claimed = new HashSet<Integer>();
+	private HashSet<Unit> claimedMinerals = new HashSet<>();
 	
-	/** has drone 5 been morphed */
-	private boolean morphedDrone = false;
+	/** have drone 5 been morphed */
+	private boolean morphedDrone;
 	
-	/** has a drone been assigned to building a pool? */
-	private int poolDrone = -1;
+	/** the drone that has been assigned to building a pool */
+	private Unit poolDrone;
 	
 	/** when should the next overlord be spawned? */
-	private int supplyCap = 0;
+	private int supplyCap;
 	
 	/**
 	 * Create a Java AI.
@@ -68,9 +71,9 @@ public class ExampleAIClient implements BWAPIEventListener {
 		bwapi.setGameSpeed(0);
 		
 		// reset agent state
-		claimed.clear();
+		claimedMinerals.clear();
 		morphedDrone = false;
-		poolDrone = -1;
+		poolDrone = null;
 		supplyCap = 0;
 	}
 	
@@ -81,40 +84,39 @@ public class ExampleAIClient implements BWAPIEventListener {
 	public void matchFrame() {
 		// print out some info about any upgrades or research happening
 		String msg = "=";
-		for (TechTypes t : TechTypes.values()) {
+		for (TechType t : TechTypes.getAllTechTypes()) {
 			if (bwapi.getSelf().isResearching(t.getID())) {
-				msg += "Researching " + t.name() + "=";
+				msg += "Researching " + t.getName() + "=";
 			}
 			// Exclude tech that is given at the start of the game
-			TechType tt = bwapi.getTechType(t.getID());
-			if (tt == null) {
+			UnitType whatResearches = t.getWhatResearches();
+			if (whatResearches == UnitTypes.None) {
 				continue;
-			} else {
-				int whatResearches = bwapi.getTechType(t.getID()).getWhatResearchesTypeID();
-				if (whatResearches == UnitTypes.None.getID()) {
-					continue;
-				}
 			}
 			if (bwapi.getSelf().isResearched(t.getID())) {
-				msg += "Researched " + t.name() + "=";
+				msg += "Researched " + t.getName() + "=";
 			}
 		}
-		for (UpgradeTypes t : UpgradeTypes.values()) {
+		for (UpgradeType t : UpgradeTypes.getAllUpgradeTypes()) {
 			if (bwapi.getSelf().isUpgrading(t.getID())) {
-				msg += "Upgrading " + t.name() + "=";
+				msg += "Upgrading " + t.getName() + "=";
 			}
 			if (bwapi.getSelf().getUpgradeLevel(t.getID()) > 0) {
 				int level = bwapi.getSelf().getUpgradeLevel(t.getID());
-				msg += "Upgraded " + t.name() + " to level " + level + "=";
+				msg += "Upgraded " + t.getName() + " to level " + level + "=";
 			}
 		}
-		bwapi.drawText(0, 20, msg, true);
+		bwapi.drawText(new Position(0, 20), msg, true);
+		
+		// draw the terrain information
+		bwapi.getMap().drawTerrainData(bwapi);
 		
 		// spawn a drone
 		for (Unit unit : bwapi.getMyUnits()) {
-			if (unit.getTypeID() == UnitTypes.Zerg_Larva.getID()) {
+			// Note you can use referential equality
+			if (unit.getType() == UnitTypes.Zerg_Larva) {
 				if (bwapi.getSelf().getMinerals() >= 50 && !morphedDrone) {
-					bwapi.morph(unit.getID(), UnitTypes.Zerg_Drone.getID());
+					unit.morph(UnitTypes.Zerg_Drone);
 					morphedDrone = true;
 				}
 			}
@@ -122,18 +124,17 @@ public class ExampleAIClient implements BWAPIEventListener {
 		
 		// collect minerals
 		for (Unit unit : bwapi.getMyUnits()) {
-			if (unit.getTypeID() == UnitTypes.Zerg_Drone.getID()) {
-				if (unit.isIdle() && unit.getID() != poolDrone) {
-					
+			if (unit.getType() == UnitTypes.Zerg_Drone) {
+				// You can use referential equality for units, too
+				if (unit.isIdle() && unit != poolDrone) {
 					for (Unit minerals : bwapi.getNeutralUnits()) {
-						if (minerals.getTypeID() == UnitTypes.Resource_Mineral_Field.getID()
-								&& !claimed.contains(minerals.getID())) {
-							double distance = Math.sqrt(Math.pow(minerals.getX() - unit.getX(), 2)
-									+ Math.pow(minerals.getY() - unit.getY(), 2));
+						if (minerals.getType().isMineralField()
+								&& !claimedMinerals.contains(minerals)) {
+							double distance = unit.getDistance(minerals);
 							
 							if (distance < 300) {
-								bwapi.rightClick(unit.getID(), minerals.getID());
-								claimed.add(minerals.getID());
+								unit.rightClick(minerals);
+								claimedMinerals.add(minerals);
 								break;
 							}
 						}
@@ -143,19 +144,18 @@ public class ExampleAIClient implements BWAPIEventListener {
 		}
 		
 		// build a spawning pool
-		if (bwapi.getSelf().getMinerals() >= 200 && poolDrone < 0) {
+		if (bwapi.getSelf().getMinerals() >= 200 && poolDrone == null) {
 			for (Unit unit : bwapi.getMyUnits()) {
-				if (unit.getTypeID() == UnitTypes.Zerg_Drone.getID()) {
-					poolDrone = unit.getID();
+				if (unit.getType() == UnitTypes.Zerg_Drone) {
+					poolDrone = unit;
 					break;
 				}
 			}
 			
 			// build the pool under the overlord
 			for (Unit unit : bwapi.getMyUnits()) {
-				if (unit.getTypeID() == UnitTypes.Zerg_Overlord.getID()) {
-					bwapi.build(poolDrone, unit.getTileX(), unit.getTileY(),
-							UnitTypes.Zerg_Spawning_Pool.getID());
+				if (unit.getType() == UnitTypes.Zerg_Overlord) {
+					poolDrone.build(unit.getPosition(), UnitTypes.Zerg_Spawning_Pool);
 				}
 			}
 		}
@@ -165,21 +165,20 @@ public class ExampleAIClient implements BWAPIEventListener {
 				&& bwapi.getSelf().getSupplyTotal() > supplyCap) {
 			if (bwapi.getSelf().getMinerals() >= 100) {
 				for (Unit larva : bwapi.getMyUnits()) {
-					if (larva.getTypeID() == UnitTypes.Zerg_Larva.getID()) {
-						bwapi.morph(larva.getID(), UnitTypes.Zerg_Overlord.getID());
+					if (larva.getType() == UnitTypes.Zerg_Larva) {
+						larva.morph(UnitTypes.Zerg_Overlord);
 						supplyCap = bwapi.getSelf().getSupplyTotal();
 					}
 				}
 			}
 		}
-		
 		// spawn zerglings
 		else if (bwapi.getSelf().getMinerals() >= 50) {
 			for (Unit unit : bwapi.getMyUnits()) {
-				if (unit.getTypeID() == UnitTypes.Zerg_Spawning_Pool.getID() && unit.isCompleted()) {
+				if (unit.getType() == UnitTypes.Zerg_Spawning_Pool && unit.isCompleted()) {
 					for (Unit larva : bwapi.getMyUnits()) {
-						if (larva.getTypeID() == UnitTypes.Zerg_Larva.getID()) {
-							bwapi.morph(larva.getID(), UnitTypes.Zerg_Zergling.getID());
+						if (larva.getType() == UnitTypes.Zerg_Larva) {
+							larva.morph(UnitTypes.Zerg_Zergling);
 						}
 					}
 				}
@@ -188,9 +187,9 @@ public class ExampleAIClient implements BWAPIEventListener {
 		
 		// attack move toward an enemy
 		for (Unit unit : bwapi.getMyUnits()) {
-			if (unit.getTypeID() == UnitTypes.Zerg_Zergling.getID() && unit.isIdle()) {
+			if (unit.getType() == UnitTypes.Zerg_Zergling && unit.isIdle()) {
 				for (Unit enemy : bwapi.getEnemyUnits()) {
-					bwapi.attack(unit.getID(), enemy.getX(), enemy.getY());
+					unit.attack(enemy.getPosition());
 					break;
 				}
 			}

@@ -12,28 +12,28 @@ public class ChokePoint {
 	public static final int numAttributes = 9;
 	public static final double fixedScale = 100.0;
 	
-	private final int centerX;
-	private final int centerY;
+	private final Position center;
 	private final double radius;
 	private final int firstRegionID;
 	private final int secondRegionID;
-	private final int firstSideX;
-	private final int firstSideY;
-	private final int secondSideX;
-	private final int secondSideY;
+	private final Position firstSide;
+	private final Position secondSide;
 	private final Region firstRegion;
 	private final Region secondRegion;
 	
 	public ChokePoint(int[] data, int index, Map<Integer, Region> idToRegion) {
-		centerX = data[index++];
-		centerY = data[index++];
+		int centerX = data[index++];
+		int centerY = data[index++];
+		center = new Position(centerX, centerY);
 		radius = data[index++] / fixedScale;
 		firstRegionID = data[index++];
 		secondRegionID = data[index++];
-		firstSideX = data[index++];
-		firstSideY = data[index++];
-		secondSideX = data[index++];
-		secondSideY = data[index++];
+		int firstSideX = data[index++];
+		int firstSideY = data[index++];
+		firstSide = new Position(firstSideX, firstSideY);
+		int secondSideX = data[index++];
+		int secondSideY = data[index++];
+		secondSide = new Position(secondSideX, secondSideY);
 		firstRegion = idToRegion.get(firstRegionID);
 		secondRegion = idToRegion.get(secondRegionID);
 	}
@@ -50,39 +50,59 @@ public class ChokePoint {
 		return secondRegion;
 	}
 	
-	public int getCenterX() {
-		return centerX;
+	public Position getCenter() {
+		return center;
 	}
 	
+	/** @deprecated use {@link #getCenter()} instead */
+	public int getCenterX() {
+		return center.getPX();
+	}
+	
+	/** @deprecated use {@link #getCenter()} instead */
 	public int getCenterY() {
-		return centerY;
+		return center.getPY();
 	}
 	
 	public double getRadius() {
 		return radius;
 	}
 	
+	/** @deprecated use {@link #getFirstRegion()} instead */
 	public int getFirstRegionID() {
 		return firstRegionID;
 	}
 	
+	/** @deprecated use {@link #getSecondRegion()} instead */
 	public int getSecondRegionID() {
 		return secondRegionID;
 	}
 	
+	public Position getFirstSide() {
+		return firstSide;
+	}
+	
+	public Position getSecondSide() {
+		return secondSide;
+	}
+	
+	/** @deprecated use {@link #getFirstSide()} instead */
 	public int getFirstSideX() {
-		return firstSideX;
+		return firstSide.getPX();
 	}
 	
+	/** @deprecated use {@link #getFirstSide()} instead */
 	public int getFirstSideY() {
-		return firstSideY;
+		return firstSide.getPY();
 	}
 	
+	/** @deprecated use {@link #getSecondSide()} instead */
 	public int getSecondSideX() {
-		return secondSideX;
+		return secondSide.getPX();
 	}
 	
+	/** @deprecated use {@link #getSecondSide()} instead */
 	public int getSecondSideY() {
-		return secondSideY;
+		return secondSide.getPY();
 	}
 }

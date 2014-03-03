@@ -929,11 +929,27 @@ JNIEXPORT jboolean JNICALL Java_jnibwapi_JNIBWAPI_hasPath__III
 
 /*
  * Class:     jnibwapi_JNIBWAPI
- * Method:    hasLoadedUnit
- * Signature: (II)Z
+ * Method:    getLoadedUnits
+ * Signature: (I)[I
  */
-JNIEXPORT jboolean JNICALL Java_jnibwapi_JNIBWAPI_hasLoadedUnit
-  (JNIEnv *, jobject, jint, jint);
+JNIEXPORT jintArray JNICALL Java_jnibwapi_JNIBWAPI_getLoadedUnits
+  (JNIEnv *, jobject, jint);
+
+/*
+ * Class:     jnibwapi_JNIBWAPI
+ * Method:    getInterceptors
+ * Signature: (I)[I
+ */
+JNIEXPORT jintArray JNICALL Java_jnibwapi_JNIBWAPI_getInterceptors
+  (JNIEnv *, jobject, jint);
+
+/*
+ * Class:     jnibwapi_JNIBWAPI
+ * Method:    getLarva
+ * Signature: (I)[I
+ */
+JNIEXPORT jintArray JNICALL Java_jnibwapi_JNIBWAPI_getLarva
+  (JNIEnv *, jobject, jint);
 
 /*
  * Class:     jnibwapi_JNIBWAPI

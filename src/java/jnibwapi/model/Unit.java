@@ -1,15 +1,27 @@
 package jnibwapi.model;
 
+import jnibwapi.IDLookup;
+import jnibwapi.NativeUnitCommands;
+import jnibwapi.types.*;
+import jnibwapi.types.OrderType.OrderTypes;
+import jnibwapi.types.TechType.TechTypes;
+import jnibwapi.types.UnitCommandType.UnitCommandTypes;
+import jnibwapi.types.UnitType.UnitTypes;
+import jnibwapi.types.UpgradeType.UpgradeTypes;
+
 /**
  * Represents a StarCraft unit.
  * 
  * For a description of fields see: http://code.google.com/p/bwapi/wiki/Unit
  */
-public class Unit {
+public class Unit implements Cloneable {
 	
-	public static final int numAttributes = 118;
+	public static final int numAttributes = 123;
 	public static final double TO_DEGREES = 180.0 / Math.PI;
 	public static final double fixedScale = 100.0;
+	
+	private final IDLookup lookup;
+	private final NativeUnitCommands cmds;
 	
 	private int ID;
 	private int replayID;
@@ -29,6 +41,7 @@ public class Unit {
 	private int resourceGroup;
 	private int lastCommandFrame;
 	private int lastCommandID;
+	private int lastAttackingPlayerID;
 	private int initialTypeID;
 	private int initialX;
 	private int initialY;
@@ -74,9 +87,13 @@ public class Unit {
 	private int rallyY;
 	private int rallyUnitID;
 	private int addOnID;
+	private int nydusExitUnitID;
 	private int transportID;
-	private int numLoadedUnits;
-	private int numLarva;
+	private int loadedUnitsCount;
+	private int carrierUnitID;
+	private int hatcheryUnitID;
+	private int larvaCount;
+	private int powerUpUnitID;
 	private boolean exists;
 	private boolean nukeReady;
 	private boolean accelerating;
@@ -130,8 +147,10 @@ public class Unit {
 	private boolean upgrading;
 	private boolean visible;
 	
-	public Unit(int ID) {
+	public Unit(int ID, IDLookup lookup, NativeUnitCommands cmds) {
 		this.ID = ID;
+		this.lookup = lookup;
+		this.cmds = cmds;
 	}
 	
 	public void setDestroyed()
@@ -158,6 +177,7 @@ public class Unit {
 		resourceGroup = data[index++];
 		lastCommandFrame = data[index++];
 		lastCommandID = data[index++];
+		lastAttackingPlayerID = data[index++];
 		initialTypeID = data[index++];
 		initialX = data[index++];
 		initialY = data[index++];
@@ -203,9 +223,13 @@ public class Unit {
 		rallyY = data[index++];
 		rallyUnitID = data[index++];
 		addOnID = data[index++];
+		nydusExitUnitID = data[index++];
 		transportID = data[index++];
-		numLoadedUnits = data[index++];
-		numLarva = data[index++];
+		loadedUnitsCount = data[index++];
+		carrierUnitID = data[index++];
+		hatcheryUnitID = data[index++];
+		larvaCount = data[index++];
+		powerUpUnitID = data[index++];
 		exists = data[index++] == 1;
 		nukeReady = data[index++] == 1;
 		accelerating = data[index++] == 1;
@@ -260,6 +284,99 @@ public class Unit {
 		visible = data[index++] == 1;
 	}
 	
+	@Override
+	public Unit clone() {
+		/*
+		 * Safe to use clone for this class because it has only primitive fields and a reference to
+		 * BWAPI, which should be shallow-copied. Beware when using equals or == with cloned Units
+		 * as they will be considered equal (and not ==) regardless of any changes in their
+		 * properties over time.
+		 */
+		try {
+			return (Unit) super.clone();
+		} catch (CloneNotSupportedException e) {
+			// Should never happen, as this implements Cloneable and extends Object
+			e.printStackTrace();
+			return null;
+		}
+	}
+	
+	public Position getPosition() {
+		return new Position(x, y);
+	}
+	
+	/** Returns the edge-to-edge distance between the current unit and the target unit. */
+	public double getDistance(Unit target) {
+		if (!isExists() || target == null || !target.isExists())
+			return Integer.MAX_VALUE;
+		
+		if (this == target)
+			return 0;
+		
+		int xDist = getLeft() - (target.getRight() + 1);
+		if (xDist < 0) {
+			xDist = target.getLeft() - (getRight() + 1);
+			if (xDist < 0) {
+				xDist = 0;
+			}
+		}
+		int yDist = getTop() - (target.getBottom() + 1);
+		if (yDist < 0) {
+			yDist = target.getTop() - (getBottom() + 1);
+			if (yDist < 0) {
+				yDist = 0;
+			}
+		}
+		return new Position(0, 0).getPDistance(new Position(xDist, yDist));
+	}
+	
+	/** Returns the distance from the edge of the current unit to the target position. */
+	public double getDistance(Position target) {
+		if (!isExists())
+			return Integer.MAX_VALUE;
+		int xDist = getLeft() - (target.getPX() + 1);
+		if (xDist < 0) {
+			xDist = target.getPX() - (getRight() + 1);
+			if (xDist < 0) {
+				xDist = 0;
+			}
+		}
+		int yDist = getTop() - (target.getPY() + 1);
+		if (yDist < 0) {
+			yDist = target.getPY() - (getBottom() + 1);
+			if (yDist < 0) {
+				yDist = 0;
+			}
+		}
+		return new Position(0, 0).getPDistance(new Position(xDist, yDist));
+	}
+	
+	public Position getTopLeft() {
+		return new Position(getLeft(), getTop());
+	}
+	
+	public Position getBottomRight() {
+		return new Position(getRight(), getBottom());
+	}
+	
+	public int getLeft() {
+		return x - getType().getDimensionLeft();
+	}
+	
+	public int getTop() {
+		return y - getType().getDimensionUp();
+	}
+	
+	public int getRight() {
+		return x + getType().getDimensionRight();
+	}
+	
+	public int getBottom() {
+		return y + getType().getDimensionDown();
+	}
+	
+	// ------------------------------ FIELD ACCESSOR METHODS ------------------------------ //
+	
 	public int getID() {
 		return ID;
 	}
@@ -268,26 +385,40 @@ public class Unit {
 		return replayID;
 	}
 	
+	@Deprecated
 	public int getPlayerID() {
 		return playerID;
 	}
 	
+	public Player getPlayer() {
+		return lookup.getPlayer(playerID);
+	}
+	
+	@Deprecated
 	public int getTypeID() {
 		return typeID;
 	}
 	
+	public UnitType getType() {
+		return UnitTypes.getUnitType(typeID);
+	}
+	
+	/** @deprecated use {@link #getPosition()} */
 	public int getX() {
 		return x;
 	}
 	
+	/** @deprecated use {@link #getPosition()} */
 	public int getY() {
 		return y;
 	}
 	
+	/** @deprecated use {@link #getPosition()} */
 	public int getTileX() {
 		return tileX;
 	}
 	
+	/** @deprecated use {@link #getPosition()} */
 	public int getTileY() {
 		return tileY;
 	}
@@ -328,28 +459,55 @@ public class Unit {
 		return lastCommandFrame;
 	}
 	
+	@Deprecated
 	public int getLastCommandID() {
 		return lastCommandID;
 	}
 	
+	public UnitCommandType getLastCommand() {
+		return UnitCommandTypes.getUnitCommandType(lastCommandID);
+	}
+	
+	@Deprecated
+	public int getLastAttackingPlayerID() {
+		return lastAttackingPlayerID;
+	}
+	
+	public Player getLastAttackingPlayer() {
+		return lookup.getPlayer(lastAttackingPlayerID);
+	}
+	
+	@Deprecated
 	public int getInitialTypeID() {
 		return initialTypeID;
 	}
 	
+	public UnitType getInitialType() {
+		return UnitTypes.getUnitType(initialTypeID);
+	}
+	
+	/** @deprecated use {@link #getInitialPosition()} */
 	public int getInitialX() {
 		return initialX;
 	}
 	
+	/** @deprecated use {@link #getInitialPosition()} */
 	public int getInitialY() {
 		return initialY;
 	}
 	
+	/** @deprecated use {@link #getInitialPosition()} */
 	public int getInitialTileX() {
 		return initialTileX;
 	}
 	
+	/** @deprecated use {@link #getInitialPosition()} */
 	public int getInitialTileY() {
 		return initialTileY;
+	}
+	
+	public Position getInitialPosition() {
+		return new Position(initialX, initialY);
 	}
 	
 	public int getInitialHitPoints() {
@@ -368,6 +526,7 @@ public class Unit {
 		return acidSporeCount;
 	}
 	
+	/** @see #getInterceptors() TODO */
 	public int getInterceptorCount() {
 		return interceptorCount;
 	}
@@ -436,20 +595,35 @@ public class Unit {
 		return stimTimer;
 	}
 	
+	@Deprecated
 	public int getBuildTypeID() {
 		return buildTypeID;
+	}
+	
+	public UnitType getBuildType() {
+		return UnitTypes.getUnitType(buildTypeID);
 	}
 	
 	public int getTrainingQueueSize() {
 		return trainingQueueSize;
 	}
 	
+	@Deprecated
 	public int getResearchingTechID() {
 		return researchingTechID;
 	}
 	
+	public TechType getTech() {
+		return TechTypes.getTechType(researchingTechID);
+	}
+	
+	@Deprecated
 	public int getUpgradingUpgradeID() {
 		return upgradingUpgradeID;
+	}
+	
+	public UpgradeType getUpgrade() {
+		return UpgradeTypes.getUpgradeType(upgradingUpgradeID);
 	}
 	
 	public int getRemainingBuildTimer() {
@@ -468,60 +642,150 @@ public class Unit {
 		return remainingUpgradeTime;
 	}
 	
+	@Deprecated
 	public int getBuildUnitID() {
 		return buildUnitID;
 	}
 	
+	public Unit getBuildUnit() {
+		return lookup.getUnit(buildUnitID);
+	}
+	
+	@Deprecated
 	public int getTargetUnitID() {
 		return targetUnitID;
 	}
 	
+	public Unit getTarget() {
+		return lookup.getUnit(targetUnitID);
+	}
+	
+	@Deprecated
 	public int getTargetX() {
 		return targetX;
 	}
 	
+	@Deprecated
 	public int getTargetY() {
 		return targetY;
 	}
 	
+	public Position getTargetPosition() {
+		return new Position(targetX, targetY);
+	}
+	
+	@Deprecated
 	public int getOrderID() {
 		return orderID;
 	}
 	
+	public OrderType getOrder() {
+		return OrderTypes.getOrderType(orderID);
+	}
+	
+	@Deprecated
 	public int getOrderTargetUnitID() {
 		return orderTargetID;
 	}
 	
+	public Unit getOrderTarget() {
+		return lookup.getUnit(orderTargetID);
+	}
+	
+	@Deprecated
 	public int getSecondaryOrderID() {
 		return secondaryOrderID;
 	}
 	
+	public OrderType getSecondaryOrder() {
+		return OrderTypes.getOrderType(secondaryOrderID);
+	}
+	
+	@Deprecated
 	public int getRallyX() {
 		return rallyX;
 	}
 	
+	@Deprecated
 	public int getRallyY() {
 		return rallyY;
 	}
 	
+	public Position getRallyPosition() {
+		return new Position(rallyX, rallyY);
+	}
+	
+	@Deprecated
 	public int getRallyUnitID() {
 		return rallyUnitID;
 	}
 	
+	public Unit getRallyUnit() {
+		return lookup.getUnit(rallyUnitID);
+	}
+	
+	@Deprecated
 	public int getAddOnUnitID() {
 		return addOnID;
 	}
 	
+	public Unit getAddon() {
+		return lookup.getUnit(addOnID);
+	}
+	
+	@Deprecated
+	public int getNydusExitUnitID() {
+		return nydusExitUnitID;
+	}
+	
+	public Unit getNydusExit() {
+		return lookup.getUnit(nydusExitUnitID);
+	}
+	
+	@Deprecated
 	public int getTransportUnitID() {
 		return transportID;
 	}
 	
-	public int getNumLoadedUnits() {
-		return numLoadedUnits;
+	public Unit getTransport() {
+		return lookup.getUnit(transportID);
 	}
 	
-	public int getNumLarva() {
-		return numLarva;
+	/** TODO @see #getLoadedUnits() */
+	public int getLoadedUnitsCount() {
+		return loadedUnitsCount;
+	}
+	
+	@Deprecated
+	public int getCarrierUnitID() {
+		return carrierUnitID;
+	}
+	
+	public Unit getCarrier() {
+		return lookup.getUnit(carrierUnitID);
+	}
+	
+	@Deprecated
+	public int getHatcheryUnitID() {
+		return hatcheryUnitID;
+	}
+	
+	public Unit getHatchery() {
+		return lookup.getUnit(hatcheryUnitID);
+	}
+	
+	/** TODO @see #getLarva() */
+	public int getLarvaCount() {
+		return larvaCount;
+	}
+	
+	@Deprecated
+	public int getPowerUpUnitID() {
+		return powerUpUnitID;
+	}
+	
+	public Unit getPowerUp() {
+		return lookup.getUnit(powerUpUnitID);
 	}
 	
 	public boolean isExists() {
@@ -730,5 +994,204 @@ public class Unit {
 	
 	public boolean isVisible() {
 		return visible;
+	}
+	
+	// ------------------------------ UNIT COMMANDS ------------------------------ //
+	public boolean attack(Position p) {
+		return cmds.attack(ID, p.getPX(), p.getPY());
+	}
+	
+	public boolean attack(Unit target) {
+		return cmds.attack(ID, target.getID());
+	}
+	
+	public boolean build(Position p, UnitType type) {
+		return cmds.build(ID, p.getBX(), p.getBY(), type.getID());
+	}
+	
+	public boolean buildAddon(UnitType type) {
+		return cmds.buildAddon(ID, type.getID());
+	}
+	
+	public boolean train(UnitType type) {
+		return cmds.train(ID, type.getID());
+	}
+	
+	public boolean morph(UnitType type) {
+		return cmds.morph(ID, type.getID());
+	}
+	
+	public boolean research(TechType tech) {
+		return cmds.research(ID, tech.getID());
+	}
+	
+	public boolean upgrade(UpgradeType upgrade) {
+		return cmds.upgrade(ID, upgrade.getID());
+	}
+	
+	public boolean setRallyPoint(Position p) {
+		return cmds.setRallyPoint(ID, p.getPX(), p.getPY());
+	}
+	
+	public boolean setRallyPoint(Unit target) {
+		return cmds.setRallyPoint(ID, target.getID());
+	}
+	
+	public boolean move(Position p) {
+		return cmds.move(ID, p.getPX(), p.getPY());
+	}
+	
+	public boolean patrol(Position p) {
+		return cmds.patrol(ID, p.getPX(), p.getPY());
+	}
+	
+	public boolean holdPosition() {
+		return cmds.holdPosition(ID);
+	}
+	
+	public boolean stop() {
+		return cmds.stop(ID);
+	}
+	
+	public boolean follow(Unit target) {
+		return cmds.follow(ID, target.getID());
+	}
+	
+	public boolean gather(Unit target) {
+		return cmds.gather(ID, target.getID());
+	}
+	
+	public boolean returnCargo() {
+		return cmds.returnCargo(ID);
+	}
+	
+	public boolean repair(Unit target) {
+		return cmds.repair(ID, target.getID());
+	}
+	
+	public boolean burrow() {
+		return cmds.burrow(ID);
+	}
+	
+	public boolean unburrow() {
+		return cmds.unburrow(ID);
+	}
+	
+	public boolean cloak() {
+		return cmds.cloak(ID);
+	}
+	
+	public boolean decloak() {
+		return cmds.decloak(ID);
+	}
+	
+	public boolean siege() {
+		return cmds.siege(ID);
+	}
+	
+	public boolean unsiege() {
+		return cmds.unsiege(ID);
+	}
+	
+	public boolean lift() {
+		return cmds.lift(ID);
+	}
+	
+	public boolean land(Position p) {
+		return cmds.land(ID, p.getBX(), p.getBY());
+	}
+	
+	public boolean load(Unit target) {
+		return cmds.load(ID, target.getID());
+	}
+	
+	public boolean unload(Unit target) {
+		return cmds.unload(ID, target.getID());
+	}
+	
+	public boolean unloadAll() {
+		return cmds.unloadAll(ID);
+	}
+	
+	public boolean unloadAll(Position p) {
+		return cmds.unloadAll(ID, p.getPX(), p.getPY());
+	}
+	
+	public boolean rightClick(Position p) {
+		return cmds.rightClick(ID, p.getPX(), p.getPY());
+	}
+	
+	public boolean rightClick(Unit target) {
+		return cmds.rightClick(ID, target.getID());
+	}
+	
+	public boolean haltConstruction() {
+		return cmds.haltConstruction(ID);
+	}
+	
+	public boolean cancelConstruction() {
+		return cmds.cancelConstruction(ID);
+	}
+	
+	public boolean cancelAddon() {
+		return cmds.cancelAddon(ID);
+	}
+	
+	public boolean cancelTrain(int slot) {
+		return cmds.cancelTrain(ID, slot);
+	}
+	
+	/** Remove the last unit from the training queue. */
+	public boolean cancelTrain() {
+		return cmds.cancelTrain(ID, -2);
+	}
+	
+	public boolean cancelMorph() {
+		return cmds.cancelMorph(ID);
+	}
+	
+	public boolean cancelResearch() {
+		return cmds.cancelResearch(ID);
+	}
+	
+	public boolean cancelUpgrade() {
+		return cmds.cancelUpgrade(ID);
+	}
+	
+	public boolean useTech(TechType tech) {
+		return cmds.useTech(ID, tech.getID());
+	}
+	
+	public boolean useTech(TechType tech, Position p) {
+		return cmds.useTech(ID, tech.getID(), p.getPX(), p.getPY());
+	}
+	
+	public boolean useTech(TechType tech, Unit target) {
+		return cmds.useTech(ID, tech.getID(), target.getID());
+	}
+	
+	public boolean placeCOP(Position p) {
+		return cmds.placeCOP(ID, p.getBX(), p.getBY());
+	}
+	
+	// ------------------------------ HASHCODE & EQUALS ------------------------------ //
+	
+	@Override
+	public int hashCode() {
+		return ID;
+	}
+	
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		Unit other = (Unit) obj;
+		if (ID != other.ID)
+			return false;
+		return true;
 	}
 }

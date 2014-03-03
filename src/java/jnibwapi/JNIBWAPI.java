@@ -1,6 +1,5 @@
 package jnibwapi;
 
-import java.awt.Point;
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.File;
@@ -17,12 +16,26 @@ import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import jnibwapi.model.Map;
 import jnibwapi.model.Player;
+import jnibwapi.model.Position;
 import jnibwapi.model.Region;
 import jnibwapi.model.Unit;
 import jnibwapi.types.*;
+import jnibwapi.types.BulletType.BulletTypes;
+import jnibwapi.types.DamageType.DamageTypes;
+import jnibwapi.types.ExplosionType.ExplosionTypes;
+import jnibwapi.types.OrderType.OrderTypes;
+import jnibwapi.types.RaceType.RaceTypes;
+import jnibwapi.types.TechType.TechTypes;
+import jnibwapi.types.UnitCommandType.UnitCommandTypes;
+import jnibwapi.types.UnitSizeType.UnitSizeTypes;
+import jnibwapi.types.UnitType.UnitTypes;
+import jnibwapi.types.UpgradeType.UpgradeTypes;
+import jnibwapi.types.WeaponType.WeaponTypes;
+import jnibwapi.util.BWColor;
 
 /**
  * JNI interface for the Brood War API.<br>
@@ -39,7 +52,7 @@ import jnibwapi.types.*;
  * Game: {@link http://code.google.com/p/bwapi/wiki/Game}<br>
  * Unit: {@link http://code.google.com/p/bwapi/wiki/Unit}<br>
  */
-public class JNIBWAPI {
+public class JNIBWAPI implements IDLookup, NativeUnitCommands {
 	
 	// load the BWAPI client library
 	static {
@@ -53,7 +66,7 @@ public class JNIBWAPI {
 			if (!dll.exists()) {
 				System.err.println("Native code library not found: " + dll.getAbsolutePath());
 			}
-			System.err.println("Native code library failed to load: " + e.toString());
+			System.err.println("Native code library failed to load." + e);
 		}
 	}
 	
@@ -107,11 +120,9 @@ public class JNIBWAPI {
 	// player lists
 	private Player self;
 	private Player neutralPlayer;
-	private HashSet<Integer> allyIDs = new HashSet<Integer>();
-	private HashSet<Integer> enemyIDs = new HashSet<Integer>();
 	private HashMap<Integer, Player> players = new HashMap<Integer, Player>();
-	private ArrayList<Player> allies = new ArrayList<Player>();
-	private ArrayList<Player> enemies = new ArrayList<Player>();
+	private HashSet<Player> allies = new HashSet<Player>();
+	private HashSet<Player> enemies = new HashSet<Player>();
 	
 	// invokes the main native method
 	private native void startClient(JNIBWAPI jniBWAPI);
@@ -127,7 +138,7 @@ public class JNIBWAPI {
 	private native int[] getUpgradeStatus(int playerID);
 	private native int[] getAllUnitsData();
 	private native int[] getRaceTypes();
-	private native String getRaceTypeName(int unitTypeID);
+	private native String getRaceTypeName(int raceID);
 	private native int[] getUnitTypes();
 	private native String getUnitTypeName(int unitTypeID);
 	private native int[] getRequiredUnits(int unitTypeID);
@@ -169,49 +180,93 @@ public class JNIBWAPI {
 	private native int[] getPolygon(int regionID);
 	private native int[] getBaseLocations();
 	
-	// unit commands: http://code.google.com/p/bwapi/wiki/Unit
+	// Native unit commands. These should all be accessed via the Unit class now.
+	// TODO implement these using only canIssueCommand and issueCommand
+	/** @deprecated Use the one in {@link Unit} instead */
 	public native boolean attack(int unitID, int x, int y);
+	/** @deprecated Use the one in {@link Unit} instead */
 	public native boolean attack(int unitID, int targetID);
+	/** @deprecated Use the one in {@link Unit} instead */
 	public native boolean build(int unitID, int tx, int ty, int typeID);
+	/** @deprecated Use the one in {@link Unit} instead */
 	public native boolean buildAddon(int unitID, int typeID);
+	/** @deprecated Use the one in {@link Unit} instead */
 	public native boolean train(int unitID, int typeID);
+	/** @deprecated Use the one in {@link Unit} instead */
 	public native boolean morph(int unitID, int typeID);
+	/** @deprecated Use the one in {@link Unit} instead */
 	public native boolean research(int unitID, int techID);
+	/** @deprecated Use the one in {@link Unit} instead */
 	public native boolean upgrade(int unitID, int updateID);
+	/** @deprecated Use the one in {@link Unit} instead */
 	public native boolean setRallyPoint(int unitID, int x, int y);
+	/** @deprecated Use the one in {@link Unit} instead */
 	public native boolean setRallyPoint(int unitID, int targetID);
+	/** @deprecated Use the one in {@link Unit} instead */
 	public native boolean move(int unitID, int x, int y);
+	/** @deprecated Use the one in {@link Unit} instead */
 	public native boolean patrol(int unitID, int x, int y);
+	/** @deprecated Use the one in {@link Unit} instead */
 	public native boolean holdPosition(int unitID);
+	/** @deprecated Use the one in {@link Unit} instead */
 	public native boolean stop(int unitID);
+	/** @deprecated Use the one in {@link Unit} instead */
 	public native boolean follow(int unitID, int targetID);
+	/** @deprecated Use the one in {@link Unit} instead */
 	public native boolean gather(int unitID, int targetID);
+	/** @deprecated Use the one in {@link Unit} instead */
 	public native boolean returnCargo(int unitID);
+	/** @deprecated Use the one in {@link Unit} instead */
 	public native boolean repair(int unitID, int targetID);
+	/** @deprecated Use the one in {@link Unit} instead */
 	public native boolean burrow(int unitID);
+	/** @deprecated Use the one in {@link Unit} instead */
 	public native boolean unburrow(int unitID);
+	/** @deprecated Use the one in {@link Unit} instead */
 	public native boolean cloak(int unitID);
+	/** @deprecated Use the one in {@link Unit} instead */
 	public native boolean decloak(int unitID);
+	/** @deprecated Use the one in {@link Unit} instead */
 	public native boolean siege(int unitID);
+	/** @deprecated Use the one in {@link Unit} instead */
 	public native boolean unsiege(int unitID);
+	/** @deprecated Use the one in {@link Unit} instead */
 	public native boolean lift(int unitID);
+	/** @deprecated Use the one in {@link Unit} instead */
 	public native boolean land(int unitID, int tx, int ty);
+	/** @deprecated Use the one in {@link Unit} instead */
 	public native boolean load(int unitID, int targetID);
+	/** @deprecated Use the one in {@link Unit} instead */
 	public native boolean unload(int unitID, int targetID);
+	/** @deprecated Use the one in {@link Unit} instead */
 	public native boolean unloadAll(int unitID);
+	/** @deprecated Use the one in {@link Unit} instead */
 	public native boolean unloadAll(int unitID, int x, int y);
+	/** @deprecated Use the one in {@link Unit} instead */
 	public native boolean rightClick(int unitID, int x, int y);
+	/** @deprecated Use the one in {@link Unit} instead */
 	public native boolean rightClick(int unitID, int targetID);
+	/** @deprecated Use the one in {@link Unit} instead */
 	public native boolean haltConstruction(int unitID);
+	/** @deprecated Use the one in {@link Unit} instead */
 	public native boolean cancelConstruction(int unitID);
+	/** @deprecated Use the one in {@link Unit} instead */
 	public native boolean cancelAddon(int unitID);
+	/** @deprecated Use the one in {@link Unit} instead */
 	public native boolean cancelTrain(int unitID, int slot);
+	/** @deprecated Use the one in {@link Unit} instead */
 	public native boolean cancelMorph(int unitID);
+	/** @deprecated Use the one in {@link Unit} instead */
 	public native boolean cancelResearch(int unitID);
+	/** @deprecated Use the one in {@link Unit} instead */
 	public native boolean cancelUpgrade(int unitID);
+	/** @deprecated Use the one in {@link Unit} instead */
 	public native boolean useTech(int unitID, int typeID);
+	/** @deprecated Use the one in {@link Unit} instead */
 	public native boolean useTech(int unitID, int typeID, int x, int y);
+	/** @deprecated Use the one in {@link Unit} instead */
 	public native boolean useTech(int unitID, int typeID, int targetID);
+	/** @deprecated Use the one in {@link Unit} instead */
 	public native boolean placeCOP(int unitID, int tx, int ty);
 
 	// utility commands
@@ -224,24 +279,42 @@ public class JNIBWAPI {
 	public native void setFrameSkip(int frameSkip);
 	public native void leaveGame();
 	
-	// draw commands
-	public native void drawBox(int left, int top, int right, int bottom, int color, boolean fill, boolean screenCoords);
-	public native void drawCircle(int x, int y, int radius, int color, boolean fill, boolean screenCoords);
-	public native void drawLine(int x1, int y1, int x2, int y2, int color, boolean screenCoords);
-	public void drawLine(Point a, Point b, int color, boolean screenCoords) {
-		drawLine(a.x, a.y, b.x, b.y, color, screenCoords);
+	// draw commands (if screenCoords is false, draws at map pixel coordinates)
+	private native void drawBox(int left, int top, int right, int bottom, int color, boolean fill, boolean screenCoords);
+	public void drawBox(Position topLeft, Position bottomRight, BWColor bWColor, boolean fill, boolean screenCoords) {
+		drawBox(topLeft.getPX(), topLeft.getPY(), bottomRight.getPX(), bottomRight.getPY(), bWColor.getID(), fill, screenCoords);
 	}
-	public native void drawDot(int x, int y, int color, boolean screenCoords);
-	public native void drawText(int x, int y, String msg, boolean screenCoords);
-	public void drawText(Point a, String msg, boolean screenCoords) {
-		drawText(a.x, a.y, msg, screenCoords);
+	private native void drawCircle(int x, int y, int radius, int color, boolean fill, boolean screenCoords);
+	public void drawCircle(Position p, int radius, BWColor bWColor, boolean fill, boolean screenCoords) {
+		drawCircle(p.getPX(), p.getPY(), radius, bWColor.getID(), fill, screenCoords);
+	}
+	private native void drawLine(int x1, int y1, int x2, int y2, int color, boolean screenCoords);
+	public void drawLine(Position start, Position end, BWColor bWColor, boolean screenCoords) {
+		drawLine(start.getPX(), start.getPY(), end.getPX(), end.getPY(), bWColor.getID(), screenCoords);
+	}
+	private native void drawDot(int x, int y, int color, boolean screenCoords);
+	public void drawDot(Position p, BWColor bWColor, boolean screenCoords) {
+		drawDot(p.getPX(), p.getPY(), bWColor.getID(), screenCoords);
+	}
+	private native void drawText(int x, int y, String msg, boolean screenCoords);
+	public void drawText(Position a, String msg, boolean screenCoords) {
+		drawText(a.getPX(), a.getPY(), msg, screenCoords);
 	}
 	
 	// Extended Commands
-	public native boolean isVisible(int tileX, int tileY);
-	public native boolean isExplored(int tileX, int tileY);
-	public native boolean isBuildable(int tx, int ty, boolean includeBuildings);
-	public boolean isBuildable(int tx, int ty) { return isBuildable(tx, ty, false);}
+	private native boolean isVisible(int tileX, int tileY);
+	public boolean isVisible(Position p) {
+		return isVisible(p.getBX(), p.getBY());
+	}
+	private native boolean isExplored(int tileX, int tileY);
+	public boolean isExplored(Position p) {
+		return isExplored(p.getBX(), p.getBY());
+	}
+	private native boolean isBuildable(int tx, int ty, boolean includeBuildings);
+	public boolean isBuildable(Position p, boolean includeBuildings) {
+		return isBuildable(p.getBX(), p.getBY(), includeBuildings);
+	}
+	// TODO use Position instead of x and y
 	public native boolean hasCreep(int tileX, int tileY);
 	public native boolean hasPower(int tileX, int tileY);
 	public native boolean hasPower(int tileX, int tileY, int unitTypeID);
@@ -251,7 +324,9 @@ public class JNIBWAPI {
 	public native boolean hasPath(int fromX, int fromY, int toX, int toY);
 	public native boolean hasPath(int unitID, int targetID);
 	public native boolean hasPath(int unitID, int toX, int toY);
-	public native boolean hasLoadedUnit(int unitID1, int unitID2);
+	public native int[] getLoadedUnits(int unitID);
+	public native int[] getInterceptors(int unitID);
+	public native int[] getLarva(int unitID);
 	public native boolean canBuildHere(int tileX, int tileY, int unitTypeID, boolean checkExplored);
 	public native boolean canBuildHere(int unitID, int tileX, int tileY, int unitTypeID, boolean checkExplored);
 	public native boolean canMake(int unitTypeID);
@@ -271,54 +346,67 @@ public class JNIBWAPI {
 	public native int getLastError();
 	public native int getRemainingLatencyFrames();
 
-	// type data
-	private HashMap<Integer, UnitType> unitTypes = new HashMap<Integer, UnitType>();
-	private HashMap<Integer, RaceType> raceTypes = new HashMap<Integer, RaceType>();
-	private HashMap<Integer, TechType> techTypes = new HashMap<Integer, TechType>();
-	private HashMap<Integer, UpgradeType> upgradeTypes = new HashMap<Integer, UpgradeType>();
-	private HashMap<Integer, WeaponType> weaponTypes = new HashMap<Integer, WeaponType>();
-	private HashMap<Integer, UnitSizeType> unitSizeTypes = new HashMap<Integer, UnitSizeType>();
-	private HashMap<Integer, BulletType> bulletTypes = new HashMap<Integer, BulletType>();
-	private HashMap<Integer, DamageType> damageTypes = new HashMap<Integer, DamageType>();
-	private HashMap<Integer, ExplosionType> explosionTypes = new HashMap<Integer, ExplosionType>();
-	private HashMap<Integer, UnitCommandType> unitCommandTypes = new HashMap<Integer, UnitCommandType>();
-	private HashMap<Integer, OrderType> orderTypes = new HashMap<Integer, OrderType>();
-	private HashMap<Integer, EventType> eventTypes = new HashMap<Integer, EventType>();
+	// Old get___ methods for ID dereferencing no longer needed.
+	@Deprecated
+	public UnitType getUnitType(int typeID) { return UnitTypes.getUnitType(typeID); }
+	@Deprecated
+	public RaceType getRaceType(int typeID) { return RaceTypes.getRaceType(typeID); }
+	@Deprecated
+	public TechType getTechType(int typeID) { return TechTypes.getTechType(typeID); }
+	@Deprecated
+	public UpgradeType getUpgradeType(int upgradeID) { return UpgradeTypes.getUpgradeType(upgradeID); }
+	@Deprecated
+	public WeaponType getWeaponType(int weaponID) { return WeaponTypes.getWeaponType(weaponID); }
+	@Deprecated
+	public UnitSizeType getUnitSizeType(int sizeID) { return UnitSizeTypes.getUnitSizeType(sizeID); }
+	@Deprecated
+	public BulletType getBulletType(int bulletID) { return BulletTypes.getBulletType(bulletID); }
+	@Deprecated
+	public DamageType getDamageType(int damageID) { return DamageTypes.getDamageType(damageID); }
+	@Deprecated
+	public ExplosionType getExplosionType(int explosionID) { return ExplosionTypes.getExplosionType(explosionID); }
+	@Deprecated
+	public UnitCommandType getUnitCommandType(int unitCommandID) { return UnitCommandTypes.getUnitCommandType(unitCommandID); }
+	@Deprecated
+	public OrderType getOrderType(int orderID) { return OrderTypes.getOrderType(orderID); }
 	
-	// type data accessors
-	public UnitType getUnitType(int typeID) { return unitTypes.get(typeID); }
-	public RaceType getRaceType(int typeID) { return raceTypes.get(typeID); }
-	public TechType getTechType(int typeID) { return techTypes.get(typeID); }
-	public UpgradeType getUpgradeType(int upgradeID) { return upgradeTypes.get(upgradeID); }
-	public WeaponType getWeaponType(int weaponID) { return weaponTypes.get(weaponID); }
-	public UnitSizeType getUnitSizeType(int sizeID) { return unitSizeTypes.get(sizeID); }
-	public BulletType getBulletType(int bulletID) { return bulletTypes.get(bulletID); }
-	public DamageType getDamageType(int damageID) { return damageTypes.get(damageID); }
-	public ExplosionType getExplosionType(int explosionID) { return explosionTypes.get(explosionID); }
-	public UnitCommandType getUnitCommandType(int unitCommandID) { return unitCommandTypes.get(unitCommandID); }
-	public OrderType getOrderType(int orderID) { return orderTypes.get(orderID); }
+	// Old ___Types() methods no longer needed
+	@Deprecated
+	public Collection<UnitType> unitTypes() { return UnitTypes.getAllUnitTypes(); }
+	@Deprecated
+	public Collection<RaceType> raceTypes() { return RaceTypes.getAllRaceTypes(); }
+	@Deprecated
+	public Collection<TechType> techTypes() { return TechTypes.getAllTechTypes(); }
+	@Deprecated
+	public Collection<UpgradeType> upgradeTypes() { return UpgradeTypes.getAllUpgradeTypes(); }
+	@Deprecated
+	public Collection<WeaponType> weaponTypes() { return WeaponTypes.getAllWeaponTypes(); }
+	@Deprecated
+	public Collection<UnitSizeType> unitSizeTypes() { return UnitSizeTypes.getAllUnitSizeTypes(); }
+	@Deprecated
+	public Collection<BulletType> bulletTypes() { return BulletTypes.getAllBulletTypes(); }
+	@Deprecated
+	public Collection<DamageType> damageTypes() { return DamageTypes.getAllDamageTypes(); }
+	@Deprecated
+	public Collection<ExplosionType> explosionTypes() { return ExplosionTypes.getAllExplosionTypes(); }
+	@Deprecated
+	public Collection<UnitCommandType> unitCommandTypes() { return UnitCommandTypes.getAllUnitCommandTypes(); }
+	@Deprecated
+	public Collection<OrderType> orderTypes() { return OrderTypes.getAllOrderTypes(); }
 	
-	public Collection<UnitType> unitTypes() { return Collections.unmodifiableCollection(unitTypes.values()); }
-	public Collection<RaceType> raceTypes() { return Collections.unmodifiableCollection(raceTypes.values()); }
-	public Collection<TechType> techTypes() { return Collections.unmodifiableCollection(techTypes.values()); }
-	public Collection<UpgradeType> upgradeTypes() { return Collections.unmodifiableCollection(upgradeTypes.values()); }
-	public Collection<WeaponType> weaponTypes() { return Collections.unmodifiableCollection(weaponTypes.values()); }
-	public Collection<UnitSizeType> unitSizeTypes() { return Collections.unmodifiableCollection(unitSizeTypes.values()); }
-	public Collection<BulletType> bulletTypes() { return Collections.unmodifiableCollection(bulletTypes.values()); }
-	public Collection<DamageType> damageTypes() { return Collections.unmodifiableCollection(damageTypes.values()); }
-	public Collection<ExplosionType> explosionTypes() { return Collections.unmodifiableCollection(explosionTypes.values()); }
-	public Collection<UnitCommandType> unitCommandTypes() { return Collections.unmodifiableCollection(unitCommandTypes.values()); }
-	public Collection<OrderType> orderTypes() { return Collections.unmodifiableCollection(orderTypes.values()); }
-	
+	// ID Lookup Methods (should not usually be needed)
+	@Override
+	public Player getPlayer(int playerID) { return players.get(playerID); }
+	@Override
+	public Unit getUnit(int unitID) { return units.get(unitID); }
+
 	// game state accessors
 	public int getFrameCount() { return gameFrame; }
 	public Player getSelf() { return self; }
 	public Player getNeutralPlayer() { return neutralPlayer; }
-	public Player getPlayer(int playerID) { return players.get(playerID); }
 	public Collection<Player> getPlayers() { return Collections.unmodifiableCollection(players.values()); }
-	public List<Player> getAllies() { return Collections.unmodifiableList(allies); }
-	public List<Player> getEnemies() { return Collections.unmodifiableList(enemies); }
-	public Unit getUnit(int unitID) { return units.get(unitID); }
+	public Set<Player> getAllies() { return Collections.unmodifiableSet(allies); }
+	public Set<Player> getEnemies() { return Collections.unmodifiableSet(enemies); }
 	public Collection<Unit> getAllUnits() { return Collections.unmodifiableCollection(units.values()); }
 	public List<Unit> getMyUnits() { return Collections.unmodifiableList(playerUnits); }
 	public List<Unit> getAlliedUnits() { return Collections.unmodifiableList(alliedUnits); }
@@ -328,7 +416,7 @@ public class JNIBWAPI {
 	public List<Unit> getUnits(Player p) {
 		List<Unit> pUnits = new ArrayList<Unit>();
 		for (Unit u : units.values()) {
-			if (u.getPlayerID() == p.getID()) {
+			if (u.getPlayer() == p) {
 				pUnits.add(u);
 			}
 		}
@@ -358,96 +446,82 @@ public class JNIBWAPI {
 		// race types
 		int[] raceTypeData = getRaceTypes();
 		for (int index = 0; index < raceTypeData.length; index += RaceType.numAttributes) {
-			RaceType type = new RaceType(raceTypeData, index);
-			type.setName(getRaceTypeName(type.getID()));
-			raceTypes.put(type.getID(), type);
+			int id = raceTypeData[index];
+			RaceTypes.getRaceType(id).initialize(raceTypeData, index, getRaceTypeName(id));
 		}
 		
 		// unit types
 		int[] unitTypeData = getUnitTypes();
 		for (int index = 0; index < unitTypeData.length; index += UnitType.numAttributes) {
-			String name = getUnitTypeName(unitTypeData[index]);
-			int[] requiredUnits = getRequiredUnits(unitTypeData[index]);
-			UnitType type = new UnitType(unitTypeData, index, name, requiredUnits);
-			unitTypes.put(type.getID(), type);
+			int id = unitTypeData[index];
+			UnitTypes.getUnitType(id).initialize(unitTypeData, index, getUnitTypeName(id),
+					getRequiredUnits(id));
 		}
 		
 		// tech types
 		int[] techTypeData = getTechTypes();
 		for (int index = 0; index < techTypeData.length; index += TechType.numAttributes) {
-			TechType type = new TechType(techTypeData, index);
-			type.setName(getTechTypeName(type.getID()));
-			techTypes.put(type.getID(), type);
+			int id = techTypeData[index];
+			TechTypes.getTechType(id).initialize(techTypeData, index, getTechTypeName(id));
 		}
 		
 		// upgrade types
 		int[] upgradeTypeData = getUpgradeTypes();
 		for (int index = 0; index < upgradeTypeData.length; index += UpgradeType.numAttributes) {
-			UpgradeType type = new UpgradeType(upgradeTypeData, index);
-			type.setName(getUpgradeTypeName(type.getID()));
-			upgradeTypes.put(type.getID(), type);
+			int id = upgradeTypeData[index];
+			UpgradeTypes.getUpgradeType(id).initialize(upgradeTypeData, index, getUpgradeTypeName(id));
 		}
 		
 		// weapon types
 		int[] weaponTypeData = getWeaponTypes();
 		for (int index = 0; index < weaponTypeData.length; index += WeaponType.numAttributes) {
-			WeaponType type = new WeaponType(weaponTypeData, index);
-			type.setName(getWeaponTypeName(type.getID()));
-			weaponTypes.put(type.getID(), type);
+			int id = weaponTypeData[index];
+			WeaponTypes.getWeaponType(id).initialize(weaponTypeData, index, getWeaponTypeName(id));
 		}
 		
 		// unit size types
 		int[] unitSizeTypeData = getUnitSizeTypes();
 		for (int index = 0; index < unitSizeTypeData.length; index += UnitSizeType.numAttributes) {
-			UnitSizeType type = new UnitSizeType(unitSizeTypeData, index);
-			type.setName(getUnitSizeTypeName(type.getID()));
-			unitSizeTypes.put(type.getID(), type);
+			int id = unitSizeTypeData[index];
+			UnitSizeTypes.getUnitSizeType(id).initialize(unitSizeTypeData, index, getUnitSizeTypeName(id));
 		}
 		
 		// bullet types
 		int[] bulletTypeData = getBulletTypes();
 		for (int index = 0; index < bulletTypeData.length; index += BulletType.numAttributes) {
-			BulletType type = new BulletType(bulletTypeData, index);
-			type.setName(getBulletTypeName(type.getID()));
-			bulletTypes.put(type.getID(), type);
+			int id = bulletTypeData[index];
+			BulletTypes.getBulletType(id).initialize(bulletTypeData, index, getBulletTypeName(id));
 		}
 		
 		// damage types
 		int[] damageTypeData = getDamageTypes();
 		for (int index = 0; index < damageTypeData.length; index += DamageType.numAttributes) {
-			DamageType type = new DamageType(damageTypeData, index);
-			type.setName(getDamageTypeName(type.getID()));
-			damageTypes.put(type.getID(), type);
+			int id = damageTypeData[index];
+			DamageTypes.getDamageType(id).initialize(damageTypeData, index, getDamageTypeName(id));
 		}
 		
 		// explosion types
 		int[] explosionTypeData = getExplosionTypes();
 		for (int index = 0; index < explosionTypeData.length; index += ExplosionType.numAttributes) {
-			ExplosionType type = new ExplosionType(explosionTypeData, index);
-			type.setName(getExplosionTypeName(type.getID()));
-			explosionTypes.put(type.getID(), type);
+			int id = explosionTypeData[index];
+			ExplosionTypes.getExplosionType(id).initialize(explosionTypeData, index, getExplosionTypeName(id));
 		}
 		
 		// unitCommand types
 		int[] unitCommandTypeData = getUnitCommandTypes();
 		for (int index = 0; index < unitCommandTypeData.length; index += UnitCommandType.numAttributes) {
-			UnitCommandType type = new UnitCommandType(unitCommandTypeData, index);
-			type.setName(getUnitCommandTypeName(type.getID()));
-			unitCommandTypes.put(type.getID(), type);
+			int id = unitCommandTypeData[index];
+			UnitCommandTypes.getUnitCommandType(id).initialize(unitCommandTypeData, index, getUnitCommandTypeName(id));
 		}
 		
 		// order types
 		int[] orderTypeData = getOrderTypes();
 		for (int index = 0; index < orderTypeData.length; index += OrderType.numAttributes) {
-			OrderType type = new OrderType(orderTypeData, index);
-			type.setName(getOrderTypeName(type.getID()));
-			orderTypes.put(type.getID(), type);
+			int id = orderTypeData[index];
+			OrderTypes.getOrderType(id).initialize(orderTypeData, index, getOrderTypeName(id));
 		}
 		
 		// event types - no extra data to load
-		for (EventType type : EventType.values()) {
-			eventTypes.put(type.getID(), type);
-		}
 	}
 	
 	/**
@@ -603,9 +677,7 @@ public class JNIBWAPI {
 			// get the players
 			self = null;
 			allies.clear();
-			allyIDs.clear();
 			enemies.clear();
-			enemyIDs.clear();
 			players.clear();
 			
 			int[] playerData = getPlayersData();
@@ -620,11 +692,9 @@ public class JNIBWAPI {
 				}
 				else if (player.isAlly()) {
 					allies.add(player);
-					allyIDs.add(player.getID());
 				}
 				else if (player.isEnemy()) {
 					enemies.add(player);
-					enemyIDs.add(player.getID());
 				}
 				else if (player.isNeutral()) {
 					neutralPlayer = player;
@@ -641,17 +711,17 @@ public class JNIBWAPI {
 			
 			for (int index = 0; index < unitData.length; index += Unit.numAttributes) {
 				int id = unitData[index];
-				Unit unit = new Unit(id);
+				Unit unit = new Unit(id, this, this);
 				unit.update(unitData, index);
 				
 				units.put(id, unit);
-				if (self != null && unit.getPlayerID() == self.getID()) {
+				if (self != null && unit.getPlayer() == self) {
 					playerUnits.add(unit);
 				}
-				else if (allyIDs.contains(unit.getPlayerID())) {
+				else if (allies.contains(unit.getPlayer())) {
 					alliedUnits.add(unit);
 				}
-				else if (enemyIDs.contains(unit.getPlayerID())) {
+				else if (enemies.contains(unit.getPlayer())) {
 					enemyUnits.add(unit);
 				}
 				else {
@@ -699,12 +769,11 @@ public class JNIBWAPI {
 			for (int index = 0; index < unitData.length; index += Unit.numAttributes) {
 				int id = unitData[index];
 				
-				// bugfix - unit list was emptying itself every second frame
 				deadUnits.remove(id);
 				
 				Unit unit = units.get(id);
 				if (unit == null) {
-					unit = new Unit(id);
+					unit = new Unit(id, this, this);
 					units.put(id, unit);
 				}
 				
@@ -712,23 +781,23 @@ public class JNIBWAPI {
 				
 				if (self != null)
 				{
-					if (unit.getPlayerID() == self.getID()) {
+					if (unit.getPlayer() == self) {
 						playerList.add(unit);
 					}
-					else if (allyIDs.contains(unit.getPlayerID())) {
+					else if (allies.contains(unit.getPlayer())) {
 						alliedList.add(unit);
 					}
-					else if (enemyIDs.contains(unit.getPlayerID())) {
+					else if (enemies.contains(unit.getPlayer())) {
 						enemyList.add(unit);
 					}
 					else {
 						neutralList.add(unit);
 					}
 				}
-				else if (allyIDs.contains(unit.getPlayerID())) {
+				else if (allies.contains(unit.getPlayer())) {
 					alliedList.add(unit);
 				}
-				else if (enemyIDs.contains(unit.getPlayerID())) {
+				else if (enemies.contains(unit.getPlayer())) {
 					enemyList.add(unit);
 				}
 				else {
@@ -767,7 +836,7 @@ public class JNIBWAPI {
 	 */
 	private void eventOccurred(int eventTypeID, int param1, int param2, String param3) {
 		try {
-			EventType event = eventTypes.get(eventTypeID);
+			EventType event = EventType.getEventType(eventTypeID);
 			switch (event) {
 				case MatchStart:
 					listener.matchStart();

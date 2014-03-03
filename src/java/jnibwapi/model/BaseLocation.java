@@ -1,5 +1,9 @@
 package jnibwapi.model;
 
+import java.util.Map;
+
+import jnibwapi.model.Position.Type;
+
 /**
  * Represents a StarCraft base location.
  * 
@@ -9,23 +13,24 @@ public class BaseLocation {
 	
 	public static final int numAttributes = 10;
 	
-	private final int x;
-	private final int y;
-	private final int tx;
-	private final int ty;
-	private final int regionID;
+	private final Position center;
+	private final Position position;
+	private final Region region;
 	private final int minerals;
 	private final int gas;
 	private final boolean island;
 	private final boolean mineralOnly;
 	private final boolean startLocation;
 	
-	public BaseLocation(int[] data, int index) {
-		x = data[index++];
-		y = data[index++];
-		tx = data[index++];
-		ty = data[index++];
-		regionID = data[index++];
+	public BaseLocation(int[] data, int index,  Map<Integer, Region> idToRegion) {
+		int x = data[index++];
+		int y = data[index++];
+		center = new Position(x, y);
+		int tx = data[index++];
+		int ty = data[index++];
+		position = new Position(tx, ty, Type.BUILD);
+		int regionID = data[index++];
+		region = idToRegion.get(regionID);
 		minerals = data[index++];
 		gas = data[index++];
 		island = (data[index++] == 1);
@@ -33,24 +38,43 @@ public class BaseLocation {
 		startLocation = (data[index++] == 1);
 	}
 	
+	/** The Position of the center of the BaseLocation */
+	public Position getCenter() {
+		return center;
+	}
+	
+	/** The Position of the top left of the BaseLocation */
+	public Position getPosition() {
+		return position;
+	}
+	
+	/** @deprecated use {@link #getPosition()} instead */
 	public int getX() {
-		return x;
+		return position.getPX();
 	}
 	
+	/** @deprecated use {@link #getPosition()} instead */
 	public int getY() {
-		return y;
+		return position.getPY();
 	}
 	
+	/** @deprecated use {@link #getPosition()} instead */
 	public int getTx() {
-		return tx;
+		return position.getBX();
 	}
 	
+	/** @deprecated use {@link #getPosition()} instead */
 	public int getTy() {
-		return ty;
+		return position.getBY();
 	}
 	
+	public Region getRegion() {
+		return region;
+	}
+	
+	/** @deprecated use {@link #getRegion()} instead */
 	public int getRegionID() {
-		return regionID;
+		return region.getID();
 	}
 	
 	public int getMinerals() {
