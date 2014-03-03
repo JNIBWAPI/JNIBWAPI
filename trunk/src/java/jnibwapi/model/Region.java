@@ -16,34 +16,43 @@ public class Region {
 	public static final int numAttributes = 3;
 	
 	private final int ID;
-	private final int centerX;
-	private final int centerY;
-	private final int[] coordinates;
+	private final Position center;
+	private final Position[] polygon;
 	private Set<Region> connectedRegions = new HashSet<>();
 	private Set<ChokePoint> chokePoints = new HashSet<>();
 	private Set<Region> allConnectedRegions = null;
 	
 	public Region(int[] data, int index, int[] coordinates) {
 		ID = data[index++];
-		centerX = data[index++];
-		centerY = data[index++];
-		this.coordinates = coordinates;
+		int centerX = data[index++];
+		int centerY = data[index++];
+		center = new Position(centerX, centerY);
+		polygon = new Position[coordinates.length / 2];
+		for (int i = 0; i < coordinates.length; i += 2) {
+			polygon[i / 2] = new Position(coordinates[i], coordinates[i + 1]);
+		}
 	}
 	
 	public int getID() {
 		return ID;
 	}
 	
+	public Position getCenter() {
+		return center;
+	}
+	
+	/** @deprecated use {@link #getCenter()} instead */
 	public int getCenterX() {
-		return centerX;
+		return center.getPX();
 	}
 	
+	/** @deprecated use {@link #getCenter()} instead */
 	public int getCenterY() {
-		return centerY;
+		return center.getPY();
 	}
 	
-	public int[] getCoordinates() {
-		return Arrays.copyOf(coordinates, coordinates.length);
+	public Position[] getPolygon() {
+		return Arrays.copyOf(polygon, polygon.length);
 	}
 	
 	protected void addChokePoint(ChokePoint chokePoint) {

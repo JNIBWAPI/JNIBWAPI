@@ -1,5 +1,10 @@
 package jnibwapi.types;
 
+import java.util.Collection;
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.Map;
+
 /**
  * Represents a StarCraft unit command type.
  * 
@@ -7,122 +12,87 @@ package jnibwapi.types;
  */
 public class UnitCommandType {
 	
+	private static Map<Integer, UnitCommandType> idToUnitCommandType = new HashMap<>();
+	
+	public static class UnitCommandTypes {
+		public static final UnitCommandType Attack_Move = new UnitCommandType(0);
+		public static final UnitCommandType Attack_Unit = new UnitCommandType(1);
+		public static final UnitCommandType Build = new UnitCommandType(2);
+		public static final UnitCommandType Build_Addon = new UnitCommandType(3);
+		public static final UnitCommandType Train = new UnitCommandType(4);
+		public static final UnitCommandType Morph = new UnitCommandType(5);
+		public static final UnitCommandType Research = new UnitCommandType(6);
+		public static final UnitCommandType Upgrade = new UnitCommandType(7);
+		public static final UnitCommandType Set_Rally_Position = new UnitCommandType(8);
+		public static final UnitCommandType Set_Rally_Unit = new UnitCommandType(9);
+		public static final UnitCommandType Move = new UnitCommandType(10);
+		public static final UnitCommandType Patrol = new UnitCommandType(11);
+		public static final UnitCommandType Hold_Position = new UnitCommandType(12);
+		public static final UnitCommandType Stop = new UnitCommandType(13);
+		public static final UnitCommandType Follow = new UnitCommandType(14);
+		public static final UnitCommandType Gather = new UnitCommandType(15);
+		public static final UnitCommandType Return_Cargo = new UnitCommandType(16);
+		public static final UnitCommandType Repair = new UnitCommandType(17);
+		public static final UnitCommandType Burrow = new UnitCommandType(18);
+		public static final UnitCommandType Unburrow = new UnitCommandType(19);
+		public static final UnitCommandType Cloak = new UnitCommandType(20);
+		public static final UnitCommandType Decloak = new UnitCommandType(21);
+		public static final UnitCommandType Siege = new UnitCommandType(22);
+		public static final UnitCommandType Unsiege = new UnitCommandType(23);
+		public static final UnitCommandType Lift = new UnitCommandType(24);
+		public static final UnitCommandType Land = new UnitCommandType(25);
+		public static final UnitCommandType Load = new UnitCommandType(26);
+		public static final UnitCommandType Unload = new UnitCommandType(27);
+		public static final UnitCommandType Unload_All = new UnitCommandType(28);
+		public static final UnitCommandType Unload_All_Position = new UnitCommandType(29);
+		public static final UnitCommandType Right_Click_Position = new UnitCommandType(30);
+		public static final UnitCommandType Right_Click_Unit = new UnitCommandType(31);
+		public static final UnitCommandType Halt_Construction = new UnitCommandType(32);
+		public static final UnitCommandType Cancel_Construction = new UnitCommandType(33);
+		public static final UnitCommandType Cancel_Addon = new UnitCommandType(34);
+		public static final UnitCommandType Cancel_Train = new UnitCommandType(35);
+		public static final UnitCommandType Cancel_Train_Slot = new UnitCommandType(36);
+		public static final UnitCommandType Cancel_Morph = new UnitCommandType(37);
+		public static final UnitCommandType Cancel_Research = new UnitCommandType(38);
+		public static final UnitCommandType Cancel_Upgrade = new UnitCommandType(39);
+		public static final UnitCommandType Use_Tech = new UnitCommandType(40);
+		public static final UnitCommandType Use_Tech_Position = new UnitCommandType(41);
+		public static final UnitCommandType Use_Tech_Unit = new UnitCommandType(42);
+		public static final UnitCommandType Place_COP = new UnitCommandType(43);
+		public static final UnitCommandType None = new UnitCommandType(44);
+		public static final UnitCommandType Unknown = new UnitCommandType(45);
+		
+		public static UnitCommandType getUnitCommandType(int id) {
+			return idToUnitCommandType.get(id);
+		}
+		
+		public static Collection<UnitCommandType> getAllUnitCommandTypes() {
+			return Collections.unmodifiableCollection(idToUnitCommandType.values());
+		}
+	}
+	
 	public static final int numAttributes = 1;
 	
 	private String name;
 	private int ID;
 	
-	public enum UnitCommandTypes {
-		// Attack_Move - corresponds to Unit::attack
-		Attack_Move,
-		// Attack_Unit - corresponds to Unit::attack
-		Attack_Unit,
-		// Build - corresponds to Unit::build
-		Build,
-		// Build_Addon - corresponds to Unit::buildAddon
-		Build_Addon,
-		// Train - corresponds to Unit::train
-		Train,
-		// Morph - corresponds to Unit::morph
-		Morph,
-		// Research - corresponds to Unit::research
-		Research,
-		// Upgrade - corresponds to Unit::upgrade
-		Upgrade,
-		// Set_Rally_Position - corresponds to Unit::setRallyPoint
-		Set_Rally_Position,
-		// Set_Rally_Unit - corresponds to Unit::setRallyPoint
-		Set_Rally_Unit,
-		// Move - corresponds to Unit::move
-		Move,
-		// Patrol - corresponds to Unit::patrol
-		Patrol,
-		// Hold_Position - corresponds to Unit::holdPosition
-		Hold_Position,
-		// Stop - corresponds to Unit::stop
-		Stop,
-		// Follow - corresponds to Unit::follow
-		Follow,
-		// Gather - corresponds to Unit::gather
-		Gather,
-		// Return_Cargo - corresponds to Unit::returnCargo
-		Return_Cargo,
-		// Repair - corresponds to Unit::repair
-		Repair,
-		// Burrow - corresponds to Unit::burrow
-		Burrow,
-		// Unburrow - corresponds to Unit::unburrow
-		Unburrow,
-		// Cloak - corresponds to Unit::cloak
-		Cloak,
-		// Decloak - corresponds to Unit::decloak
-		Decloak,
-		// Siege - corresponds to Unit::siege
-		Siege,
-		// Unsiege - corresponds to Unit::unsiege
-		Unsiege,
-		// Lift - corresponds to Unit::lift
-		Lift,
-		// Land - corresponds to Unit::land
-		Land,
-		// Load - corresponds to Unit::load
-		Load,
-		// Unload - corresponds to Unit::unload
-		Unload,
-		// Unload_All - corresponds to Unit::unloadAll
-		Unload_All,
-		// Unload_All_Position - corresponds to Unit::unloadAll
-		Unload_All_Position,
-		// Right_Click_Position - corresponds to Unit::rightClick
-		Right_Click_Position,
-		// Right_Click_Unit - corresponds to Unit::rightClick
-		Right_Click_Unit,
-		// Halt_Construction - corresponds to Unit::haltConstruction
-		Halt_Construction,
-		// Cancel_Construction - corresponds to Unit::cancelConstruction
-		Cancel_Construction,
-		// Cancel_Addon - corresponds to Unit::cancelAddon
-		Cancel_Addon,
-		// Cancel_Train - corresponds to Unit::cancelTrain
-		Cancel_Train,
-		// Cancel_Train_Slot - corresponds to Unit::cancelTrain
-		Cancel_Train_Slot,
-		// Cancel_Morph - corresponds to Unit::cancelMorph
-		Cancel_Morph,
-		// Cancel_Research - corresponds to Unit::cancelResearch
-		Cancel_Research,
-		// Cancel_Upgrade - corresponds to Unit::cancelUpgrade
-		Cancel_Upgrade,
-		// Use_Tech - corresponds to Unit::useTech
-		Use_Tech,
-		// Use_Tech_Position - corresponds to Unit::useTech
-		Use_Tech_Position,
-		// Use_Tech_Unit - corresponds to Unit::useTech
-		Use_Tech_Unit,
-		// Place a flag from a beacon
-		Place_COP,
-		// None
-		None,
-		// Unknown
-		Unknown;
-		public int getID() {
-			return ordinal();
-		}
+	private UnitCommandType(int ID) {
+		this.ID = ID;
+		idToUnitCommandType.put(ID, this);
 	}
 	
-	public UnitCommandType(int[] data, int index) {
-		ID = data[index++];
+	public void initialize(int[] data, int index, String name) {
+		if (ID != data[index++])
+			throw new IllegalArgumentException();
+		this.name = name;
 	}
 	
 	public String getName() {
 		return name;
 	}
 	
-	public void setName(String name) {
-		this.name = name;
-	}
-	
 	public int getID() {
 		return ID;
 	}
+	
 }

@@ -27,7 +27,7 @@ public class MinimalAIClient implements BWAPIEventListener {
 	@Override
 	public void matchFrame() {
 		for (Unit u : bwapi.getAllUnits()) {
-			bwapi.drawCircle(u.getX(), u.getY(), 5, BWColor.RED, true, false);
+			bwapi.drawCircle(u.getPosition(), 5, BWColor.Red, true, false);
 		}
 	}
 	
