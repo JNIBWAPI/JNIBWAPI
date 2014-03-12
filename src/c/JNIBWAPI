@@ -1,7 +1,10 @@
 Compiled from "JNIBWAPI.java"
-public class jnibwapi.JNIBWAPI implements jnibwapi.IdLookup,jnibwapi.NativeUnitCommands {
+public class jnibwapi.JNIBWAPI {
   static {};
     Signature: ()V
+
+  public static jnibwapi.JNIBWAPI getInstance();
+    Signature: ()Ljnibwapi/JNIBWAPI;
 
   public jnibwapi.JNIBWAPI(jnibwapi.BWAPIEventListener, boolean);
     Signature: (Ljnibwapi/BWAPIEventListener;Z)V
@@ -11,6 +14,12 @@ public class jnibwapi.JNIBWAPI implements jnibwapi.IdLookup,jnibwapi.NativeUnitC
 
   public native int getReplayFrameTotal();
     Signature: ()I
+
+  public boolean canIssueCommand(jnibwapi.model.UnitCommand);
+    Signature: (Ljnibwapi/model/UnitCommand;)Z
+
+  public boolean issueCommand(jnibwapi.model.UnitCommand);
+    Signature: (Ljnibwapi/model/UnitCommand;)Z
 
   public native boolean attack(int, int, int);
     Signature: (III)Z
@@ -189,32 +198,35 @@ public class jnibwapi.JNIBWAPI implements jnibwapi.IdLookup,jnibwapi.NativeUnitC
   public boolean isBuildable(jnibwapi.model.Position, boolean);
     Signature: (Ljnibwapi/model/Position;Z)Z
 
-  public native boolean hasCreep(int, int);
-    Signature: (II)Z
+  public boolean hasCreep(jnibwapi.model.Position);
+    Signature: (Ljnibwapi/model/Position;)Z
 
-  public native boolean hasPower(int, int);
-    Signature: (II)Z
+  public boolean hasPower(jnibwapi.model.Position);
+    Signature: (Ljnibwapi/model/Position;)Z
 
-  public native boolean hasPower(int, int, int);
-    Signature: (III)Z
+  public boolean hasPower(jnibwapi.model.Position, jnibwapi.types.UnitType);
+    Signature: (Ljnibwapi/model/Position;Ljnibwapi/types/UnitType;)Z
 
-  public native boolean hasPower(int, int, int, int);
-    Signature: (IIII)Z
+  public boolean hasPower(jnibwapi.model.Position, int, int);
+    Signature: (Ljnibwapi/model/Position;II)Z
 
-  public native boolean hasPower(int, int, int, int, int);
-    Signature: (IIIII)Z
+  public boolean hasPower(jnibwapi.model.Position, int, int, jnibwapi.types.UnitType);
+    Signature: (Ljnibwapi/model/Position;IILjnibwapi/types/UnitType;)Z
 
-  public native boolean hasPowerPrecise(int, int);
-    Signature: (II)Z
+  public boolean hasPowerPrecise(jnibwapi.model.Position);
+    Signature: (Ljnibwapi/model/Position;)Z
 
-  public native boolean hasPath(int, int, int, int);
-    Signature: (IIII)Z
+  public boolean hasPowerPrecise(jnibwapi.model.Position, jnibwapi.types.UnitType);
+    Signature: (Ljnibwapi/model/Position;Ljnibwapi/types/UnitType;)Z
 
-  public native boolean hasPath(int, int);
-    Signature: (II)Z
+  public boolean hasPath(jnibwapi.model.Position, jnibwapi.model.Position);
+    Signature: (Ljnibwapi/model/Position;Ljnibwapi/model/Position;)Z
 
-  public native boolean hasPath(int, int, int);
-    Signature: (III)Z
+  public boolean hasPath(jnibwapi.model.Unit, jnibwapi.model.Unit);
+    Signature: (Ljnibwapi/model/Unit;Ljnibwapi/model/Unit;)Z
+
+  public boolean hasPath(jnibwapi.model.Unit, jnibwapi.model.Position);
+    Signature: (Ljnibwapi/model/Unit;Ljnibwapi/model/Position;)Z
 
   public native int[] getLoadedUnits(int);
     Signature: (I)[I
@@ -225,29 +237,29 @@ public class jnibwapi.JNIBWAPI implements jnibwapi.IdLookup,jnibwapi.NativeUnitC
   public native int[] getLarva(int);
     Signature: (I)[I
 
-  public native boolean canBuildHere(int, int, int, boolean);
-    Signature: (IIIZ)Z
+  public boolean canBuildHere(jnibwapi.model.Position, jnibwapi.types.UnitType, boolean);
+    Signature: (Ljnibwapi/model/Position;Ljnibwapi/types/UnitType;Z)Z
 
-  public native boolean canBuildHere(int, int, int, int, boolean);
-    Signature: (IIIIZ)Z
+  public boolean canBuildHere(jnibwapi.model.Unit, jnibwapi.model.Position, jnibwapi.types.UnitType, boolean);
+    Signature: (Ljnibwapi/model/Unit;Ljnibwapi/model/Position;Ljnibwapi/types/UnitType;Z)Z
 
-  public native boolean canMake(int);
-    Signature: (I)Z
+  public boolean canMake(jnibwapi.types.UnitType);
+    Signature: (Ljnibwapi/types/UnitType;)Z
 
-  public native boolean canMake(int, int);
-    Signature: (II)Z
+  public boolean canMake(jnibwapi.model.Unit, jnibwapi.types.UnitType);
+    Signature: (Ljnibwapi/model/Unit;Ljnibwapi/types/UnitType;)Z
 
-  public native boolean canResearch(int);
-    Signature: (I)Z
+  public boolean canResearch(jnibwapi.types.TechType);
+    Signature: (Ljnibwapi/types/TechType;)Z
 
-  public native boolean canResearch(int, int);
-    Signature: (II)Z
+  public boolean canResearch(jnibwapi.model.Unit, jnibwapi.types.TechType);
+    Signature: (Ljnibwapi/model/Unit;Ljnibwapi/types/TechType;)Z
 
-  public native boolean canUpgrade(int);
-    Signature: (I)Z
+  public boolean canUpgrade(jnibwapi.types.UpgradeType);
+    Signature: (Ljnibwapi/types/UpgradeType;)Z
 
-  public native boolean canUpgrade(int, int);
-    Signature: (II)Z
+  public boolean canUpgrade(jnibwapi.model.Unit, jnibwapi.types.UpgradeType);
+    Signature: (Ljnibwapi/model/Unit;Ljnibwapi/types/UpgradeType;)Z
 
   public native void printText(java.lang.String);
     Signature: (Ljava/lang/String;)V

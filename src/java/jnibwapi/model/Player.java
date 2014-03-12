@@ -1,6 +1,6 @@
 package jnibwapi.model;
 
-import jnibwapi.model.Position.Type;
+import jnibwapi.model.Position.PosType;
 import jnibwapi.types.RaceType;
 import jnibwapi.types.RaceType.RaceTypes;
 import jnibwapi.types.TechType;
@@ -125,7 +125,7 @@ public class Player {
 	 * Positions.Invalid / Positions.None / Positions.Unknown.
 	 */
 	public Position getStartLocation() {
-		return new Position(startLocationX, startLocationY, Type.BUILD);
+		return new Position(startLocationX, startLocationY, PosType.BUILD);
 	}
 	
 	public boolean isSelf() {

@@ -22,10 +22,10 @@ import jnibwapi.types.UpgradeType.UpgradeTypes;
 public class ExampleAIClient implements BWAPIEventListener {
 	
 	/** reference to JNI-BWAPI */
-	private JNIBWAPI bwapi;
+	private final JNIBWAPI bwapi;
 	
 	/** used for mineral splits */
-	private HashSet<Unit> claimedMinerals = new HashSet<>();
+	private final HashSet<Unit> claimedMinerals = new HashSet<>();
 	
 	/** have drone 5 been morphed */
 	private boolean morphedDrone;
@@ -85,7 +85,7 @@ public class ExampleAIClient implements BWAPIEventListener {
 		// print out some info about any upgrades or research happening
 		String msg = "=";
 		for (TechType t : TechTypes.getAllTechTypes()) {
-			if (bwapi.getSelf().isResearching(t.getID())) {
+			if (bwapi.getSelf().isResearching(t)) {
 				msg += "Researching " + t.getName() + "=";
 			}
 			// Exclude tech that is given at the start of the game
@@ -93,16 +93,16 @@ public class ExampleAIClient implements BWAPIEventListener {
 			if (whatResearches == UnitTypes.None) {
 				continue;
 			}
-			if (bwapi.getSelf().isResearched(t.getID())) {
+			if (bwapi.getSelf().isResearched(t)) {
 				msg += "Researched " + t.getName() + "=";
 			}
 		}
 		for (UpgradeType t : UpgradeTypes.getAllUpgradeTypes()) {
-			if (bwapi.getSelf().isUpgrading(t.getID())) {
+			if (bwapi.getSelf().isUpgrading(t)) {
 				msg += "Upgrading " + t.getName() + "=";
 			}
-			if (bwapi.getSelf().getUpgradeLevel(t.getID()) > 0) {
-				int level = bwapi.getSelf().getUpgradeLevel(t.getID());
+			if (bwapi.getSelf().getUpgradeLevel(t) > 0) {
+				int level = bwapi.getSelf().getUpgradeLevel(t);
 				msg += "Upgraded " + t.getName() + " to level " + level + "=";
 			}
 		}
@@ -133,7 +133,7 @@ public class ExampleAIClient implements BWAPIEventListener {
 							double distance = unit.getDistance(minerals);
 							
 							if (distance < 300) {
-								unit.rightClick(minerals);
+								unit.rightClick(minerals, false);
 								claimedMinerals.add(minerals);
 								break;
 							}
@@ -189,7 +189,7 @@ public class ExampleAIClient implements BWAPIEventListener {
 		for (Unit unit : bwapi.getMyUnits()) {
 			if (unit.getType() == UnitTypes.Zerg_Zergling && unit.isIdle()) {
 				for (Unit enemy : bwapi.getEnemyUnits()) {
-					unit.attack(enemy.getPosition());
+					unit.attack(enemy.getPosition(), false);
 					break;
 				}
 			}

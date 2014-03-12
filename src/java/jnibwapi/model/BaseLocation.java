@@ -2,7 +2,7 @@ package jnibwapi.model;
 
 import java.util.Map;
 
-import jnibwapi.model.Position.Type;
+import jnibwapi.model.Position.PosType;
 
 /**
  * Represents a StarCraft base location.
@@ -28,7 +28,7 @@ public class BaseLocation {
 		center = new Position(x, y);
 		int tx = data[index++];
 		int ty = data[index++];
-		position = new Position(tx, ty, Type.BUILD);
+		position = new Position(tx, ty, PosType.BUILD);
 		int regionID = data[index++];
 		region = idToRegion.get(regionID);
 		minerals = data[index++];

@@ -385,6 +385,22 @@ JNIEXPORT jintArray JNICALL Java_jnibwapi_JNIBWAPI_getBaseLocations
 
 /*
  * Class:     jnibwapi_JNIBWAPI
+ * Method:    canIssueCommand
+ * Signature: (IIIIII)Z
+ */
+JNIEXPORT jboolean JNICALL Java_jnibwapi_JNIBWAPI_canIssueCommand
+  (JNIEnv *, jobject, jint, jint, jint, jint, jint, jint);
+
+/*
+ * Class:     jnibwapi_JNIBWAPI
+ * Method:    issueCommand
+ * Signature: (IIIIII)Z
+ */
+JNIEXPORT jboolean JNICALL Java_jnibwapi_JNIBWAPI_issueCommand
+  (JNIEnv *, jobject, jint, jint, jint, jint, jint, jint);
+
+/*
+ * Class:     jnibwapi_JNIBWAPI
  * Method:    attack
  * Signature: (III)Z
  */
@@ -866,26 +882,10 @@ JNIEXPORT jboolean JNICALL Java_jnibwapi_JNIBWAPI_hasCreep
 /*
  * Class:     jnibwapi_JNIBWAPI
  * Method:    hasPower
- * Signature: (II)Z
- */
-JNIEXPORT jboolean JNICALL Java_jnibwapi_JNIBWAPI_hasPower__II
-  (JNIEnv *, jobject, jint, jint);
-
-/*
- * Class:     jnibwapi_JNIBWAPI
- * Method:    hasPower
  * Signature: (III)Z
  */
 JNIEXPORT jboolean JNICALL Java_jnibwapi_JNIBWAPI_hasPower__III
   (JNIEnv *, jobject, jint, jint, jint);
-
-/*
- * Class:     jnibwapi_JNIBWAPI
- * Method:    hasPower
- * Signature: (IIII)Z
- */
-JNIEXPORT jboolean JNICALL Java_jnibwapi_JNIBWAPI_hasPower__IIII
-  (JNIEnv *, jobject, jint, jint, jint, jint);
 
 /*
  * Class:     jnibwapi_JNIBWAPI
@@ -898,10 +898,10 @@ JNIEXPORT jboolean JNICALL Java_jnibwapi_JNIBWAPI_hasPower__IIIII
 /*
  * Class:     jnibwapi_JNIBWAPI
  * Method:    hasPowerPrecise
- * Signature: (II)Z
+ * Signature: (III)Z
  */
 JNIEXPORT jboolean JNICALL Java_jnibwapi_JNIBWAPI_hasPowerPrecise
-  (JNIEnv *, jobject, jint, jint);
+  (JNIEnv *, jobject, jint, jint, jint);
 
 /*
  * Class:     jnibwapi_JNIBWAPI
