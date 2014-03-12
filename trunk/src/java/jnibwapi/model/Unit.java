@@ -1,7 +1,9 @@
 package jnibwapi.model;
 
-import jnibwapi.IDLookup;
-import jnibwapi.NativeUnitCommands;
+import java.util.ArrayList;
+import java.util.List;
+
+import jnibwapi.JNIBWAPI;
 import jnibwapi.types.*;
 import jnibwapi.types.OrderType.OrderTypes;
 import jnibwapi.types.TechType.TechTypes;
@@ -20,8 +22,7 @@ public class Unit implements Cloneable {
 	public static final double TO_DEGREES = 180.0 / Math.PI;
 	public static final double fixedScale = 100.0;
 	
-	private final IDLookup lookup;
-	private final NativeUnitCommands cmds;
+	private final JNIBWAPI bwapi;
 	
 	private int ID;
 	private int replayID;
@@ -147,10 +148,9 @@ public class Unit implements Cloneable {
 	private boolean upgrading;
 	private boolean visible;
 	
-	public Unit(int ID, IDLookup lookup, NativeUnitCommands cmds) {
+	public Unit(int ID, JNIBWAPI bwapi) {
 		this.ID = ID;
-		this.lookup = lookup;
-		this.cmds = cmds;
+		this.bwapi = bwapi;
 	}
 	
 	public void setDestroyed()
@@ -391,7 +391,7 @@ public class Unit implements Cloneable {
 	}
 	
 	public Player getPlayer() {
-		return lookup.getPlayer(playerID);
+		return bwapi.getPlayer(playerID);
 	}
 	
 	@Deprecated
@@ -474,7 +474,7 @@ public class Unit implements Cloneable {
 	}
 	
 	public Player getLastAttackingPlayer() {
-		return lookup.getPlayer(lastAttackingPlayerID);
+		return bwapi.getPlayer(lastAttackingPlayerID);
 	}
 	
 	@Deprecated
@@ -526,9 +526,16 @@ public class Unit implements Cloneable {
 		return acidSporeCount;
 	}
 	
-	/** @see #getInterceptors() TODO */
 	public int getInterceptorCount() {
 		return interceptorCount;
+	}
+	
+	public List<Unit> getInterceptors() {
+		List<Unit> interceptors = new ArrayList<>(8);
+		for (int id : bwapi.getInterceptors(ID)) {
+			interceptors.add(bwapi.getUnit(id));
+		}
+		return interceptors;
 	}
 	
 	public int getScarabCount() {
@@ -648,7 +655,7 @@ public class Unit implements Cloneable {
 	}
 	
 	public Unit getBuildUnit() {
-		return lookup.getUnit(buildUnitID);
+		return bwapi.getUnit(buildUnitID);
 	}
 	
 	@Deprecated
@@ -657,7 +664,7 @@ public class Unit implements Cloneable {
 	}
 	
 	public Unit getTarget() {
-		return lookup.getUnit(targetUnitID);
+		return bwapi.getUnit(targetUnitID);
 	}
 	
 	@Deprecated
@@ -689,7 +696,7 @@ public class Unit implements Cloneable {
 	}
 	
 	public Unit getOrderTarget() {
-		return lookup.getUnit(orderTargetID);
+		return bwapi.getUnit(orderTargetID);
 	}
 	
 	@Deprecated
@@ -721,7 +728,7 @@ public class Unit implements Cloneable {
 	}
 	
 	public Unit getRallyUnit() {
-		return lookup.getUnit(rallyUnitID);
+		return bwapi.getUnit(rallyUnitID);
 	}
 	
 	@Deprecated
@@ -730,7 +737,7 @@ public class Unit implements Cloneable {
 	}
 	
 	public Unit getAddon() {
-		return lookup.getUnit(addOnID);
+		return bwapi.getUnit(addOnID);
 	}
 	
 	@Deprecated
@@ -739,7 +746,7 @@ public class Unit implements Cloneable {
 	}
 	
 	public Unit getNydusExit() {
-		return lookup.getUnit(nydusExitUnitID);
+		return bwapi.getUnit(nydusExitUnitID);
 	}
 	
 	@Deprecated
@@ -748,12 +755,20 @@ public class Unit implements Cloneable {
 	}
 	
 	public Unit getTransport() {
-		return lookup.getUnit(transportID);
+		return bwapi.getUnit(transportID);
 	}
 	
-	/** TODO @see #getLoadedUnits() */
+	@Deprecated
 	public int getLoadedUnitsCount() {
 		return loadedUnitsCount;
+	}
+	
+	public List<Unit> getLoadedUnits() {
+		List<Unit> units = new ArrayList<Unit>();
+		for (int id : bwapi.getLoadedUnits(ID)) {
+			units.add(bwapi.getUnit(id));
+		}
+		return units;
 	}
 	
 	@Deprecated
@@ -762,7 +777,7 @@ public class Unit implements Cloneable {
 	}
 	
 	public Unit getCarrier() {
-		return lookup.getUnit(carrierUnitID);
+		return bwapi.getUnit(carrierUnitID);
 	}
 	
 	@Deprecated
@@ -771,12 +786,20 @@ public class Unit implements Cloneable {
 	}
 	
 	public Unit getHatchery() {
-		return lookup.getUnit(hatcheryUnitID);
+		return bwapi.getUnit(hatcheryUnitID);
 	}
 	
-	/** TODO @see #getLarva() */
+	@Deprecated
 	public int getLarvaCount() {
 		return larvaCount;
+	}
+	
+	public List<Unit> getLarva() {
+		List<Unit> larva = new ArrayList<>(3);
+		for (int id : bwapi.getLarva(ID)) {
+			larva.add(bwapi.getUnit(id));
+		}
+		return larva;
 	}
 	
 	@Deprecated
@@ -785,7 +808,7 @@ public class Unit implements Cloneable {
 	}
 	
 	public Unit getPowerUp() {
-		return lookup.getUnit(powerUpUnitID);
+		return bwapi.getUnit(powerUpUnitID);
 	}
 	
 	public boolean isExists() {
@@ -997,181 +1020,200 @@ public class Unit implements Cloneable {
 	}
 	
 	// ------------------------------ UNIT COMMANDS ------------------------------ //
-	public boolean attack(Position p) {
-		return cmds.attack(ID, p.getPX(), p.getPY());
+	public boolean attack(Position p, boolean queued) {
+		return bwapi.issueCommand(new UnitCommand(this, UnitCommandTypes.Attack_Move, p, queued));
 	}
 	
-	public boolean attack(Unit target) {
-		return cmds.attack(ID, target.getID());
+	public boolean attack(Unit target, boolean queued) {
+		return bwapi.issueCommand(new UnitCommand(this, UnitCommandTypes.Attack_Unit, target, queued));
 	}
 	
 	public boolean build(Position p, UnitType type) {
-		return cmds.build(ID, p.getBX(), p.getBY(), type.getID());
+		return bwapi.issueCommand(new UnitCommand(this, UnitCommandTypes.Build, p, type.getID()));
 	}
 	
 	public boolean buildAddon(UnitType type) {
-		return cmds.buildAddon(ID, type.getID());
+		return bwapi.issueCommand(new UnitCommand(this, UnitCommandTypes.Build_Addon, type.getID()));
 	}
 	
 	public boolean train(UnitType type) {
-		return cmds.train(ID, type.getID());
+		return bwapi.issueCommand(new UnitCommand(this, UnitCommandTypes.Train, type.getID()));
 	}
 	
 	public boolean morph(UnitType type) {
-		return cmds.morph(ID, type.getID());
+		return bwapi.issueCommand(new UnitCommand(this, UnitCommandTypes.Morph, type.getID()));
 	}
 	
 	public boolean research(TechType tech) {
-		return cmds.research(ID, tech.getID());
+		return bwapi.issueCommand(new UnitCommand(this, UnitCommandTypes.Research, tech.getID()));
 	}
 	
 	public boolean upgrade(UpgradeType upgrade) {
-		return cmds.upgrade(ID, upgrade.getID());
+		return bwapi.issueCommand(new UnitCommand(this, UnitCommandTypes.Upgrade, upgrade.getID()));
 	}
 	
 	public boolean setRallyPoint(Position p) {
-		return cmds.setRallyPoint(ID, p.getPX(), p.getPY());
+		return bwapi.issueCommand(new UnitCommand(this, UnitCommandTypes.Set_Rally_Position, p));
 	}
 	
 	public boolean setRallyPoint(Unit target) {
-		return cmds.setRallyPoint(ID, target.getID());
+		return bwapi.issueCommand(new UnitCommand(this, UnitCommandTypes.Set_Rally_Unit, target));
 	}
 	
-	public boolean move(Position p) {
-		return cmds.move(ID, p.getPX(), p.getPY());
+	public boolean move(Position p, boolean queued) {
+		return bwapi.issueCommand(new UnitCommand(this, UnitCommandTypes.Move, p, queued));
 	}
 	
-	public boolean patrol(Position p) {
-		return cmds.patrol(ID, p.getPX(), p.getPY());
+	public boolean patrol(Position p, boolean queued) {
+		return bwapi.issueCommand(new UnitCommand(this, UnitCommandTypes.Patrol, p, queued));
 	}
 	
-	public boolean holdPosition() {
-		return cmds.holdPosition(ID);
+	public boolean holdPosition(boolean queued) {
+		return bwapi.issueCommand(new UnitCommand(this, UnitCommandTypes.Hold_Position, queued));
 	}
 	
-	public boolean stop() {
-		return cmds.stop(ID);
+	public boolean stop(boolean queued) {
+		return bwapi.issueCommand(new UnitCommand(this, UnitCommandTypes.Stop, queued));
 	}
 	
-	public boolean follow(Unit target) {
-		return cmds.follow(ID, target.getID());
+	public boolean follow(Unit target, boolean queued) {
+		return bwapi.issueCommand(new UnitCommand(this, UnitCommandTypes.Follow, target, queued));
 	}
 	
-	public boolean gather(Unit target) {
-		return cmds.gather(ID, target.getID());
+	public boolean gather(Unit target, boolean queued) {
+		return bwapi.issueCommand(new UnitCommand(this, UnitCommandTypes.Gather, target, queued));
 	}
 	
-	public boolean returnCargo() {
-		return cmds.returnCargo(ID);
+	public boolean returnCargo(boolean queued) {
+		return bwapi.issueCommand(new UnitCommand(this, UnitCommandTypes.Return_Cargo, queued));
 	}
 	
-	public boolean repair(Unit target) {
-		return cmds.repair(ID, target.getID());
+	public boolean repair(Unit target, boolean queued) {
+		return bwapi.issueCommand(new UnitCommand(this, UnitCommandTypes.Repair, target, queued));
 	}
 	
 	public boolean burrow() {
-		return cmds.burrow(ID);
+		return bwapi.issueCommand(new UnitCommand(this, UnitCommandTypes.Burrow));
 	}
 	
 	public boolean unburrow() {
-		return cmds.unburrow(ID);
+		return bwapi.issueCommand(new UnitCommand(this, UnitCommandTypes.Unburrow));
 	}
 	
 	public boolean cloak() {
-		return cmds.cloak(ID);
+		return bwapi.issueCommand(new UnitCommand(this, UnitCommandTypes.Cloak));
 	}
 	
 	public boolean decloak() {
-		return cmds.decloak(ID);
+		return bwapi.issueCommand(new UnitCommand(this, UnitCommandTypes.Decloak));
 	}
 	
 	public boolean siege() {
-		return cmds.siege(ID);
+		return bwapi.issueCommand(new UnitCommand(this, UnitCommandTypes.Siege));
 	}
 	
 	public boolean unsiege() {
-		return cmds.unsiege(ID);
+		return bwapi.issueCommand(new UnitCommand(this, UnitCommandTypes.Unsiege));
 	}
 	
 	public boolean lift() {
-		return cmds.lift(ID);
+		return bwapi.issueCommand(new UnitCommand(this, UnitCommandTypes.Lift));
 	}
 	
 	public boolean land(Position p) {
-		return cmds.land(ID, p.getBX(), p.getBY());
+		return bwapi.issueCommand(new UnitCommand(this, UnitCommandTypes.Land, p));
 	}
 	
-	public boolean load(Unit target) {
-		return cmds.load(ID, target.getID());
+	public boolean load(Unit target, boolean queued) {
+		return bwapi.issueCommand(new UnitCommand(this, UnitCommandTypes.Load, target, queued));
 	}
 	
 	public boolean unload(Unit target) {
-		return cmds.unload(ID, target.getID());
+		return bwapi.issueCommand(new UnitCommand(this, UnitCommandTypes.Unload, target));
 	}
 	
-	public boolean unloadAll() {
-		return cmds.unloadAll(ID);
+	public boolean unloadAll(boolean queued) {
+		return bwapi.issueCommand(new UnitCommand(this, UnitCommandTypes.Unload_All, queued));
 	}
 	
-	public boolean unloadAll(Position p) {
-		return cmds.unloadAll(ID, p.getPX(), p.getPY());
+	public boolean unloadAll(Position p, boolean queued) {
+		return bwapi.issueCommand(new UnitCommand(this, UnitCommandTypes.Unload_All_Position, p, queued));
 	}
 	
-	public boolean rightClick(Position p) {
-		return cmds.rightClick(ID, p.getPX(), p.getPY());
+	public boolean rightClick(Position p, boolean queued) {
+		return bwapi.issueCommand(new UnitCommand(this, UnitCommandTypes.Right_Click_Position, p, queued));
 	}
 	
-	public boolean rightClick(Unit target) {
-		return cmds.rightClick(ID, target.getID());
+	public boolean rightClick(Unit target, boolean queued) {
+		return bwapi.issueCommand(new UnitCommand(this, UnitCommandTypes.Right_Click_Unit, target, queued));
 	}
 	
 	public boolean haltConstruction() {
-		return cmds.haltConstruction(ID);
+		return bwapi.issueCommand(new UnitCommand(this, UnitCommandTypes.Halt_Construction));
 	}
 	
 	public boolean cancelConstruction() {
-		return cmds.cancelConstruction(ID);
+		return bwapi.issueCommand(new UnitCommand(this, UnitCommandTypes.Cancel_Construction));
 	}
 	
 	public boolean cancelAddon() {
-		return cmds.cancelAddon(ID);
+		return bwapi.issueCommand(new UnitCommand(this, UnitCommandTypes.Cancel_Addon));
 	}
 	
 	public boolean cancelTrain(int slot) {
-		return cmds.cancelTrain(ID, slot);
+		return bwapi.issueCommand(new UnitCommand(this, UnitCommandTypes.Cancel_Train_Slot, slot));
 	}
 	
 	/** Remove the last unit from the training queue. */
 	public boolean cancelTrain() {
-		return cmds.cancelTrain(ID, -2);
+		return bwapi.issueCommand(new UnitCommand(this, UnitCommandTypes.Cancel_Train, -2));
 	}
 	
 	public boolean cancelMorph() {
-		return cmds.cancelMorph(ID);
+		return bwapi.issueCommand(new UnitCommand(this, UnitCommandTypes.Cancel_Morph));
 	}
 	
 	public boolean cancelResearch() {
-		return cmds.cancelResearch(ID);
+		return bwapi.issueCommand(new UnitCommand(this, UnitCommandTypes.Cancel_Research));
 	}
 	
 	public boolean cancelUpgrade() {
-		return cmds.cancelUpgrade(ID);
+		return bwapi.issueCommand(new UnitCommand(this, UnitCommandTypes.Cancel_Upgrade));
 	}
 	
 	public boolean useTech(TechType tech) {
-		return cmds.useTech(ID, tech.getID());
+		UnitCommandType uct = UnitCommandTypes.Use_Tech;
+		if (tech == TechTypes.Burrowing) {
+			if (isBurrowed())
+				uct = UnitCommandTypes.Unburrow;
+			else
+				uct = UnitCommandTypes.Burrow;
+		}
+		else if (tech == TechTypes.Cloaking_Field || tech == TechTypes.Personnel_Cloaking) {
+			if (isCloaked())
+				uct = UnitCommandTypes.Decloak;
+			else
+				uct = UnitCommandTypes.Cloak;
+		}
+		else if (tech == TechTypes.Tank_Siege_Mode) {
+			if (isSieged())
+				uct = UnitCommandTypes.Unsiege;
+			else
+				uct = UnitCommandTypes.Siege;
+		}
+		return bwapi.issueCommand(new UnitCommand(this, uct, tech.getID()));
 	}
 	
 	public boolean useTech(TechType tech, Position p) {
-		return cmds.useTech(ID, tech.getID(), p.getPX(), p.getPY());
+		return bwapi.issueCommand(new UnitCommand(this, UnitCommandTypes.Use_Tech_Position, p, tech.getID()));
 	}
 	
 	public boolean useTech(TechType tech, Unit target) {
-		return cmds.useTech(ID, tech.getID(), target.getID());
+		return bwapi.issueCommand(new UnitCommand(this, UnitCommandTypes.Use_Tech_Unit, target, tech.getID()));
 	}
 	
 	public boolean placeCOP(Position p) {
-		return cmds.placeCOP(ID, p.getBX(), p.getBY());
+		return bwapi.issueCommand(new UnitCommand(this, UnitCommandTypes.Place_COP, p));
 	}
 	
 	// ------------------------------ HASHCODE & EQUALS ------------------------------ //

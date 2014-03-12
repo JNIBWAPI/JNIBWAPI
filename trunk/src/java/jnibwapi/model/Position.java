@@ -1,15 +1,17 @@
 package jnibwapi.model;
 
+import jnibwapi.JNIBWAPI;
+
 /** Generalised representation of a position for JNIBWAPI. Immutable. */
 public class Position {
 	
 	public static class Positions {
-		public static final Position Invalid = new Position(1000, 1000, Type.BUILD);
-		public static final Position None = new Position(1000, 1001, Type.BUILD);
-		public static final Position Unknown = new Position(1000, 1002, Type.BUILD);
+		public static final Position Invalid = new Position(1000, 1000, PosType.BUILD);
+		public static final Position None = new Position(1000, 1001, PosType.BUILD);
+		public static final Position Unknown = new Position(1000, 1002, PosType.BUILD);
 	}
 	
-	public static enum Type {
+	public static enum PosType {
 		PIXEL(1),
 		WALK(8),
 		BUILD(32);
@@ -17,7 +19,7 @@ public class Position {
 		/** Length in pixels */
 		public final int scale;
 		
-		private Type(int size) {
+		private PosType(int size) {
 			this.scale = size;
 		}
 	};
@@ -27,46 +29,64 @@ public class Position {
 	
 	/**
 	 * Creates a new Position representing the given x and y as Pixel, Walk Tile, or Build Tile
-	 * coordinates (depending on the Type given).
+	 * coordinates (depending on the PosType given).
 	 */
-	public Position(int x, int y, Type type) {
-		this.x = x * type.scale;
-		this.y = y * type.scale;
+	public Position(int x, int y, PosType posType) {
+		this.x = x * posType.scale;
+		this.y = y * posType.scale;
 	}
 	
 	/** Creates a new Position representing the given x and y as Pixel coordinates. */
 	public Position(int x, int y) {
-		this(x, y, Type.PIXEL);
+		this(x, y, PosType.PIXEL);
+	}
+	
+	/**
+	 * Returns the x-coordinate, in the scale appropriate for the given type
+	 * 
+	 * @see {@link #getPX()}, {@link #getBX()}, {@link #getWX()}
+	 */
+	public int getX(PosType posType) {
+		return x / posType.scale;
+	}
+	
+	/**
+	 * Returns the y-coordinate, in the scale appropriate for the given type
+	 * 
+	 * @see {@link #getPY()}, {@link #getBY()}, {@link #getWY()}
+	 */
+	public int getY(PosType posType) {
+		return y / posType.scale;
 	}
 	
 	/** Returns the x-coordinate, in pixels */
 	public int getPX() {
-		return x / Type.PIXEL.scale;
+		return x / PosType.PIXEL.scale;
 	}
 	
 	/** Returns the y-coordinate, in pixels */
 	public int getPY() {
-		return y / Type.PIXEL.scale;
+		return y / PosType.PIXEL.scale;
 	}
 	
 	/** Returns the x-coordinate, in walk tiles */
 	public int getWX() {
-		return x / Type.WALK.scale;
+		return x / PosType.WALK.scale;
 	}
 	
 	/** Returns the y-coordinate, in walk tiles */
 	public int getWY() {
-		return y / Type.WALK.scale;
+		return y / PosType.WALK.scale;
 	}
 	
 	/** Returns the x-coordinate, in build tiles */
 	public int getBX() {
-		return x / Type.BUILD.scale;
+		return x / PosType.BUILD.scale;
 	}
 	
 	/** Returns the y-coordinate, in build tiles */
 	public int getBY() {
-		return y / Type.BUILD.scale;
+		return y / PosType.BUILD.scale;
 	}
 	
 	/**
@@ -81,11 +101,11 @@ public class Position {
 	}
 	
 	public double getWDistance(Position target) {
-		return getPDistance(target) / Type.WALK.scale;
+		return getPDistance(target) / PosType.WALK.scale;
 	}
 	
 	public double getBDistance(Position target) {
-		return getPDistance(target) / Type.BUILD.scale;
+		return getPDistance(target) / PosType.BUILD.scale;
 	}
 	
 	/**
@@ -113,20 +133,25 @@ public class Position {
 	}
 	
 	public int getApproxWDistance(Position target) {
-		return getApproxPDistance(target) / Type.WALK.scale;
+		return getApproxPDistance(target) / PosType.WALK.scale;
 	}
 	
 	public int getApproxBDistance(Position target) {
-		return getApproxPDistance(target) / Type.BUILD.scale;
+		return getApproxPDistance(target) / PosType.BUILD.scale;
 	}
 	
 	/**
-	 * Returns true if the position is on the map. Note: if map parameter is null, this function
+	 * Returns true if the position is on the map. Note: if map info is unavailable, this function
 	 * will check validity against the largest (256x256) map size.
 	 */
-	public boolean isValid(Map map) {
+	public boolean isValid() {
 		if (x < 0 || y < 0)
 			return false;
+		Map map;
+		if (JNIBWAPI.getInstance() != null)
+			map = JNIBWAPI.getInstance().getMap();
+		else
+			map = null;
 		if (map == null)
 			return getBX() < 256 && getBY() < 256;
 		else
@@ -135,15 +160,20 @@ public class Position {
 	
 	/**
 	 * Returns a <b>new</b> Position in the closest valid map position. Worked out at Build Tile
-	 * resolution, like in BWAPI. Note: if map parameter is null, this function will check validity
-	 * against the largest (256x256) map size.
+	 * resolution, like in BWAPI 3. Note: if map info is unavailable, this function will check
+	 * validity against the largest (256x256) map size.
 	 */
-	public Position makeValid(Map map) {
-		if (isValid(map))
+	public Position makeValid() {
+		if (isValid())
 			return this;
 		// 
 		int newBtX = Math.max(getBX(), 0);
 		int newBtY = Math.max(getBY(), 0);
+		Map map;
+		if (JNIBWAPI.getInstance() != null)
+			map = JNIBWAPI.getInstance().getMap();
+		else
+			map = null;
 		if (map == null) {
 			newBtX = Math.min(newBtX, 256 - 1);
 			newBtY = Math.min(newBtY, 256 - 1);
@@ -151,7 +181,7 @@ public class Position {
 			newBtX = Math.min(newBtX, map.getSize().getBX() - 1);
 			newBtY = Math.min(newBtY, map.getSize().getBY() - 1);
 		}
-		return new Position(newBtX, newBtY, Type.BUILD);
+		return new Position(newBtX, newBtY, PosType.BUILD);
 	}
 	
 	/**

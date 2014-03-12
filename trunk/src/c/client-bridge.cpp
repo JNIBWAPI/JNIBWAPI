@@ -1200,6 +1200,38 @@ JNIEXPORT jintArray JNICALL Java_jnibwapi_JNIBWAPI_getUnitIdsOnTile(JNIEnv * env
 // Unit Commands
 /*****************************************************************************************************************/
 
+JNIEXPORT jboolean JNICALL Java_jnibwapi_JNIBWAPI_canIssueCommand(JNIEnv * env, jobject jObj, jint unitID, jint unitCommandTypeID, jint targetUnitID, jint x, jint y, jint extra)
+{
+	Unit* unit = Broodwar->getUnit(unitID);
+	if (unit != NULL) {
+		UnitCommand c = BWAPI::UnitCommand();
+		c.unit = unit;
+		c.type = unitCommandTypeID;
+		c.target = Broodwar->getUnit(targetUnitID);
+		c.x = x;
+		c.y = y;
+		c.extra = extra;
+		return c.unit->canIssueCommand(c);
+	}
+	return JNI_FALSE;
+}
+
+JNIEXPORT jboolean JNICALL Java_jnibwapi_JNIBWAPI_issueCommand(JNIEnv * env, jobject jObj, jint unitID, jint unitCommandTypeID, jint targetUnitID, jint x, jint y, jint extra)
+{
+	Unit* unit = Broodwar->getUnit(unitID);
+	if (unit != NULL) {
+		UnitCommand c = BWAPI::UnitCommand();
+		c.unit = unit;
+		c.type = unitCommandTypeID;
+		c.target = Broodwar->getUnit(targetUnitID);
+		c.x = x;
+		c.y = y;
+		c.extra = extra;
+		return c.unit->issueCommand(c);
+	}
+	return JNI_FALSE;
+}
+
 JNIEXPORT jboolean JNICALL Java_jnibwapi_JNIBWAPI_attack__III(JNIEnv* env, jobject jObj, jint unitID, jint x, jint y)
 {
 	Unit* unit = Broodwar->getUnit(unitID);
@@ -1811,40 +1843,33 @@ JNIEXPORT jboolean JNICALL Java_jnibwapi_JNIBWAPI_hasCreep(JNIEnv* env, jobject 
 	return Broodwar->hasCreep(tx, ty);
 }
 
-JNIEXPORT jboolean JNICALL Java_jnibwapi_JNIBWAPI_hasPower__II(JNIEnv* env, jobject jObj, jint tileX, jint tileY)
+JNIEXPORT jboolean JNICALL Java_jnibwapi_JNIBWAPI_hasPower__III(JNIEnv* env, jobject jObj, jint tileX, jint tileY, jint unitTypeID)
 {
+	if (unitTypeMap.count(unitTypeID) > 0) {
+		BWAPI::UnitType unitType = unitTypeMap[unitTypeID];
+		return Broodwar->hasPower(tileX, tileY, unitType);
+	}
+	
 	return Broodwar->hasPower(tileX, tileY);
 }
 
-JNIEXPORT jboolean JNICALL Java_jnibwapi_JNIBWAPI_hasPower__III(JNIEnv* env, jobject jObj, jint tileX, jint tileY, jint unitID)
+JNIEXPORT jboolean JNICALL Java_jnibwapi_JNIBWAPI_hasPower__IIIII(JNIEnv* env, jobject jObj, jint tileX, jint tileY, jint tileWidth, jint tileHeight, jint unitTypeID)
 {
-	Unit* unit = Broodwar->getUnit(unitID);
-
-	if (unit != NULL) {
-		return Broodwar->hasPower(tileX, tileY, unit->getType());
+	if (unitTypeMap.count(unitTypeID) > 0) {
+		BWAPI::UnitType unitType = unitTypeMap[unitTypeID];
+		return Broodwar->hasPower(tileX, tileY, tileWidth, tileHeight, unitType);
 	}
-
-	return JNI_FALSE;
-}
-
-JNIEXPORT jboolean JNICALL Java_jnibwapi_JNIBWAPI_hasPower__IIII(JNIEnv* env, jobject jObj, jint tileX, jint tileY, jint tileWidth, jint tileHeight)
-{
+	
 	return Broodwar->hasPower(tileX, tileY, tileWidth, tileHeight);
 }
 
-JNIEXPORT jboolean JNICALL Java_jnibwapi_JNIBWAPI_hasPower__IIIII(JNIEnv* env, jobject jObj, jint tileX, jint tileY, jint tileWidth, jint tileHeight, jint unitID)
+JNIEXPORT jboolean JNICALL Java_jnibwapi_JNIBWAPI_hasPowerPrecise(JNIEnv* env, jobject jObj, jint x, jint y, jint unitTypeID)
 {
-	Unit* unit = Broodwar->getUnit(unitID);
-
-	if (unit != NULL) {
-		return Broodwar->hasPower(tileX, tileY, tileWidth, tileHeight);
+	if (unitTypeMap.count(unitTypeID) > 0) {
+		BWAPI::UnitType unitType = unitTypeMap[unitTypeID];
+		return Broodwar->hasPowerPrecise(x, y, unitType);
 	}
-
-	return JNI_FALSE;
-}
-
-JNIEXPORT jboolean JNICALL Java_jnibwapi_JNIBWAPI_hasPowerPrecise(JNIEnv* env, jobject jObj, jint x, jint y)
-{
+	
 	return Broodwar->hasPowerPrecise(x, y);
 }
 
