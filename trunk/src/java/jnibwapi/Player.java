@@ -1,6 +1,7 @@
-package jnibwapi.model;
+package jnibwapi;
 
-import jnibwapi.model.Position.PosType;
+import jnibwapi.Position.PosType;
+import jnibwapi.types.PlayerType;
 import jnibwapi.types.RaceType;
 import jnibwapi.types.RaceType.RaceTypes;
 import jnibwapi.types.TechType;
@@ -115,9 +116,8 @@ public class Player {
 		return RaceTypes.getRaceType(raceID);
 	}
 	
-	// TODO Should return a PlayerType
-	public int getTypeID() {
-		return typeID;
+	public PlayerType getTypeID() {
+		return PlayerType.getPlayerType(typeID);
 	}
 	
 	/**

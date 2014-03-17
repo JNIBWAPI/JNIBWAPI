@@ -26,7 +26,7 @@ public interface BWAPIEventListener {
 	public void sendText(String text);
 	public void receiveText(String text);
 	public void playerLeft(int playerID);
-	public void nukeDetect(int x, int y);
+	public void nukeDetect(Position p);
 	public void nukeDetect();
 	public void unitDiscover(int unitID);
 	public void unitEvade(int unitID);

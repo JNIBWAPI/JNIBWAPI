@@ -778,6 +778,138 @@ JNIEXPORT jintArray JNICALL Java_jnibwapi_JNIBWAPI_getOrderTypes(JNIEnv* env, jo
 	return result;
 }
 
+int addUnitDataToBuffer(Unit* u, int index)
+{
+	intBuf[index++] = u->getID();
+	intBuf[index++] = u->getReplayID();
+	intBuf[index++] = u->getPlayer()->getID();
+	intBuf[index++] = u->getType().getID();
+	intBuf[index++] = u->getPosition().x();
+	intBuf[index++] = u->getPosition().y();
+	intBuf[index++] = u->getTilePosition().x();
+	intBuf[index++] = u->getTilePosition().y();
+	intBuf[index++] = static_cast<int>(TO_DEGREES * u->getAngle());
+	intBuf[index++] = static_cast<int>(fixedScale * u->getVelocityX());
+	intBuf[index++] = static_cast<int>(fixedScale * u->getVelocityY());
+	intBuf[index++] = u->getHitPoints();
+	intBuf[index++] = u->getShields();
+	intBuf[index++] = u->getEnergy();
+	intBuf[index++] = u->getResources();
+	intBuf[index++] = u->getResourceGroup();
+	intBuf[index++] = u->getLastCommandFrame();
+	intBuf[index++] = u->getLastCommand().getType().getID();
+	// getLastAttackingPlayer doesn't work as documented, have to check for "None" player
+	intBuf[index++] = (u->getLastAttackingPlayer() != NULL
+		&& u->getLastAttackingPlayer()->getType() != PlayerTypes::None)
+		? u->getLastAttackingPlayer()->getID() : -1;
+	intBuf[index++] = u->getInitialType().getID();
+	intBuf[index++] = u->getInitialPosition().x();
+	intBuf[index++] = u->getInitialPosition().y();
+	intBuf[index++] = u->getInitialTilePosition().x();
+	intBuf[index++] = u->getInitialTilePosition().y();
+	intBuf[index++] = u->getInitialHitPoints();
+	intBuf[index++] = u->getInitialResources();
+	intBuf[index++] = u->getKillCount();
+	intBuf[index++] = u->getAcidSporeCount();
+	intBuf[index++] = u->getInterceptorCount();
+	intBuf[index++] = u->getScarabCount();
+	intBuf[index++] = u->getSpiderMineCount();
+	intBuf[index++] = u->getGroundWeaponCooldown();
+	intBuf[index++] = u->getAirWeaponCooldown();
+	intBuf[index++] = u->getSpellCooldown();
+	intBuf[index++] = u->getDefenseMatrixPoints();
+	intBuf[index++] = u->getDefenseMatrixTimer();
+	intBuf[index++] = u->getEnsnareTimer();
+	intBuf[index++] = u->getIrradiateTimer();
+	intBuf[index++] = u->getLockdownTimer();
+	intBuf[index++] = u->getMaelstromTimer();
+	intBuf[index++] = u->getOrderTimer();
+	intBuf[index++] = u->getPlagueTimer();
+	intBuf[index++] = u->getRemoveTimer();
+	intBuf[index++] = u->getStasisTimer();
+	intBuf[index++] = u->getStimTimer();
+	intBuf[index++] = u->getBuildType().getID();
+	intBuf[index++] = u->getTrainingQueue().size();
+	intBuf[index++] = u->getTech().getID();
+	intBuf[index++] = u->getUpgrade().getID();
+	intBuf[index++] = u->getRemainingBuildTime();
+	intBuf[index++] = u->getRemainingTrainTime();
+	intBuf[index++] = u->getRemainingResearchTime();
+	intBuf[index++] = u->getRemainingUpgradeTime();
+	intBuf[index++] = (u->getBuildUnit() != NULL) ? u->getBuildUnit()->getID() : -1;
+	intBuf[index++] = (u->getTarget() != NULL) ? u->getTarget()->getID() : -1;
+	intBuf[index++] = u->getTargetPosition().x();
+	intBuf[index++] = u->getTargetPosition().y();
+	intBuf[index++] = u->getOrder().getID();
+	intBuf[index++] = (u->getOrderTarget() != NULL) ? u->getOrderTarget()->getID() : -1;
+	intBuf[index++] = u->getSecondaryOrder().getID();
+	intBuf[index++] = u->getRallyPosition().x();
+	intBuf[index++] = u->getRallyPosition().y();
+	intBuf[index++] = (u->getRallyUnit() != NULL) ? u->getRallyUnit()->getID() : -1;
+	intBuf[index++] = (u->getAddon() != NULL) ? u->getAddon()->getID() : -1;
+	intBuf[index++] = (u->getNydusExit() != NULL) ? u->getNydusExit()->getID() : -1;
+	intBuf[index++] = (u->getTransport() != NULL) ? u->getTransport()->getID() : -1;
+	intBuf[index++] = u->getLoadedUnits().size(); // see separate getLoadedUnits method
+	intBuf[index++] = (u->getCarrier() != NULL) ? u->getCarrier()->getID() : -1;
+	// see getInterceptorCount and separate getInterceptors method
+	intBuf[index++] = (u->getHatchery() != NULL) ? u->getHatchery()->getID() : -1;
+	intBuf[index++] = u->getLarva().size(); // see separate getLarva method
+	intBuf[index++] = (u->getPowerUp() != NULL) ? u->getPowerUp()->getID() : -1;
+	intBuf[index++] = u->exists() ? 1 : 0;
+	intBuf[index++] = u->hasNuke() ? 1 : 0;
+	intBuf[index++] = u->isAccelerating() ? 1 : 0;
+	intBuf[index++] = u->isAttacking() ? 1 : 0;
+	intBuf[index++] = u->isAttackFrame() ? 1 : 0;
+	intBuf[index++] = u->isBeingConstructed() ? 1 : 0;
+	intBuf[index++] = u->isBeingGathered() ? 1 : 0;
+	intBuf[index++] = u->isBeingHealed() ? 1 : 0;
+	intBuf[index++] = u->isBlind() ? 1 : 0;
+	intBuf[index++] = u->isBraking() ? 1 : 0;
+	intBuf[index++] = u->isBurrowed() ? 1 : 0;
+	intBuf[index++] = u->isCarryingGas() ? 1 : 0;
+	intBuf[index++] = u->isCarryingMinerals() ? 1 : 0;
+	intBuf[index++] = u->isCloaked() ? 1 : 0;
+	intBuf[index++] = u->isCompleted() ? 1 : 0;
+	intBuf[index++] = u->isConstructing() ? 1 : 0;
+	intBuf[index++] = u->isDefenseMatrixed() ? 1 : 0;
+	intBuf[index++] = u->isDetected() ? 1 : 0;
+	intBuf[index++] = u->isEnsnared() ? 1 : 0;
+	intBuf[index++] = u->isFollowing() ? 1 : 0;
+	intBuf[index++] = u->isGatheringGas() ? 1 : 0;
+	intBuf[index++] = u->isGatheringMinerals() ? 1 : 0;
+	intBuf[index++] = u->isHallucination() ? 1 : 0;
+	intBuf[index++] = u->isHoldingPosition() ? 1 : 0;
+	intBuf[index++] = u->isIdle() ? 1 : 0;
+	intBuf[index++] = u->isInterruptible() ? 1 : 0;
+	intBuf[index++] = u->isInvincible() ? 1 : 0;
+	intBuf[index++] = u->isIrradiated() ? 1 : 0;
+	intBuf[index++] = u->isLifted() ? 1 : 0;
+	intBuf[index++] = u->isLoaded() ? 1 : 0;
+	intBuf[index++] = u->isLockedDown() ? 1 : 0;
+	intBuf[index++] = u->isMaelstrommed() ? 1 : 0;
+	intBuf[index++] = u->isMorphing() ? 1 : 0;
+	intBuf[index++] = u->isMoving() ? 1 : 0;
+	intBuf[index++] = u->isParasited() ? 1 : 0;
+	intBuf[index++] = u->isPatrolling() ? 1 : 0;
+	intBuf[index++] = u->isPlagued() ? 1 : 0;
+	intBuf[index++] = u->isRepairing() ? 1 : 0;
+	intBuf[index++] = u->isSelected() ? 1 : 0;
+	intBuf[index++] = u->isSieged() ? 1 : 0;
+	intBuf[index++] = u->isStartingAttack() ? 1 : 0;
+	intBuf[index++] = u->isStasised() ? 1 : 0;
+	intBuf[index++] = u->isStimmed() ? 1 : 0;
+	intBuf[index++] = u->isStuck() ? 1 : 0;
+	intBuf[index++] = u->isTraining() ? 1 : 0;
+	intBuf[index++] = u->isUnderAttack() ? 1 : 0;
+	intBuf[index++] = u->isUnderDarkSwarm() ? 1 : 0;
+	intBuf[index++] = u->isUnderDisruptionWeb() ? 1 : 0;
+	intBuf[index++] = u->isUnderStorm() ? 1 : 0;
+	intBuf[index++] = u->isUnpowered() ? 1 : 0;
+	intBuf[index++] = u->isUpgrading() ? 1 : 0;
+	intBuf[index++] = u->isVisible() ? 1 : 0;
+	return index;
+}
+
 /**
 * Returns the list of active units in the game. 
 *
@@ -789,133 +921,24 @@ JNIEXPORT jintArray JNICALL Java_jnibwapi_JNIBWAPI_getAllUnitsData(JNIEnv* env, 
 
 	std::set<Unit*> units = Broodwar->getAllUnits();
 	for (std::set<Unit*>::iterator i = units.begin(); i != units.end(); ++i) {
-		intBuf[index++] = (*i)->getID();
-		intBuf[index++] = (*i)->getReplayID();
-		intBuf[index++] = (*i)->getPlayer()->getID();
-		intBuf[index++] = (*i)->getType().getID();
-		intBuf[index++] = (*i)->getPosition().x();
-		intBuf[index++] = (*i)->getPosition().y();
-		intBuf[index++] = (*i)->getTilePosition().x();
-		intBuf[index++] = (*i)->getTilePosition().y();
-		intBuf[index++] = static_cast<int>(TO_DEGREES * (*i)->getAngle());
-		intBuf[index++] = static_cast<int>(fixedScale * (*i)->getVelocityX());
-		intBuf[index++] = static_cast<int>(fixedScale * (*i)->getVelocityY());
-		intBuf[index++] = (*i)->getHitPoints();
-		intBuf[index++] = (*i)->getShields();
-		intBuf[index++] = (*i)->getEnergy();
-		intBuf[index++] = (*i)->getResources();
-		intBuf[index++] = (*i)->getResourceGroup();
-		intBuf[index++] = (*i)->getLastCommandFrame();
-		intBuf[index++] = (*i)->getLastCommand().getType().getID();
-		// getLastAttackingPlayer doesn't work as documented, have to check for "None" player
-		intBuf[index++] = ((*i)->getLastAttackingPlayer() != NULL
-			&& (*i)->getLastAttackingPlayer()->getType() != PlayerTypes::None)
-			? (*i)->getLastAttackingPlayer()->getID() : -1;
-		intBuf[index++] = (*i)->getInitialType().getID();
-		intBuf[index++] = (*i)->getInitialPosition().x();
-		intBuf[index++] = (*i)->getInitialPosition().y();
-		intBuf[index++] = (*i)->getInitialTilePosition().x();
-		intBuf[index++] = (*i)->getInitialTilePosition().y();
-		intBuf[index++] = (*i)->getInitialHitPoints();
-		intBuf[index++] = (*i)->getInitialResources();
-		intBuf[index++] = (*i)->getKillCount();
-		intBuf[index++] = (*i)->getAcidSporeCount();
-		intBuf[index++] = (*i)->getInterceptorCount();
-		intBuf[index++] = (*i)->getScarabCount();
-		intBuf[index++] = (*i)->getSpiderMineCount();
-		intBuf[index++] = (*i)->getGroundWeaponCooldown();
-		intBuf[index++] = (*i)->getAirWeaponCooldown();
-		intBuf[index++] = (*i)->getSpellCooldown();
-		intBuf[index++] = (*i)->getDefenseMatrixPoints();
-		intBuf[index++] = (*i)->getDefenseMatrixTimer();
-		intBuf[index++] = (*i)->getEnsnareTimer();
-		intBuf[index++] = (*i)->getIrradiateTimer();
-		intBuf[index++] = (*i)->getLockdownTimer();
-		intBuf[index++] = (*i)->getMaelstromTimer();
-		intBuf[index++] = (*i)->getOrderTimer();
-		intBuf[index++] = (*i)->getPlagueTimer();
-		intBuf[index++] = (*i)->getRemoveTimer();
-		intBuf[index++] = (*i)->getStasisTimer();
-		intBuf[index++] = (*i)->getStimTimer();
-		intBuf[index++] = (*i)->getBuildType().getID();
-		intBuf[index++] = (*i)->getTrainingQueue().size();
-		intBuf[index++] = (*i)->getTech().getID();
-		intBuf[index++] = (*i)->getUpgrade().getID();
-		intBuf[index++] = (*i)->getRemainingBuildTime();
-		intBuf[index++] = (*i)->getRemainingTrainTime();
-		intBuf[index++] = (*i)->getRemainingResearchTime();
-		intBuf[index++] = (*i)->getRemainingUpgradeTime();
-		intBuf[index++] = ((*i)->getBuildUnit() != NULL) ? (*i)->getBuildUnit()->getID() : -1;
-		intBuf[index++] = ((*i)->getTarget() != NULL) ? (*i)->getTarget()->getID() : -1;
-		intBuf[index++] = (*i)->getTargetPosition().x();
-		intBuf[index++] = (*i)->getTargetPosition().y();
-		intBuf[index++] = (*i)->getOrder().getID();
-		intBuf[index++] = ((*i)->getOrderTarget() != NULL) ? (*i)->getOrderTarget()->getID() : -1;
-		intBuf[index++] = (*i)->getSecondaryOrder().getID();
-		intBuf[index++] = (*i)->getRallyPosition().x();
-		intBuf[index++] = (*i)->getRallyPosition().y();
-		intBuf[index++] = ((*i)->getRallyUnit() != NULL) ? (*i)->getRallyUnit()->getID() : -1;
-		intBuf[index++] = ((*i)->getAddon() != NULL) ? (*i)->getAddon()->getID() : -1;
-		intBuf[index++] = ((*i)->getNydusExit() != NULL) ? (*i)->getNydusExit()->getID() : -1;
-		intBuf[index++] = ((*i)->getTransport() != NULL) ? (*i)->getTransport()->getID() : -1;
-		intBuf[index++] = (*i)->getLoadedUnits().size(); // see separate getLoadedUnits method
-		intBuf[index++] = ((*i)->getCarrier() != NULL) ? (*i)->getCarrier()->getID() : -1;
-		// see getInterceptorCount and separate getInterceptors method
-		intBuf[index++] = ((*i)->getHatchery() != NULL) ? (*i)->getHatchery()->getID() : -1;
-		intBuf[index++] = (*i)->getLarva().size(); // see separate getLarva method
-		intBuf[index++] = ((*i)->getPowerUp() != NULL) ? (*i)->getPowerUp()->getID() : -1;
-		intBuf[index++] = (*i)->exists() ? 1 : 0;
-		intBuf[index++] = (*i)->hasNuke() ? 1 : 0;
-		intBuf[index++] = (*i)->isAccelerating() ? 1 : 0;
-		intBuf[index++] = (*i)->isAttacking() ? 1 : 0;
-		intBuf[index++] = (*i)->isAttackFrame() ? 1 : 0;
-		intBuf[index++] = (*i)->isBeingConstructed() ? 1 : 0;
-		intBuf[index++] = (*i)->isBeingGathered() ? 1 : 0;
-		intBuf[index++] = (*i)->isBeingHealed() ? 1 : 0;
-		intBuf[index++] = (*i)->isBlind() ? 1 : 0;
-		intBuf[index++] = (*i)->isBraking() ? 1 : 0;
-		intBuf[index++] = (*i)->isBurrowed() ? 1 : 0;
-		intBuf[index++] = (*i)->isCarryingGas() ? 1 : 0;
-		intBuf[index++] = (*i)->isCarryingMinerals() ? 1 : 0;
-		intBuf[index++] = (*i)->isCloaked() ? 1 : 0;
-		intBuf[index++] = (*i)->isCompleted() ? 1 : 0;
-		intBuf[index++] = (*i)->isConstructing() ? 1 : 0;
-		intBuf[index++] = (*i)->isDefenseMatrixed() ? 1 : 0;
-		intBuf[index++] = (*i)->isDetected() ? 1 : 0;
-		intBuf[index++] = (*i)->isEnsnared() ? 1 : 0;
-		intBuf[index++] = (*i)->isFollowing() ? 1 : 0;
-		intBuf[index++] = (*i)->isGatheringGas() ? 1 : 0;
-		intBuf[index++] = (*i)->isGatheringMinerals() ? 1 : 0;
-		intBuf[index++] = (*i)->isHallucination() ? 1 : 0;
-		intBuf[index++] = (*i)->isHoldingPosition() ? 1 : 0;
-		intBuf[index++] = (*i)->isIdle() ? 1 : 0;
-		intBuf[index++] = (*i)->isInterruptible() ? 1 : 0;
-		intBuf[index++] = (*i)->isInvincible() ? 1 : 0;
-		intBuf[index++] = (*i)->isIrradiated() ? 1 : 0;
-		intBuf[index++] = (*i)->isLifted() ? 1 : 0;
-		intBuf[index++] = (*i)->isLoaded() ? 1 : 0;
-		intBuf[index++] = (*i)->isLockedDown() ? 1 : 0;
-		intBuf[index++] = (*i)->isMaelstrommed() ? 1 : 0;
-		intBuf[index++] = (*i)->isMorphing() ? 1 : 0;
-		intBuf[index++] = (*i)->isMoving() ? 1 : 0;
-		intBuf[index++] = (*i)->isParasited() ? 1 : 0;
-		intBuf[index++] = (*i)->isPatrolling() ? 1 : 0;
-		intBuf[index++] = (*i)->isPlagued() ? 1 : 0;
-		intBuf[index++] = (*i)->isRepairing() ? 1 : 0;
-		intBuf[index++] = (*i)->isSelected() ? 1 : 0;
-		intBuf[index++] = (*i)->isSieged() ? 1 : 0;
-		intBuf[index++] = (*i)->isStartingAttack() ? 1 : 0;
-		intBuf[index++] = (*i)->isStasised() ? 1 : 0;
-		intBuf[index++] = (*i)->isStimmed() ? 1 : 0;
-		intBuf[index++] = (*i)->isStuck() ? 1 : 0;
-		intBuf[index++] = (*i)->isTraining() ? 1 : 0;
-		intBuf[index++] = (*i)->isUnderAttack() ? 1 : 0;
-		intBuf[index++] = (*i)->isUnderDarkSwarm() ? 1 : 0;
-		intBuf[index++] = (*i)->isUnderDisruptionWeb() ? 1 : 0;
-		intBuf[index++] = (*i)->isUnderStorm() ? 1 : 0;
-		intBuf[index++] = (*i)->isUnpowered() ? 1 : 0;
-		intBuf[index++] = (*i)->isUpgrading() ? 1 : 0;
-		intBuf[index++] = (*i)->isVisible() ? 1 : 0;
+		index = addUnitDataToBuffer(*i, index);
+	}
+
+	jintArray result = env->NewIntArray(index);
+	env->SetIntArrayRegion(result, 0, index, intBuf);
+	return result;
+}
+
+/**
+* Each unit takes up a fixed number of integer values (based on method above). Currently: 123
+*/
+JNIEXPORT jintArray JNICALL Java_jnibwapi_JNIBWAPI_getStaticNeutralUnitsData(JNIEnv* env, jobject jObj) 
+{
+	int index = 0;
+
+	std::set<Unit*> units = Broodwar->getStaticNeutralUnits();
+	for (std::set<Unit*>::iterator i = units.begin(); i != units.end(); ++i) {
+		index = addUnitDataToBuffer(*i, index);
 	}
 
 	jintArray result = env->NewIntArray(index);
@@ -2002,6 +2025,12 @@ JNIEXPORT void JNICALL Java_jnibwapi_JNIBWAPI_sendText(JNIEnv* env, jobject jObj
 	const char* messagechars = env->GetStringUTFChars(message, 0);
 	Broodwar->sendText("%s", messagechars);
 	env->ReleaseStringUTFChars(message, messagechars);
+}
+
+JNIEXPORT void JNICALL Java_jnibwapi_JNIBWAPI_setLatCom(JNIEnv* env, jobject jObj, jboolean enabled)
+{
+
+	Broodwar->setLatCom(enabled != JNI_FALSE);
 }
 
 JNIEXPORT void JNICALL Java_jnibwapi_JNIBWAPI_setCommandOptimizationLevel(JNIEnv* env, jobject jObj, jint level)

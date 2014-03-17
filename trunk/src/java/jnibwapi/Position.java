@@ -1,6 +1,5 @@
-package jnibwapi.model;
+package jnibwapi;
 
-import jnibwapi.JNIBWAPI;
 
 /** Generalised representation of a position for JNIBWAPI. Immutable. */
 public class Position {

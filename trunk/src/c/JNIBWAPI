@@ -15,11 +15,11 @@ public class jnibwapi.JNIBWAPI {
   public native int getReplayFrameTotal();
     Signature: ()I
 
-  public boolean canIssueCommand(jnibwapi.model.UnitCommand);
-    Signature: (Ljnibwapi/model/UnitCommand;)Z
+  public boolean canIssueCommand(jnibwapi.UnitCommand);
+    Signature: (Ljnibwapi/UnitCommand;)Z
 
-  public boolean issueCommand(jnibwapi.model.UnitCommand);
-    Signature: (Ljnibwapi/model/UnitCommand;)Z
+  public boolean issueCommand(jnibwapi.UnitCommand);
+    Signature: (Ljnibwapi/UnitCommand;)Z
 
   public native boolean attack(int, int, int);
     Signature: (III)Z
@@ -174,92 +174,92 @@ public class jnibwapi.JNIBWAPI {
   public native void leaveGame();
     Signature: ()V
 
-  public void drawBox(jnibwapi.model.Position, jnibwapi.model.Position, jnibwapi.util.BWColor, boolean, boolean);
-    Signature: (Ljnibwapi/model/Position;Ljnibwapi/model/Position;Ljnibwapi/util/BWColor;ZZ)V
+  public void drawBox(jnibwapi.Position, jnibwapi.Position, jnibwapi.util.BWColor, boolean, boolean);
+    Signature: (Ljnibwapi/Position;Ljnibwapi/Position;Ljnibwapi/util/BWColor;ZZ)V
 
-  public void drawCircle(jnibwapi.model.Position, int, jnibwapi.util.BWColor, boolean, boolean);
-    Signature: (Ljnibwapi/model/Position;ILjnibwapi/util/BWColor;ZZ)V
+  public void drawCircle(jnibwapi.Position, int, jnibwapi.util.BWColor, boolean, boolean);
+    Signature: (Ljnibwapi/Position;ILjnibwapi/util/BWColor;ZZ)V
 
-  public void drawLine(jnibwapi.model.Position, jnibwapi.model.Position, jnibwapi.util.BWColor, boolean);
-    Signature: (Ljnibwapi/model/Position;Ljnibwapi/model/Position;Ljnibwapi/util/BWColor;Z)V
+  public void drawLine(jnibwapi.Position, jnibwapi.Position, jnibwapi.util.BWColor, boolean);
+    Signature: (Ljnibwapi/Position;Ljnibwapi/Position;Ljnibwapi/util/BWColor;Z)V
 
-  public void drawDot(jnibwapi.model.Position, jnibwapi.util.BWColor, boolean);
-    Signature: (Ljnibwapi/model/Position;Ljnibwapi/util/BWColor;Z)V
+  public void drawDot(jnibwapi.Position, jnibwapi.util.BWColor, boolean);
+    Signature: (Ljnibwapi/Position;Ljnibwapi/util/BWColor;Z)V
 
-  public void drawText(jnibwapi.model.Position, java.lang.String, boolean);
-    Signature: (Ljnibwapi/model/Position;Ljava/lang/String;Z)V
+  public void drawText(jnibwapi.Position, java.lang.String, boolean);
+    Signature: (Ljnibwapi/Position;Ljava/lang/String;Z)V
 
-  public boolean isVisible(jnibwapi.model.Position);
-    Signature: (Ljnibwapi/model/Position;)Z
+  public boolean isVisible(jnibwapi.Position);
+    Signature: (Ljnibwapi/Position;)Z
 
-  public boolean isExplored(jnibwapi.model.Position);
-    Signature: (Ljnibwapi/model/Position;)Z
+  public boolean isExplored(jnibwapi.Position);
+    Signature: (Ljnibwapi/Position;)Z
 
-  public boolean isBuildable(jnibwapi.model.Position, boolean);
-    Signature: (Ljnibwapi/model/Position;Z)Z
+  public boolean isBuildable(jnibwapi.Position, boolean);
+    Signature: (Ljnibwapi/Position;Z)Z
 
-  public boolean hasCreep(jnibwapi.model.Position);
-    Signature: (Ljnibwapi/model/Position;)Z
+  public boolean hasCreep(jnibwapi.Position);
+    Signature: (Ljnibwapi/Position;)Z
 
-  public boolean hasPower(jnibwapi.model.Position);
-    Signature: (Ljnibwapi/model/Position;)Z
+  public boolean hasPower(jnibwapi.Position);
+    Signature: (Ljnibwapi/Position;)Z
 
-  public boolean hasPower(jnibwapi.model.Position, jnibwapi.types.UnitType);
-    Signature: (Ljnibwapi/model/Position;Ljnibwapi/types/UnitType;)Z
+  public boolean hasPower(jnibwapi.Position, jnibwapi.types.UnitType);
+    Signature: (Ljnibwapi/Position;Ljnibwapi/types/UnitType;)Z
 
-  public boolean hasPower(jnibwapi.model.Position, int, int);
-    Signature: (Ljnibwapi/model/Position;II)Z
+  public boolean hasPower(jnibwapi.Position, int, int);
+    Signature: (Ljnibwapi/Position;II)Z
 
-  public boolean hasPower(jnibwapi.model.Position, int, int, jnibwapi.types.UnitType);
-    Signature: (Ljnibwapi/model/Position;IILjnibwapi/types/UnitType;)Z
+  public boolean hasPower(jnibwapi.Position, int, int, jnibwapi.types.UnitType);
+    Signature: (Ljnibwapi/Position;IILjnibwapi/types/UnitType;)Z
 
-  public boolean hasPowerPrecise(jnibwapi.model.Position);
-    Signature: (Ljnibwapi/model/Position;)Z
+  public boolean hasPowerPrecise(jnibwapi.Position);
+    Signature: (Ljnibwapi/Position;)Z
 
-  public boolean hasPowerPrecise(jnibwapi.model.Position, jnibwapi.types.UnitType);
-    Signature: (Ljnibwapi/model/Position;Ljnibwapi/types/UnitType;)Z
+  public boolean hasPowerPrecise(jnibwapi.Position, jnibwapi.types.UnitType);
+    Signature: (Ljnibwapi/Position;Ljnibwapi/types/UnitType;)Z
 
-  public boolean hasPath(jnibwapi.model.Position, jnibwapi.model.Position);
-    Signature: (Ljnibwapi/model/Position;Ljnibwapi/model/Position;)Z
+  public boolean hasPath(jnibwapi.Position, jnibwapi.Position);
+    Signature: (Ljnibwapi/Position;Ljnibwapi/Position;)Z
 
-  public boolean hasPath(jnibwapi.model.Unit, jnibwapi.model.Unit);
-    Signature: (Ljnibwapi/model/Unit;Ljnibwapi/model/Unit;)Z
+  public boolean hasPath(jnibwapi.Unit, jnibwapi.Unit);
+    Signature: (Ljnibwapi/Unit;Ljnibwapi/Unit;)Z
 
-  public boolean hasPath(jnibwapi.model.Unit, jnibwapi.model.Position);
-    Signature: (Ljnibwapi/model/Unit;Ljnibwapi/model/Position;)Z
+  public boolean hasPath(jnibwapi.Unit, jnibwapi.Position);
+    Signature: (Ljnibwapi/Unit;Ljnibwapi/Position;)Z
 
-  public native int[] getLoadedUnits(int);
+  protected native int[] getLoadedUnits(int);
     Signature: (I)[I
 
-  public native int[] getInterceptors(int);
+  protected native int[] getInterceptors(int);
     Signature: (I)[I
 
-  public native int[] getLarva(int);
+  protected native int[] getLarva(int);
     Signature: (I)[I
 
-  public boolean canBuildHere(jnibwapi.model.Position, jnibwapi.types.UnitType, boolean);
-    Signature: (Ljnibwapi/model/Position;Ljnibwapi/types/UnitType;Z)Z
+  public boolean canBuildHere(jnibwapi.Position, jnibwapi.types.UnitType, boolean);
+    Signature: (Ljnibwapi/Position;Ljnibwapi/types/UnitType;Z)Z
 
-  public boolean canBuildHere(jnibwapi.model.Unit, jnibwapi.model.Position, jnibwapi.types.UnitType, boolean);
-    Signature: (Ljnibwapi/model/Unit;Ljnibwapi/model/Position;Ljnibwapi/types/UnitType;Z)Z
+  public boolean canBuildHere(jnibwapi.Unit, jnibwapi.Position, jnibwapi.types.UnitType, boolean);
+    Signature: (Ljnibwapi/Unit;Ljnibwapi/Position;Ljnibwapi/types/UnitType;Z)Z
 
   public boolean canMake(jnibwapi.types.UnitType);
     Signature: (Ljnibwapi/types/UnitType;)Z
 
-  public boolean canMake(jnibwapi.model.Unit, jnibwapi.types.UnitType);
-    Signature: (Ljnibwapi/model/Unit;Ljnibwapi/types/UnitType;)Z
+  public boolean canMake(jnibwapi.Unit, jnibwapi.types.UnitType);
+    Signature: (Ljnibwapi/Unit;Ljnibwapi/types/UnitType;)Z
 
   public boolean canResearch(jnibwapi.types.TechType);
     Signature: (Ljnibwapi/types/TechType;)Z
 
-  public boolean canResearch(jnibwapi.model.Unit, jnibwapi.types.TechType);
-    Signature: (Ljnibwapi/model/Unit;Ljnibwapi/types/TechType;)Z
+  public boolean canResearch(jnibwapi.Unit, jnibwapi.types.TechType);
+    Signature: (Ljnibwapi/Unit;Ljnibwapi/types/TechType;)Z
 
   public boolean canUpgrade(jnibwapi.types.UpgradeType);
     Signature: (Ljnibwapi/types/UpgradeType;)Z
 
-  public boolean canUpgrade(jnibwapi.model.Unit, jnibwapi.types.UpgradeType);
-    Signature: (Ljnibwapi/model/Unit;Ljnibwapi/types/UpgradeType;)Z
+  public boolean canUpgrade(jnibwapi.Unit, jnibwapi.types.UpgradeType);
+    Signature: (Ljnibwapi/Unit;Ljnibwapi/types/UpgradeType;)Z
 
   public native void printText(java.lang.String);
     Signature: (Ljava/lang/String;)V
@@ -267,14 +267,17 @@ public class jnibwapi.JNIBWAPI {
   public native void sendText(java.lang.String);
     Signature: (Ljava/lang/String;)V
 
+  public native void setLatCom(boolean);
+    Signature: (Z)V
+
   public native void setCommandOptimizationLevel(int);
     Signature: (I)V
 
   public native boolean isReplay();
     Signature: ()Z
 
-  public boolean isVisibleToPlayer(jnibwapi.model.Unit, jnibwapi.model.Player);
-    Signature: (Ljnibwapi/model/Unit;Ljnibwapi/model/Player;)Z
+  public boolean isVisibleToPlayer(jnibwapi.Unit, jnibwapi.Player);
+    Signature: (Ljnibwapi/Unit;Ljnibwapi/Player;)Z
 
   public native int getLastError();
     Signature: ()I
@@ -348,53 +351,56 @@ public class jnibwapi.JNIBWAPI {
   public java.util.Collection<jnibwapi.types.OrderType> orderTypes();
     Signature: ()Ljava/util/Collection;
 
-  public jnibwapi.model.Player getPlayer(int);
-    Signature: (I)Ljnibwapi/model/Player;
+  public jnibwapi.Player getPlayer(int);
+    Signature: (I)Ljnibwapi/Player;
 
-  public jnibwapi.model.Unit getUnit(int);
-    Signature: (I)Ljnibwapi/model/Unit;
+  public jnibwapi.Unit getUnit(int);
+    Signature: (I)Ljnibwapi/Unit;
 
   public int getFrameCount();
     Signature: ()I
 
-  public jnibwapi.model.Player getSelf();
-    Signature: ()Ljnibwapi/model/Player;
+  public jnibwapi.Player getSelf();
+    Signature: ()Ljnibwapi/Player;
 
-  public jnibwapi.model.Player getNeutralPlayer();
-    Signature: ()Ljnibwapi/model/Player;
+  public jnibwapi.Player getNeutralPlayer();
+    Signature: ()Ljnibwapi/Player;
 
-  public java.util.Collection<jnibwapi.model.Player> getPlayers();
+  public java.util.Collection<jnibwapi.Player> getPlayers();
     Signature: ()Ljava/util/Collection;
 
-  public java.util.Set<jnibwapi.model.Player> getAllies();
+  public java.util.Set<jnibwapi.Player> getAllies();
     Signature: ()Ljava/util/Set;
 
-  public java.util.Set<jnibwapi.model.Player> getEnemies();
+  public java.util.Set<jnibwapi.Player> getEnemies();
     Signature: ()Ljava/util/Set;
 
-  public java.util.Collection<jnibwapi.model.Unit> getAllUnits();
+  public java.util.Collection<jnibwapi.Unit> getAllUnits();
     Signature: ()Ljava/util/Collection;
 
-  public java.util.List<jnibwapi.model.Unit> getMyUnits();
+  public java.util.List<jnibwapi.Unit> getMyUnits();
     Signature: ()Ljava/util/List;
 
-  public java.util.List<jnibwapi.model.Unit> getAlliedUnits();
+  public java.util.List<jnibwapi.Unit> getAlliedUnits();
     Signature: ()Ljava/util/List;
 
-  public java.util.List<jnibwapi.model.Unit> getEnemyUnits();
+  public java.util.List<jnibwapi.Unit> getEnemyUnits();
     Signature: ()Ljava/util/List;
 
-  public java.util.List<jnibwapi.model.Unit> getNeutralUnits();
+  public java.util.List<jnibwapi.Unit> getNeutralUnits();
     Signature: ()Ljava/util/List;
 
-  public java.util.List<jnibwapi.model.Unit> getUnits(jnibwapi.model.Player);
-    Signature: (Ljnibwapi/model/Player;)Ljava/util/List;
+  public java.util.List<jnibwapi.Unit> getStaticNeutralUnits();
+    Signature: ()Ljava/util/List;
 
-  public java.util.List<jnibwapi.model.Unit> getUnitsOnTile(int, int);
-    Signature: (II)Ljava/util/List;
+  public java.util.List<jnibwapi.Unit> getUnits(jnibwapi.Player);
+    Signature: (Ljnibwapi/Player;)Ljava/util/List;
 
-  public jnibwapi.model.Map getMap();
-    Signature: ()Ljnibwapi/model/Map;
+  public java.util.List<jnibwapi.Unit> getUnitsOnTile(jnibwapi.Position);
+    Signature: (Ljnibwapi/Position;)Ljava/util/List;
+
+  public jnibwapi.Map getMap();
+    Signature: ()Ljnibwapi/Map;
 
   public void keyPressed(int);
     Signature: (I)V

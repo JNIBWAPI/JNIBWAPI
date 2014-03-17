@@ -81,6 +81,14 @@ JNIEXPORT jintArray JNICALL Java_jnibwapi_JNIBWAPI_getAllUnitsData
 
 /*
  * Class:     jnibwapi_JNIBWAPI
+ * Method:    getStaticNeutralUnitsData
+ * Signature: ()[I
+ */
+JNIEXPORT jintArray JNICALL Java_jnibwapi_JNIBWAPI_getStaticNeutralUnitsData
+  (JNIEnv *, jobject);
+
+/*
+ * Class:     jnibwapi_JNIBWAPI
  * Method:    getRaceTypes
  * Signature: ()[I
  */
@@ -1030,6 +1038,14 @@ JNIEXPORT void JNICALL Java_jnibwapi_JNIBWAPI_printText
  */
 JNIEXPORT void JNICALL Java_jnibwapi_JNIBWAPI_sendText
   (JNIEnv *, jobject, jstring);
+
+/*
+ * Class:     jnibwapi_JNIBWAPI
+ * Method:    setLatCom
+ * Signature: (Z)V
+ */
+JNIEXPORT void JNICALL Java_jnibwapi_JNIBWAPI_setLatCom
+  (JNIEnv *, jobject, jboolean);
 
 /*
  * Class:     jnibwapi_JNIBWAPI

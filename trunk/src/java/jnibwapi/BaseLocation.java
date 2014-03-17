@@ -1,8 +1,8 @@
-package jnibwapi.model;
+package jnibwapi;
 
 import java.util.Map;
 
-import jnibwapi.model.Position.PosType;
+import jnibwapi.Position.PosType;
 
 /**
  * Represents a StarCraft base location.

@@ -1,7 +1,7 @@
-package jnibwapi.model;
+package jnibwapi;
 
-import jnibwapi.model.Position.Positions;
-import jnibwapi.model.Position.PosType;
+import jnibwapi.Position.PosType;
+import jnibwapi.Position.Positions;
 import jnibwapi.types.UnitCommandType;
 import jnibwapi.types.UnitCommandType.UnitCommandTypes;
 

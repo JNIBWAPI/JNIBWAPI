@@ -1,9 +1,11 @@
-package jnibwapi;
+package bot;
 
 import java.util.HashSet;
 
-import jnibwapi.model.Position;
-import jnibwapi.model.Unit;
+import jnibwapi.BWAPIEventListener;
+import jnibwapi.JNIBWAPI;
+import jnibwapi.Position;
+import jnibwapi.Unit;
 import jnibwapi.types.TechType;
 import jnibwapi.types.TechType.TechTypes;
 import jnibwapi.types.UnitType;
@@ -205,7 +207,7 @@ public class ExampleAIClient implements BWAPIEventListener {
 	@Override
 	public void receiveText(String text) {}
 	@Override
-	public void nukeDetect(int x, int y) {}
+	public void nukeDetect(Position p) {}
 	@Override
 	public void nukeDetect() {}
 	@Override

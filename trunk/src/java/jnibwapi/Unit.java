@@ -1,9 +1,8 @@
-package jnibwapi.model;
+package jnibwapi;
 
 import java.util.ArrayList;
 import java.util.List;
 
-import jnibwapi.JNIBWAPI;
 import jnibwapi.types.*;
 import jnibwapi.types.OrderType.OrderTypes;
 import jnibwapi.types.TechType.TechTypes;
