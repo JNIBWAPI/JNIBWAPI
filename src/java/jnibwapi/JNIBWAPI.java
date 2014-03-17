@@ -18,12 +18,6 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
-import jnibwapi.model.Map;
-import jnibwapi.model.Player;
-import jnibwapi.model.Position;
-import jnibwapi.model.Region;
-import jnibwapi.model.Unit;
-import jnibwapi.model.UnitCommand;
 import jnibwapi.types.*;
 import jnibwapi.types.BulletType.BulletTypes;
 import jnibwapi.types.DamageType.DamageTypes;
@@ -124,18 +118,19 @@ public class JNIBWAPI {
 	// game state
 	private int gameFrame = 0;
 	private Map map;
-	private HashMap<Integer, Unit> units = new HashMap<Integer, Unit>();
-	private ArrayList<Unit> playerUnits = new ArrayList<Unit>();
-	private ArrayList<Unit> alliedUnits = new ArrayList<Unit>();
-	private ArrayList<Unit> enemyUnits = new ArrayList<Unit>();
-	private ArrayList<Unit> neutralUnits = new ArrayList<Unit>();
+	private HashMap<Integer, Unit> units = new HashMap<>();
+	private ArrayList<Unit> playerUnits = new ArrayList<>();
+	private ArrayList<Unit> alliedUnits = new ArrayList<>();
+	private ArrayList<Unit> enemyUnits = new ArrayList<>();
+	private ArrayList<Unit> neutralUnits = new ArrayList<>();
+	private ArrayList<Unit> staticNeutralUnits = new ArrayList<>();
 	
 	// player lists
 	private Player self;
 	private Player neutralPlayer;
-	private HashMap<Integer, Player> players = new HashMap<Integer, Player>();
-	private HashSet<Player> allies = new HashSet<Player>();
-	private HashSet<Player> enemies = new HashSet<Player>();
+	private HashMap<Integer, Player> players = new HashMap<>();
+	private HashSet<Player> allies = new HashSet<>();
+	private HashSet<Player> enemies = new HashSet<>();
 	
 	// invokes the main native method
 	private native void startClient(JNIBWAPI jniBWAPI);
@@ -150,6 +145,7 @@ public class JNIBWAPI {
 	private native int[] getResearchStatus(int playerID);
 	private native int[] getUpgradeStatus(int playerID);
 	private native int[] getAllUnitsData();
+	private native int[] getStaticNeutralUnitsData();
 	private native int[] getRaceTypes();
 	private native String getRaceTypeName(int raceID);
 	private native int[] getUnitTypes();
@@ -373,9 +369,9 @@ public class JNIBWAPI {
 	public boolean hasPath(Unit u, Position to) {
 		return hasPath(u.getID(), to.getPX(), to.getPY());
 	}
-	public native int[] getLoadedUnits(int unitID);
-	public native int[] getInterceptors(int unitID);
-	public native int[] getLarva(int unitID);
+	protected native int[] getLoadedUnits(int unitID);
+	protected native int[] getInterceptors(int unitID);
+	protected native int[] getLarva(int unitID);
 	private native boolean canBuildHere(int tileX, int tileY, int unitTypeID, boolean checkExplored);
 	public boolean canBuildHere(Position p, UnitType ut, boolean checkExplored) {
 		return canBuildHere(p.getBX(), p.getBY(), ut.getID(), checkExplored);
@@ -412,6 +408,7 @@ public class JNIBWAPI {
 	
 	public native void printText(String message);
 	public native void sendText(String message);
+	public native void setLatCom(boolean enabled);
 	public native void setCommandOptimizationLevel(int level);
 	public native boolean isReplay();
 	private native boolean isVisibleToPlayer(int unitID, int playerID);
@@ -485,6 +482,7 @@ public class JNIBWAPI {
 	public List<Unit> getAlliedUnits() { return Collections.unmodifiableList(alliedUnits); }
 	public List<Unit> getEnemyUnits() { return Collections.unmodifiableList(enemyUnits); }
 	public List<Unit> getNeutralUnits() { return Collections.unmodifiableList(neutralUnits); }
+	public List<Unit> getStaticNeutralUnits() { return Collections.unmodifiableList(staticNeutralUnits); }
 	
 	public List<Unit> getUnits(Player p) {
 		List<Unit> pUnits = new ArrayList<Unit>();
@@ -496,10 +494,10 @@ public class JNIBWAPI {
 		return pUnits;
 	}
 	
-	public List<Unit> getUnitsOnTile(int tx, int ty) {
+	public List<Unit> getUnitsOnTile(Position p) {
 		// Often will have 0 or few units on tile
 		List<Unit> units = new ArrayList<Unit>(0);
-		for (int id : getUnitIdsOnTile(tx, ty)) {
+		for (int id : getUnitIdsOnTile(p.getBX(), p.getBY())) {
 			units.add(getUnit(id));
 		}
 		return units;
@@ -805,6 +803,21 @@ public class JNIBWAPI {
 					neutralUnits.add(unit);
 				}
 			}
+			staticNeutralUnits.clear();
+			unitData = getStaticNeutralUnitsData();
+			for (int index = 0; index < unitData.length; index += Unit.numAttributes) {
+				int id = unitData[index];
+				
+				// Ensure we don't have duplicate units
+				Unit unit = units.get(id);
+				if (unit == null) {
+					unit = new Unit(id, this);
+					unit.update(unitData, index);
+				}
+				
+				staticNeutralUnits.add(unit);
+			}
+			
 			gameFrame = getFrame();
 			loadMapData();
 			
@@ -940,7 +953,7 @@ public class JNIBWAPI {
 					if (param1 == -1)
 						listener.nukeDetect();
 					else
-						listener.nukeDetect(param1, param2);
+						listener.nukeDetect(new Position(param1, param2));
 					break;
 				case UnitDiscover:
 					listener.unitDiscover(param1);

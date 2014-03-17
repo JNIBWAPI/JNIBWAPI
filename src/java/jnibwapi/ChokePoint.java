@@ -1,4 +1,4 @@
-package jnibwapi.model;
+package jnibwapi;
 
 import java.util.Map;
 

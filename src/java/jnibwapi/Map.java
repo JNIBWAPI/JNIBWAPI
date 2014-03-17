@@ -1,4 +1,4 @@
-package jnibwapi.model;
+package jnibwapi;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -9,8 +9,7 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.PriorityQueue;
 
-import jnibwapi.JNIBWAPI;
-import jnibwapi.model.Position.PosType;
+import jnibwapi.Position.PosType;
 import jnibwapi.types.UnitType;
 import jnibwapi.util.BWColor;
 
@@ -68,7 +67,7 @@ public class Map {
 	}
 	
 	/** Initialise the map with regions and base locations */
-	public void initialize(int[] regionMapData, int[] regionData,
+	protected void initialize(int[] regionMapData, int[] regionData,
 			HashMap<Integer, int[]> regionPolygons, int[] chokePointData, int[] baseLocationData) {
 		// regionMap
 		regionMap = regionMapData;
