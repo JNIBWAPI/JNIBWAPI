@@ -43,6 +43,9 @@ public class Map {
 		this.name = name;
 		this.fileName = fileName;
 		this.hash = hash;
+		assert(heightMap != null && heightMap.length == size.getBX() * size.getBY());
+		assert(buildable != null && buildable.length == size.getBX() * size.getBY());
+		assert(walkable != null && walkable.length == size.getWX() * size.getWY());
 		this.heightMap = heightMap;
 		this.buildable = new boolean[buildable.length];
 		this.walkable = new boolean[walkable.length];
@@ -70,6 +73,7 @@ public class Map {
 	protected void initialize(int[] regionMapData, int[] regionData,
 			HashMap<Integer, int[]> regionPolygons, int[] chokePointData, int[] baseLocationData) {
 		// regionMap
+		assert(regionMapData != null && regionMapData.length == size.getBX() * size.getBY());
 		regionMap = regionMapData;
 		
 		// regions
@@ -167,7 +171,10 @@ public class Map {
 		}
 	}
 	
-	/** Works only after initialize(). Returns null if the specified position is invalid. */
+	/**
+	 * Works only after initialize(). Returns null if the specified position is invalid. Build tile
+	 * accuracy (so may not precisely agree with region polygons).
+	 */
 	public Region getRegion(Position p) {
 		if (p.isValid()) {
 			return idToRegion.get(regionMap[getBuildTileArrayIndex(p)]);

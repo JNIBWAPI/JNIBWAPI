@@ -95,4 +95,9 @@ public class UnitCommandType {
 		return ID;
 	}
 	
+	@Override
+	public String toString() {
+		return getName() + " (" + getID() + ")";
+	}
+	
 }

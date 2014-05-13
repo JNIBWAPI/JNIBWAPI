@@ -88,4 +88,9 @@ public class RaceType {
 		return supplyProviderID;
 	}
 	
+	@Override
+	public String toString() {
+		return getName() + " (" + getID() + ")";
+	}
+	
 }

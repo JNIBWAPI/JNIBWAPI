@@ -301,4 +301,8 @@ public class WeaponType {
 		return targetsOwn;
 	}
 	
+	@Override
+	public String toString() {
+		return getName() + " (" + getID() + ")";
+	}
 }

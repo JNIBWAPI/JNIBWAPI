@@ -35,11 +35,20 @@ public enum EventType {
 		return ordinal();
 	}
 	
+	public String getName() {
+		return name();
+	}
+	
 	public static EventType getEventType(int id) {
 		return EventType.values()[id];
 	}
 	
 	public static Collection<EventType> getAllEventTypes() {
 		return Collections.unmodifiableCollection(Arrays.asList(EventType.values()));
+	}
+	
+	@Override
+	public String toString() {
+		return getName() + " (" + getID() + ")";
 	}
 }

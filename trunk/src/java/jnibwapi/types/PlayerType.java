@@ -34,11 +34,20 @@ public enum PlayerType {
 		return ID;
 	}
 	
+	public String getName() {
+		return name();
+	}
+	
 	public static PlayerType getPlayerType(int id) {
 		return PlayerType.values()[id];
 	}
 	
 	public static Collection<PlayerType> getAllPlayerTypes() {
 		return Collections.unmodifiableCollection(Arrays.asList(PlayerType.values()));
+	}
+	
+	@Override
+	public String toString() {
+		return getName() + " (" + getID() + ")";
 	}
 }
