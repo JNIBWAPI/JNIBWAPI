@@ -3,6 +3,7 @@ package jnibwapi;
 import java.util.ArrayList;
 import java.util.List;
 
+import jnibwapi.Position.PosType;
 import jnibwapi.types.*;
 import jnibwapi.types.OrderType.OrderTypes;
 import jnibwapi.types.TechType.TechTypes;
@@ -300,10 +301,6 @@ public class Unit implements Cloneable {
 		}
 	}
 	
-	public Position getPosition() {
-		return new Position(x, y);
-	}
-	
 	/** Returns the edge-to-edge distance between the current unit and the target unit. */
 	public double getDistance(Unit target) {
 		if (!isExists() || target == null || !target.isExists())
@@ -350,27 +347,29 @@ public class Unit implements Cloneable {
 		return new Position(0, 0).getPDistance(new Position(xDist, yDist));
 	}
 	
+	/** The top left corner of the unit's collision boundary. */
 	public Position getTopLeft() {
 		return new Position(getLeft(), getTop());
 	}
 	
+	/** The bottom right corner of the unit's collision boundary. */
 	public Position getBottomRight() {
 		return new Position(getRight(), getBottom());
 	}
 	
-	public int getLeft() {
+	private int getLeft() {
 		return x - getType().getDimensionLeft();
 	}
 	
-	public int getTop() {
+	private int getTop() {
 		return y - getType().getDimensionUp();
 	}
 	
-	public int getRight() {
+	private int getRight() {
 		return x + getType().getDimensionRight();
 	}
 	
-	public int getBottom() {
+	private int getBottom() {
 		return y + getType().getDimensionDown();
 	}
 	
@@ -402,6 +401,11 @@ public class Unit implements Cloneable {
 		return UnitTypes.getUnitType(typeID);
 	}
 	
+	/** Gives the position of the <b>center</b> of the unit. */
+	public Position getPosition() {
+		return new Position(x, y);
+	}
+	
 	/** @deprecated use {@link #getPosition()} */
 	public int getX() {
 		return x;
@@ -412,12 +416,21 @@ public class Unit implements Cloneable {
 		return y;
 	}
 	
-	/** @deprecated use {@link #getPosition()} */
+	/**
+	 * Returns the position of the top-left build tile occupied by the unit. Most useful for
+	 * buildings. Always above-left of {@link #getPosition()} and above-left or equal to
+	 * {@link #getTopLeft()}
+	 */
+	public Position getTilePosition() {
+		return new Position(tileX, tileY, PosType.BUILD);
+	}
+	
+	/** @deprecated use {@link #getTilePosition()} */
 	public int getTileX() {
 		return tileX;
 	}
 	
-	/** @deprecated use {@link #getPosition()} */
+	/** @deprecated use {@link #getTilePosition()} */
 	public int getTileY() {
 		return tileY;
 	}

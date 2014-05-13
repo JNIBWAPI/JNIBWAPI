@@ -243,4 +243,9 @@ public class OrderType {
 		return ID;
 	}
 	
+	@Override
+	public String toString() {
+		return getName() + " (" + getID() + ")";
+	}
+	
 }

@@ -150,4 +150,9 @@ public class TechType {
 		return targetsPosition;
 	}
 	
+	@Override
+	public String toString() {
+		return getName() + " (" + getID() + ")";
+	}
+	
 }

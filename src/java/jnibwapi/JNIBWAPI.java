@@ -610,6 +610,7 @@ public class JNIBWAPI {
 		
 		// get region and choke point data
 		File bwtaFile = new File("mapData" + File.separator + map.getHash() + ".jbwta");
+		String mapHash = map.getHash();
 		File mapDir = bwtaFile.getParentFile();
 		if (mapDir != null) {
 			mapDir.mkdirs();
@@ -619,7 +620,7 @@ public class JNIBWAPI {
 		int[] regionData = null;
 		int[] chokePointData = null;
 		int[] baseLocationData = null;
-		HashMap<Integer, int[]> polygons = new HashMap<Integer, int[]>();
+		HashMap<Integer, int[]> polygons = new HashMap<>();
 		
 		// run BWTA
 		if (!analyzed) {
@@ -631,6 +632,12 @@ public class JNIBWAPI {
 			for (int index = 0; index < regionData.length; index += Region.numAttributes) {
 				int id = regionData[index];
 				polygons.put(id, getPolygon(id));
+			}
+			
+			// sometimes BWTA seems to crash on analyse. Make sure we are definitely in the same map
+			if (!mapHash.equals(map.getHash())) {
+				System.err.println("Error: Map changed during analysis! BWTA file not saved.");
+				System.exit(1);
 			}
 			
 			// store the results to a local file (bwta directory)
@@ -850,11 +857,11 @@ public class JNIBWAPI {
 			}
 			// update units
 			int[] unitData = getAllUnitsData();
-			HashSet<Integer> deadUnits = new HashSet<Integer>(units.keySet());
-			ArrayList<Unit> playerList = new ArrayList<Unit>();
-			ArrayList<Unit> alliedList = new ArrayList<Unit>();
-			ArrayList<Unit> enemyList = new ArrayList<Unit>();
-			ArrayList<Unit> neutralList = new ArrayList<Unit>();
+			HashSet<Integer> deadUnits = new HashSet<>(units.keySet());
+			ArrayList<Unit> playerList = new ArrayList<>();
+			ArrayList<Unit> alliedList = new ArrayList<>();
+			ArrayList<Unit> enemyList = new ArrayList<>();
+			ArrayList<Unit> neutralList = new ArrayList<>();
 			
 			for (int index = 0; index < unitData.length; index += Unit.numAttributes) {
 				int id = unitData[index];

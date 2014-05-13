@@ -6,6 +6,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 import jnibwapi.types.UnitSizeType.UnitSizeTypes;
+import jnibwapi.types.WeaponType.WeaponTypes;
 
 /**
  * Represents a StarCraft unit type.
@@ -509,6 +510,11 @@ public class UnitType {
 		return sightRange;
 	}
 	
+	public WeaponType getGroundWeapon() {
+		return WeaponTypes.getWeaponType(groundWeaponID);
+	}
+	
+	@Deprecated
 	public int getGroundWeaponID() {
 		return groundWeaponID;
 	}
@@ -642,6 +648,11 @@ public class UnitType {
 		return this == UnitTypes.Resource_Mineral_Field
 				|| this == UnitTypes.Resource_Mineral_Field_Type_2
 				|| this == UnitTypes.Resource_Mineral_Field_Type_3;
+	}
+	
+	@Override
+	public String toString() {
+		return getName() + " (" + getID() + ")";
 	}
 	
 }

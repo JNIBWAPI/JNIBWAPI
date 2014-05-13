@@ -56,4 +56,9 @@ public class DamageType {
 		return ID;
 	}
 	
+	@Override
+	public String toString() {
+		return getName() + " (" + getID() + ")";
+	}
+	
 }

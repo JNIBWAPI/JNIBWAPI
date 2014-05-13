@@ -192,4 +192,9 @@ public class UpgradeType {
 		return whatUpgradesTypeID;
 	}
 	
+	@Override
+	public String toString() {
+		return getName() + " (" + getID() + ")";
+	}
+	
 }

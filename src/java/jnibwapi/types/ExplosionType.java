@@ -75,4 +75,9 @@ public class ExplosionType {
 		return ID;
 	}
 	
+	@Override
+	public String toString() {
+		return getName() + " (" + getID() + ")";
+	}
+	
 }
