@@ -1,0 +1,26 @@
+To get 64-bit compilation working, I used:
+
+Boost 1_40_0
+ Edited bootstrap.bat:
+   line 12: call .\build.bat vc9 > ..\..\..\bjam.log
+   line 9, 16, 18: replace ntx86 with ntx86_64
+ Then ran bjam with the command (in boost dir using VS2008 x64 cmd prompt):
+ > bjam address-model=64 toolset=msvc-90 --with-thread
+ Also added the BOOST_ROOT as an environment variable
+
+CGAL-3.5.1 windows installer, (chose 64 bit during installation)
+
+CMake 2.8 for windows. Command executed (from CGAL dir using VS2008 x64 cmd prompt):
+ > "C:\Program Files (x86)\CMake 2.8\bin\cmake.exe" -G "Visual Studio 9 2008 Win64" .
+
+
+--Glen (Phoglenix)
+18 May 2012
+
+
+
+ATTRIBUTION:
+
+Modification of JNIBWAPI to load platform-specific DLL
+and initial project to compile in 64-bit
+by Martin Sandsmark (iskrembilen)
