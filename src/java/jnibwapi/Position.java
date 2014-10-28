@@ -1,7 +1,12 @@
 package jnibwapi;
 
 
-/** Generalised representation of a position for JNIBWAPI. Immutable. */
+/**
+ * Generalised representation of a position for JNIBWAPI. Instead of breaking positions into pixel,
+ * walk tile, and build tile positions, as in BWAPI, this class represents all position types and
+ * converts between them when required. Position objects are immutable. They should be compared using
+ * their equals() method or by comparing the x and y values at the desired granularity.
+ */
 public class Position {
 	
 	public static class Positions {
