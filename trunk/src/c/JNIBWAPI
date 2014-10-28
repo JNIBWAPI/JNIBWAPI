@@ -222,8 +222,14 @@ public class jnibwapi.JNIBWAPI {
   public boolean hasPath(jnibwapi.Position, jnibwapi.Position);
     Signature: (Ljnibwapi/Position;Ljnibwapi/Position;)Z
 
+  protected native boolean hasPath(int, int);
+    Signature: (II)Z
+
   public boolean hasPath(jnibwapi.Unit, jnibwapi.Unit);
     Signature: (Ljnibwapi/Unit;Ljnibwapi/Unit;)Z
+
+  protected native boolean hasPath(int, int, int);
+    Signature: (III)Z
 
   public boolean hasPath(jnibwapi.Unit, jnibwapi.Position);
     Signature: (Ljnibwapi/Unit;Ljnibwapi/Position;)Z
@@ -275,6 +281,9 @@ public class jnibwapi.JNIBWAPI {
 
   public native boolean isReplay();
     Signature: ()Z
+
+  protected native boolean isVisibleToPlayer(int, int);
+    Signature: (II)Z
 
   public boolean isVisibleToPlayer(jnibwapi.Unit, jnibwapi.Player);
     Signature: (Ljnibwapi/Unit;Ljnibwapi/Player;)Z

@@ -31,6 +31,7 @@ import jnibwapi.types.UnitType.UnitTypes;
 import jnibwapi.types.UpgradeType.UpgradeTypes;
 import jnibwapi.types.WeaponType.WeaponTypes;
 import jnibwapi.util.BWColor;
+import jnibwapi.util.ErrorCode;
 
 /**
  * JNI interface for the Brood War API.<br>
@@ -137,6 +138,7 @@ public class JNIBWAPI {
 	
 	// query methods
 	private native int getFrame();
+	/** See https://code.google.com/p/bwapi/wiki/Game#getReplayFrameCount */
 	public native int getReplayFrameTotal();
 	private native int[] getPlayersData();
 	private native int[] getPlayerUpdate(int playerID);
@@ -191,11 +193,21 @@ public class JNIBWAPI {
 	
 	// Unit commands. These should generally be accessed via the Unit class now.
 	private native boolean canIssueCommand(int unitID, int unitCommandTypeID, int targetUnitID, int x, int y, int extra);
+	
+	/**
+	 * Differs from the BWAPI command in that the Unit receiving the command is encapsulated in the
+	 * UnitCommand. Otherwise matches: https://code.google.com/p/bwapi/wiki/Unit#canIssueCommand
+	 */
 	public boolean canIssueCommand(UnitCommand cmd) {
 		return canIssueCommand(cmd.getUnit().getID(), cmd.getType().getID(), cmd.getTargetUnitID(),
 				cmd.getX(), cmd.getY(), cmd.getExtra());
 	}
 	private native boolean issueCommand(int unitID, int unitCommandTypeID, int targetUnitID, int x, int y, int extra);
+	/**
+	 * Differs from the BWAPI command in that the Unit receiving the command is encapsulated in the
+	 * UnitCommand. Otherwise matches: https://code.google.com/p/bwapi/wiki/Unit#issueCommand<br>
+	 * It is preferable to use the command methods on the unit object instead.
+	 */
 	public boolean issueCommand(UnitCommand cmd) {
 		return issueCommand(cmd.getUnit().getID(), cmd.getType().getID(), cmd.getTargetUnitID(),
 				cmd.getX(), cmd.getY(), cmd.getExtra());
@@ -288,84 +300,135 @@ public class JNIBWAPI {
 	public native boolean placeCOP(int unitID, int tx, int ty);
 
 	// utility commands
+	/** Draw health boxes above units */
 	public native void drawHealth(boolean enable);
+	/** Draw the targets of each unit */
 	public native void drawTargets(boolean enable);
+	/** Draw the IDs of each unit */
 	public native void drawIDs(boolean enable);
+	/**
+	 * Enable user input so the game can get information from the user (what units are selected,
+	 * chat messages the user enters, etc). Note that this can only be enabled at the beginning of a
+	 * match, during the {@link BWAPIEventListener#matchStart()} callback, or during the
+	 * {@link BWAPIEventListener#matchFrame()} callback on the first frame (frame 0).
+	 */
 	public native void enableUserInput();
+	/**
+	 * Enable complete map information so all units are accessible, not just visible units. Note
+	 * that this can only be enabled at the beginning of a match, during the
+	 * {@link BWAPIEventListener#matchStart()} callback, or during the
+	 * {@link BWAPIEventListener#matchFrame()} callback on the first frame (frame 0).
+	 */
 	public native void enablePerfectInformation();
+	/** See https://code.google.com/p/bwapi/wiki/Game#setLocalSpeed */
 	public native void setGameSpeed(int speed);
+	/** See https://code.google.com/p/bwapi/wiki/Game#setFrameSkip */
 	public native void setFrameSkip(int frameSkip);
+	/** See https://code.google.com/p/bwapi/wiki/Game#leaveGame */
 	public native void leaveGame();
 	
 	// draw commands (if screenCoords is false, draws at map pixel coordinates)
 	private native void drawBox(int left, int top, int right, int bottom, int color, boolean fill, boolean screenCoords);
+	/**
+	 * See https://code.google.com/p/bwapi/wiki/Game#drawBox
+	 * @param screenCoords whether to draw at a screen position (true) or a map position (false)
+	 */
 	public void drawBox(Position topLeft, Position bottomRight, BWColor bWColor, boolean fill, boolean screenCoords) {
 		drawBox(topLeft.getPX(), topLeft.getPY(), bottomRight.getPX(), bottomRight.getPY(), bWColor.getID(), fill, screenCoords);
 	}
 	private native void drawCircle(int x, int y, int radius, int color, boolean fill, boolean screenCoords);
+	/**
+	 * See https://code.google.com/p/bwapi/wiki/Game#drawCircle
+	 * @param screenCoords whether to draw at a screen position (true) or a map position (false)
+	 */
 	public void drawCircle(Position p, int radius, BWColor bWColor, boolean fill, boolean screenCoords) {
 		drawCircle(p.getPX(), p.getPY(), radius, bWColor.getID(), fill, screenCoords);
 	}
 	private native void drawLine(int x1, int y1, int x2, int y2, int color, boolean screenCoords);
+	/**
+	 * See https://code.google.com/p/bwapi/wiki/Game#drawLine
+	 * @param screenCoords whether to draw at a screen position (true) or a map position (false)
+	 */
 	public void drawLine(Position start, Position end, BWColor bWColor, boolean screenCoords) {
 		drawLine(start.getPX(), start.getPY(), end.getPX(), end.getPY(), bWColor.getID(), screenCoords);
 	}
 	private native void drawDot(int x, int y, int color, boolean screenCoords);
+	/**
+	 * See https://code.google.com/p/bwapi/wiki/Game#drawDot
+	 * @param screenCoords whether to draw at a screen position (true) or a map position (false)
+	 */
 	public void drawDot(Position p, BWColor bWColor, boolean screenCoords) {
 		drawDot(p.getPX(), p.getPY(), bWColor.getID(), screenCoords);
 	}
 	private native void drawText(int x, int y, String msg, boolean screenCoords);
+	/**
+	 * See https://code.google.com/p/bwapi/wiki/Game#drawText
+	 * @param screenCoords whether to draw at a screen position (true) or a map position (false)
+	 */
 	public void drawText(Position a, String msg, boolean screenCoords) {
 		drawText(a.getPX(), a.getPY(), msg, screenCoords);
 	}
 	
 	// Extended Commands
 	private native boolean isVisible(int tileX, int tileY);
+	/** See https://code.google.com/p/bwapi/wiki/Game#isVisible */
 	public boolean isVisible(Position p) {
 		return isVisible(p.getBX(), p.getBY());
 	}
 	private native boolean isExplored(int tileX, int tileY);
+	/** See https://code.google.com/p/bwapi/wiki/Game#isExplored */
 	public boolean isExplored(Position p) {
 		return isExplored(p.getBX(), p.getBY());
 	}
 	private native boolean isBuildable(int tx, int ty, boolean includeBuildings);
+	/** See https://code.google.com/p/bwapi/wiki/Game#isBuildable */
 	public boolean isBuildable(Position p, boolean includeBuildings) {
 		return isBuildable(p.getBX(), p.getBY(), includeBuildings);
 	}
 	private native boolean hasCreep(int tileX, int tileY);
+	/** See https://code.google.com/p/bwapi/wiki/Game#hasCreep */
 	public boolean hasCreep(Position p) {
 		return hasCreep(p.getBX(), p.getBY());
 	}
 	private native boolean hasPower(int tileX, int tileY, int unitTypeID);
+	/** See https://code.google.com/p/bwapi/wiki/Game#hasPower */
 	public boolean hasPower(Position p) {
 		return hasPower(p, UnitTypes.None);
 	}
+	/** See https://code.google.com/p/bwapi/wiki/Game#hasPower */
 	public boolean hasPower(Position p, UnitType ut) {
 		return hasPower(p.getBX(), p.getBY(), ut.getID());
 	}
 	private native boolean hasPower(int tileX, int tileY, int tileWidth, int tileHeight, int unitTypeID);
+	/** See https://code.google.com/p/bwapi/wiki/Game#hasPower */
 	public boolean hasPower(Position p, int tileWidth, int tileHeight){
 		return hasPower(p, tileWidth, tileHeight, UnitTypes.None);
 	}
+	/** See https://code.google.com/p/bwapi/wiki/Game#hasPower */
 	public boolean hasPower(Position p, int tileWidth, int tileHeight, UnitType ut) {
 		return hasPower(p.getBX(), p.getBY(), tileWidth, tileHeight, ut.getID());
 	}
 	private native boolean hasPowerPrecise(int x, int y, int unitTypeID);
+	/** See https://code.google.com/p/bwapi/wiki/Game#hasPowerPrecise */
 	public boolean hasPowerPrecise(Position p) {
 		return hasPowerPrecise(p, UnitTypes.None);
 	}
+	/** See https://code.google.com/p/bwapi/wiki/Game#hasPowerPrecise */
 	public boolean hasPowerPrecise(Position p, UnitType ut) {
 		return hasPowerPrecise(p.getPX(), p.getPY(), ut.getID());
 	}
 	private native boolean hasPath(int fromX, int fromY, int toX, int toY);
+	/** See https://code.google.com/p/bwapi/wiki/Game#hasPath */
 	public boolean hasPath(Position from, Position to) {
 		return hasPath(from.getPX(), from.getPY(), to.getPX(), to.getPY());
 	}
-	private native boolean hasPath(int unitID, int targetID);
+	protected native boolean hasPath(int unitID, int targetID);
+	/** @deprecated Use the one in {@link Unit} instead */
 	public boolean hasPath(Unit u, Unit target) {
 		return hasPath(u.getID(), target.getID());
 	}
-	private native boolean hasPath(int unitID, int toX, int toY);
+	protected native boolean hasPath(int unitID, int toX, int toY);
+	/** @deprecated Use the one in {@link Unit} instead */
 	public boolean hasPath(Unit u, Position to) {
 		return hasPath(u.getID(), to.getPX(), to.getPY());
 	}
@@ -377,45 +440,62 @@ public class JNIBWAPI {
 		return canBuildHere(p.getBX(), p.getBY(), ut.getID(), checkExplored);
 	}
 	private native boolean canBuildHere(int unitID, int tileX, int tileY, int unitTypeID, boolean checkExplored);
+	/** See https://code.google.com/p/bwapi/wiki/Game#canBuildHere */
 	public boolean canBuildHere(Unit u, Position p, UnitType ut, boolean checkExplored) {
 		return canBuildHere(u == null ? -1 : u.getID(), p.getBX(), p.getBY(), ut.getID(), checkExplored);
 	}
 	private native boolean canMake(int unitTypeID);
+	/** See https://code.google.com/p/bwapi/wiki/Game#canMake */
 	public boolean canMake(UnitType ut) {
 		return canMake(ut.getID());
 	}
 	private native boolean canMake(int unitID, int unitTypeID);
+	/** See https://code.google.com/p/bwapi/wiki/Game#canMake */
 	public boolean canMake(Unit u, UnitType ut) {
 		return canMake(u.getID(), ut.getID());
 	}
 	private native boolean canResearch(int techTypeID);
+	/** See https://code.google.com/p/bwapi/wiki/Game#canResearch */
 	public boolean canResearch(TechType tt) {
 		return canResearch(tt.getID());
 	}
 	private native boolean canResearch(int unitID, int techTypeID);
+	/** See https://code.google.com/p/bwapi/wiki/Game#canResearch */
 	public boolean canResearch(Unit u, TechType tt) {
 		return canResearch(u.getID(), tt.getID());
 	}
 	private native boolean canUpgrade(int upgradeTypeID);
+	/** See https://code.google.com/p/bwapi/wiki/Game#canUpgrade */
 	public boolean canUpgrade(UpgradeType ut) {
 		return canUpgrade(ut.getID());
 	}
 	private native boolean canUpgrade(int unitID, int upgradeTypeID);
+	/** See https://code.google.com/p/bwapi/wiki/Game#canUpgrade */
 	public boolean canUpgrade(Unit u, UpgradeType ut) {
 		return canUpgrade(u.getID(), ut.getID());
 	}
 	
-	
+	/** See https://code.google.com/p/bwapi/wiki/Game#printf */
 	public native void printText(String message);
+	/** See https://code.google.com/p/bwapi/wiki/Game#sendText */
 	public native void sendText(String message);
+	/** See https://code.google.com/p/bwapi/wiki/Game#setLatCom */
 	public native void setLatCom(boolean enabled);
+	/** See https://code.google.com/p/bwapi/wiki/Game#setCommandOptimizationLevel */
 	public native void setCommandOptimizationLevel(int level);
+	/** See https://code.google.com/p/bwapi/wiki/Game#isReplay */
 	public native boolean isReplay();
-	private native boolean isVisibleToPlayer(int unitID, int playerID);
+	protected native boolean isVisibleToPlayer(int unitID, int playerID);
+	/** @deprecated Use the one in {@link Unit} instead */
 	public boolean isVisibleToPlayer(Unit u, Player p) {
 		return isVisibleToPlayer(u.getID(), p.getID());
 	}
+	/**
+	 * See https://code.google.com/p/bwapi/wiki/Game#getLastError<br>
+	 * Error codes are defined in {@link ErrorCode}
+	 */
 	public native int getLastError();
+	/** See https://code.google.com/p/bwapi/wiki/Game#getRemainingLatencyFrames */
 	public native int getRemainingLatencyFrames();
 
 	// Old get___ methods for ID dereferencing no longer needed (call method body directly).
@@ -467,23 +547,43 @@ public class JNIBWAPI {
 	public Collection<OrderType> orderTypes() { return OrderTypes.getAllOrderTypes(); }
 	
 	// ID Lookup Methods (should not usually be needed)
+	/** See https://code.google.com/p/bwapi/wiki/Game#getPlayer */
 	public Player getPlayer(int playerID) { return players.get(playerID); }
+	/** See https://code.google.com/p/bwapi/wiki/Game#getUnit */
 	public Unit getUnit(int unitID) { return units.get(unitID); }
 
 	// game state accessors
+	/** See https://code.google.com/p/bwapi/wiki/Game#getFrameCount */
 	public int getFrameCount() { return gameFrame; }
+	/** See https://code.google.com/p/bwapi/wiki/Game#self */
 	public Player getSelf() { return self; }
+	/** See https://code.google.com/p/bwapi/wiki/Game#neutral */
 	public Player getNeutralPlayer() { return neutralPlayer; }
+	/** See https://code.google.com/p/bwapi/wiki/Game#getPlayers */
 	public Collection<Player> getPlayers() { return Collections.unmodifiableCollection(players.values()); }
+	/** See https://code.google.com/p/bwapi/wiki/Game#allies */
 	public Set<Player> getAllies() { return Collections.unmodifiableSet(allies); }
+	/** See https://code.google.com/p/bwapi/wiki/Game#enemies */
 	public Set<Player> getEnemies() { return Collections.unmodifiableSet(enemies); }
+	/** See https://code.google.com/p/bwapi/wiki/Game#getAllUnits */
 	public Collection<Unit> getAllUnits() { return Collections.unmodifiableCollection(units.values()); }
+	/** Retrieve the cached list of the current player's units */
 	public List<Unit> getMyUnits() { return Collections.unmodifiableList(playerUnits); }
+	/** Retrieve the cached list of allied players' visible units */
 	public List<Unit> getAlliedUnits() { return Collections.unmodifiableList(alliedUnits); }
+	/** Retrieve the cached list of enemy players' visible units */
 	public List<Unit> getEnemyUnits() { return Collections.unmodifiableList(enemyUnits); }
+	/**
+	 * Retrieve the cached list of visible neutral units<br>
+	 * See https://code.google.com/p/bwapi/wiki/Game#getNeutralUnits
+	 */
 	public List<Unit> getNeutralUnits() { return Collections.unmodifiableList(neutralUnits); }
+	/**
+	 * Retrieve the cached list of visible static neutral units<br>
+	 * See https://code.google.com/p/bwapi/wiki/Game#getStaticNeutralUnits
+	 */
 	public List<Unit> getStaticNeutralUnits() { return Collections.unmodifiableList(staticNeutralUnits); }
-	
+	/** Replacement for https://code.google.com/p/bwapi/wiki/Player#getUnits */
 	public List<Unit> getUnits(Player p) {
 		List<Unit> pUnits = new ArrayList<Unit>();
 		for (Unit u : units.values()) {
@@ -493,7 +593,7 @@ public class JNIBWAPI {
 		}
 		return pUnits;
 	}
-	
+	/** See https://code.google.com/p/bwapi/wiki/Game#getUnitsOnTile */
 	public List<Unit> getUnitsOnTile(Position p) {
 		// Often will have 0 or few units on tile
 		List<Unit> units = new ArrayList<Unit>(0);

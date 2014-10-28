@@ -467,6 +467,14 @@ public class Unit implements Cloneable {
 		return resourceGroup;
 	}
 	
+	public boolean hasPath(Unit target) {
+		return bwapi.hasPath(this.getID(), target.getID());
+	}
+	
+	public boolean hasPath(Position target) {
+		return bwapi.hasPath(this.getID(), target.getPX(), target.getPY());
+	}
+	
 	public int getLastCommandFrame() {
 		return lastCommandFrame;
 	}
@@ -1031,7 +1039,33 @@ public class Unit implements Cloneable {
 		return visible;
 	}
 	
+	public boolean isVisible(Player p) {
+		return bwapi.isVisibleToPlayer(this.getID(), p.getID());
+	}
+	
 	// ------------------------------ UNIT COMMANDS ------------------------------ //
+	/**
+	 * Included for completeness to match BWAPI. Preferable to use
+	 * {@link JNIBWAPI#canIssueCommand(UnitCommand)} directly.
+	 */
+	public boolean canIssueCommand(UnitCommand cmd) {
+		if (!this.equals(cmd.getUnit())) {
+			throw new IllegalArgumentException("Unit Command is for a different Unit");
+		}
+		return bwapi.canIssueCommand(cmd);
+	}
+	
+	/**
+	 * Included for completeness to match BWAPI. Preferable to use other unit commands or
+	 * {@link JNIBWAPI#issueCommand(UnitCommand)} directly.
+	 */
+	public boolean issueCommand(UnitCommand cmd) {
+		if (!this.equals(cmd.getUnit())) {
+			throw new IllegalArgumentException("Unit Command is for a different Unit");
+		}
+		return bwapi.issueCommand(cmd);
+	}
+	
 	public boolean attack(Position p, boolean queued) {
 		return bwapi.issueCommand(new UnitCommand(this, UnitCommandTypes.Attack_Move, p, queued));
 	}
