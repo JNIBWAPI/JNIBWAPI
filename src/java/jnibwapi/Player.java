@@ -1,5 +1,8 @@
 package jnibwapi;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import jnibwapi.Position.PosType;
 import jnibwapi.types.PlayerType;
 import jnibwapi.types.RaceType;
@@ -154,6 +157,16 @@ public class Player {
 	
 	public String getName() {
 		return name;
+	}
+	
+	public List<Unit> getUnits() {
+		List<Unit> units = new ArrayList<>();
+		for (Unit u : JNIBWAPI.getInstance().getAllUnits()) {
+			if (u.getPlayer() == this) {
+				units.add(u);
+			}
+		}
+		return units;
 	}
 	
 	public int getMinerals() {
