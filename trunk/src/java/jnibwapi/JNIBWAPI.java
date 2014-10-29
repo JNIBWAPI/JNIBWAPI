@@ -583,9 +583,9 @@ public class JNIBWAPI {
 	 * See https://code.google.com/p/bwapi/wiki/Game#getStaticNeutralUnits
 	 */
 	public List<Unit> getStaticNeutralUnits() { return Collections.unmodifiableList(staticNeutralUnits); }
-	/** Replacement for https://code.google.com/p/bwapi/wiki/Player#getUnits */
+	/** @deprecated Use the one in {@link Player} instead */
 	public List<Unit> getUnits(Player p) {
-		List<Unit> pUnits = new ArrayList<Unit>();
+		List<Unit> pUnits = new ArrayList<>();
 		for (Unit u : units.values()) {
 			if (u.getPlayer() == p) {
 				pUnits.add(u);
@@ -596,7 +596,7 @@ public class JNIBWAPI {
 	/** See https://code.google.com/p/bwapi/wiki/Game#getUnitsOnTile */
 	public List<Unit> getUnitsOnTile(Position p) {
 		// Often will have 0 or few units on tile
-		List<Unit> units = new ArrayList<Unit>(0);
+		List<Unit> units = new ArrayList<>(0);
 		for (int id : getUnitIdsOnTile(p.getBX(), p.getBY())) {
 			units.add(getUnit(id));
 		}
