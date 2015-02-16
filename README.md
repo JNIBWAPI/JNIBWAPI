@@ -1,6 +1,6 @@
-# JNI-BWAPI
+# JNIBWAPI
 
-Build a [StarCraft](http://us.blizzard.com/en-us/games/sc/) AI in Java!
+Build a [Starcraft](http://us.blizzard.com/en-us/games/sc/) AI in Java!
 
 ## Download
 
@@ -13,15 +13,11 @@ Build a [StarCraft](http://us.blizzard.com/en-us/games/sc/) AI in Java!
 
 ## Overview
 
-This project provides a Java interface for the Brood War API ([BWAPI](http://bwapi.github.io/)) using Java Native Interface ([JNI](https://en.wikipedia.org/wiki/Java_Native_Interface)) and a shared memory bridge. Compatible with BWAPI 3.7 and available under the LGPL. This allows Java developers participate in Starcraft AI competitions such as [AIIDE](http://www.starcraftaicompetition.com/), [CIG](http://ls11-www.cs.uni-dortmund.de/rts-competition/starcraft-cig2013), [SCMAI](http://scmai.hackcraft.sk/), and [SSCAI](http://www.sscaitournament.com/).
-
-![Overview diagram JNIBWAPI connection to Starcraft over shared memory bridge](http://i.imgur.com/LWzam6k.png "Overview")
-
-The JNI interface provides several advantages over the previous socket-based [ProxyBot](http://eis.ucsc.edu/StarCraftRemote) interface. First, the interface uses the BWAPI shared memory bridge which lessens the communication bottleneck between C++ and Java and prevents cheating using direct memory access. Second, the BWAPI utility functions (e.g. canBuildHere) can be now be called from Java. Finally, the use of JNI should result in easier project maintainability and extensibility.
+This project provides a Java interface for the Brood War API ([BWAPI](http://bwapi.github.io/)) using Java Native Interface ([JNI](https://en.wikipedia.org/wiki/Java_Native_Interface)) and a shared memory bridge. This allows Java developers to write AI for Starcraft, one of the most popular [RTS](https://en.wikipedia.org/wiki/Real-time_strategy) games, and participate in AI competitions (see links below).
 
 ## Getting Started
 
-Take a look at the [getting started guide](https://code.google.com/p/jnibwapi/wiki/GettingStarted). There is also a [short demo video](https://www.youtube.com/watch?v=4yUy7j7skRQ) of the example 5-pool bot included in JNIBWAPI.
+Take a look at the [wiki](https://github.com/JNIBWAPI/JNIBWAPI/wiki) and [getting started guide](https://github.com/JNIBWAPI/JNIBWAPI/wiki/Getting-Started).
 
 ## Developers
 
@@ -42,6 +38,7 @@ If you have recommendations for improving the project or would like to help cont
 * [CIG StarCraft AI Competition (2013)](http://ls11-www.cs.uni-dortmund.de/rts-competition/starcraft-cig2013)
 * [Starcraft Micro AI Competition](http://scmai.hackcraft.sk/)
 * [Student StarCraft AI Competition](http://www.sscaitournament.com/)
+* [Starcraft Brood War Bots Ladder](http://bots-stats.krasi0.com/)
 * [Competition news](https://twitter.com/StarCraftAIComp)
 * [JBridge (deprecated)](https://code.google.com/p/bwapi-jbridge/)
 * [Java Proxy (deprecated)](https://code.google.com/p/bwapi-proxy/)
@@ -49,4 +46,7 @@ If you have recommendations for improving the project or would like to help cont
 ## Legal
 
 [Starcraft](http://us.blizzard.com/en-us/games/sc/) and  Starcraft: Brood War are trademarks or registered trademarks of Blizzard Entertainment, Inc. in the U.S. and/or other countries. ©1998 Blizzard Entertainment, Inc. All rights reserved.
+
 [BWAPI](https://bwapi.github.io/) is a third party "hack" that violates the End User License Agreement (EULA). It is strongly recommended to purchase a legitimate copy of Starcraft: Broodwar from Blizzard Entertainment before using BWAPI. 
+
+This code is available under the LGPL
