@@ -2,22 +2,20 @@
 
 Build a [Starcraft](http://us.blizzard.com/en-us/games/sc/) AI in Java!
 
+This project provides a Java interface for the Brood War API ([BWAPI](http://bwapi.github.io/)), using Java Native Interface ([JNI](https://en.wikipedia.org/wiki/Java_Native_Interface)) to communicate over a shared memory bridge. This allows Java developers to write AI for Starcraft, one of the most popular [Real-Time Strategy](https://en.wikipedia.org/wiki/Real-time_strategy) games, and participate in AI competitions (see links below).
+
 ## Download
 
-[Download JNIBWAPI](https://drive.google.com/a/soe.ucsc.edu/folderview?id=0Bxdd3L2Qj5lxamZUSUpOLVZ6c2M) ([older versions](https://code.google.com/p/jnibwapi/downloads/list))
+[Download JNIBWAPI releases](https://github.com/JNIBWAPI/JNIBWAPI/releases)
+
+## Getting Started / Documentation
+
+Take a look at the [wiki](https://github.com/JNIBWAPI/JNIBWAPI/wiki).
 
 ## Updates
 
 * 2015-02-11: JNIBWAPI has moved to GitHub
 * 2014-05-13: JNIBWAPI 1.0 is released. Includes significant changes to the API to bring it closer to the C++ API and encourage type safety.
-
-## Overview
-
-This project provides a Java interface for the Brood War API ([BWAPI](http://bwapi.github.io/)) using Java Native Interface ([JNI](https://en.wikipedia.org/wiki/Java_Native_Interface)) and a shared memory bridge. This allows Java developers to write AI for Starcraft, one of the most popular [RTS](https://en.wikipedia.org/wiki/Real-time_strategy) games, and participate in AI competitions (see links below).
-
-## Getting Started
-
-Take a look at the [wiki](https://github.com/JNIBWAPI/JNIBWAPI/wiki) and [getting started guide](https://github.com/JNIBWAPI/JNIBWAPI/wiki/Getting-Started).
 
 ## Developers
 
